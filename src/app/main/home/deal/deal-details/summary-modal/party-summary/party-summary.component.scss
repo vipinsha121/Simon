@@ -1,0 +1,35 @@
+@import '../../../../../../../mat-theme.scss';
+
+::ng-deep .mat-icon-background {
+  background: #f5f5f5;
+  padding: 6px;
+}
+
+mat-icon {
+  color: #959595;
+  font-size: 30px;
+}
+
+mat-list-item {
+  margin: 1.5rem 0px;
+}
+
+  a {
+    color: mat-color($accent) !important;
+    font-weight: 500;
+  }
+
+  .party-list-text {
+    font-size: 16px !important;
+  }
+
+  .party-list-text-label {
+    font-size: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .party-list-text-sub-header {
+    font-size: 12px !important;
+    color: #959595
+  }

@@ -1,0 +1,362 @@
+<div>
+  <div class="modal-header-add-party">
+    <div class="modal-title">
+      New Party
+    </div>
+    <div *ngIf="IsOpenFromAddParty">
+      <button class="modal-header-button" mat-flat-button (click)="openAddPartyModal()">Back to Search</button>
+    </div>
+    <div class="modal-button-close" style="padding: 4px">
+      <mat-icon class="u-mat-icon-grey" (click)="activeModal.dismiss()">close</mat-icon>
+    </div>
+  </div>
+  <div class="modal-body" style="padding-bottom: 0px; padding-right: 50px">
+   <!-- <app-loader></app-loader>-->
+    <form *ngIf="party?.type === 'I'" [formGroup]="partyDetailForm" id="newPartyI">
+      <div fxLayout="row" fxLayoutAlign="start stretch">
+        <div class="party-detail-body" style="width: 100%">
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">person</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px" *ngIf="!IsOpenFromAddParty">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Title</mat-label>
+                <input matInput required formControlName="title" [(ngModel)]="party.title" name="title"
+                  autocomplete="new-username" placeholder="Title" />
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>First Name</mat-label>
+                <input matInput required formControlName="firstName" [(ngModel)]="party.firstName" name="firstName"
+                  autocomplete="new-username" placeholder="First Name" />
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Last Name</mat-label>
+                <input matInput required placeholder="Last Name" formControlName="lastName" name="lastName"
+                  autocomplete="new-username" [(ngModel)]="party.lastName">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="edit-row" style="padding-bottom: 20px">
+            <div fxLayout="column" fxFlex="10">
+
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Birthdate</mat-label>
+                <input matInput [matDatepicker]="birthdate" placeholder="MM/DD/YYYY" autocomplete="off"
+                  formControlName="birthdate" [(ngModel)]="party.birthdate" name="birthdate">
+                <mat-datepicker-toggle matSuffix [for]="birthdate"></mat-datepicker-toggle>
+                <mat-datepicker #birthdate></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Middle Name</mat-label>
+                <input matInput placeholder="Middle Name" formControlName="middleName" name="middleName"
+                  autocomplete="new-username" [(ngModel)]="party.middleName">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">fingerprint</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>TIN</mat-label>
+                <input matInput formControlName="tin" [(ngModel)]="party.tin" name="tin"
+                  [textMask]="{mask: TINmask}"
+                  autocomplete="new-username" placeholder="Tax ID Number" />
+              </mat-form-field>
+            </div>
+
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>CIF ID</mat-label>
+                <input matInput placeholder="Customer Identification Number" formControlName="hostId"
+                  autocomplete="new-username" [(ngModel)]="party.hostId">
+              </mat-form-field>
+            </div>
+            
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px" *ngIf="!IsOpenFromAddParty">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Company</mat-label>
+                <input matInput formControlName="company" readonly [(ngModel)]="party.company" name="company"
+                [matAutocomplete]="companies" autocomplete="new-username" placeholder="Company Name" />
+              </mat-form-field>
+            </div>
+          </div>
+
+   
+
+          <div fxLayout="row" class="edit-row" *ngIf="IsOpenFromAddParty">
+            <div fxLayout="column" fxFlex="10">
+
+            </div>
+            <div fxLayout="column" fxFlex="45">
+              <mat-form-field appearance="outline" style="padding-right: 10px" floatLabel="always">
+                <mat-label>Role</mat-label>
+                <mat-select required placeholder="Select" formControlName="role" name="role" [disabled]="party.primary == true"
+                  [(ngModel)]="party.participation">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                </mat-select>
+                <mat-error>Please Select Role</mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">home_work</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 1</mat-label>
+                <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="off"
+                  [(ngModel)]="party.street1">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 2</mat-label>
+                <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="off"
+                  [(ngModel)]="party.street2">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Input" formControlName="city" autocomplete="new-username" name="city"
+                  [(ngModel)]="party.city">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="25" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>State</mat-label>
+                <mat-select placeholder="state" formControlName="state" [(ngModel)]="party.state" name="state">
+                  <mat-select-trigger>{{party.state}}</mat-select-trigger>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let states of stateList" [value]="states.abbrv">
+                    {{states.abbrv}} - {{states.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="20">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Zip</mat-label>
+                <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="new-username" name="zip"
+                  [(ngModel)]="party.zip">
+                <!-- <mat-error *ngIf="zip.invalid && zip.touched">
+                              Must be 5 characters
+                            </mat-error> -->
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">phone</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" name="phone" autocomplete="off"
+                  [(ngModel)]="party.phone">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Mobile</mat-label>
+                <input matInput formControlName="phoneMobile" name="mobile"
+                  autocomplete="off" [(ngModel)]="party.mobilePhone">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">mail_outline</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex="45" style="padding-right: 10px">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="example@eg.com" formControlName="email" name="email"
+                  autocomplete="new-username" [(ngModel)]="party.email">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end center">
+
+
+      </div>
+    </form>
+    <form *ngIf="party?.type === 'C'" [formGroup]="partyDetailFormCompany">
+      <div fxLayout="row" fxLayoutAlign="start stretch">
+        <div class="party-detail-body" style="width: 100%">
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">business</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Name</mat-label>
+                <input matInput required formControlName="name" [(ngModel)]="party.name" name="name"
+                  autocomplete="new-username"
+                  placeholder="Name" />
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+                <mat-label>Entity Type</mat-label>
+                <mat-select required placeholder="Select" formControlName="type" [(ngModel)]="party.entityTypeCode">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let entity of entityType" [value]="entity.id">{{entity.name}}</mat-option>
+                </mat-select>
+                <mat-error>Please Select Entity Type</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row" *ngIf="IsOpenFromAddParty">
+            <div fxLayout="column" fxFlex="10">
+
+            </div>
+            <div fxLayout="column" fxFlex="45">
+              <mat-form-field appearance="outline" style="padding-right: 10px" floatLabel="always">
+                <mat-label>Role</mat-label>
+                <mat-select required placeholder="Select" formControlName="role" name="role"
+                  [disabled]="party.primary == true"
+                  [(ngModel)]="party.participation">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                </mat-select>
+                <mat-error>Please Select Role</mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">fingerprint</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>TIN</mat-label>
+                <input matInput formControlName="tinBus" [(ngModel)]="party.tin" name="tinBus"
+                  [textMask]="{mask: TINbusMask}" autocomplete="new-username" placeholder="Tax ID Number" />
+              </mat-form-field>
+            </div>
+
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>CIF ID</mat-label>
+                <input matInput placeholder="Customer Identification Number" formControlName="hostId"
+                  autocomplete="new-username" [(ngModel)]="party.hostId">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+
+
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">home_work</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 1</mat-label>
+                <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="off"
+                  [(ngModel)]="party.street1">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 2</mat-label>
+                <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="off"
+                  [(ngModel)]="party.street2">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Input" formControlName="city" autocomplete="new-username" name="city"
+                  [(ngModel)]="party.city">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="25" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>State</mat-label>
+                <mat-select placeholder="state" formControlName="state" [(ngModel)]="party.state" name="state">
+                  <mat-select-trigger>{{party.state}}</mat-select-trigger>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let states of stateList" [value]="states.abbrv">
+                    {{states.abbrv}} - {{states.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="20">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Zip</mat-label>
+                <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="new-username" name="zip"
+                  [(ngModel)]="party.zip">
+                <!-- <mat-error *ngIf="zip.invalid && zip.touched">
+                          Must be 5 characters
+                        </mat-error> -->
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="edit-row">
+            <div fxLayout="column" fxFlex="10">
+              <mat-icon class="u-mat-icon-grey">phone</mat-icon>
+            </div>
+            <div fxLayout="column" fxFlex="45" style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" name="phone" autocomplete="off"
+                  [(ngModel)]="party.phone">
+              </mat-form-field>
+            </div>
+            <div fxLayout="column" fxFlex="45">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div *ngIf="party?.type === 'I'" fxLayout="row" class="footer" fxLayoutAlign="end">
+    <button type="button" class="u-button-cancel cancel" (click)="activeModal.dismiss()" mat-flat-button>Cancel</button>
+    <button type="submit" [disabled]="partyDetailForm.invalid" class="u-button-save save" (click)="saveParty(party)"
+      mat-flat-button form="newPartyI">Save</button>
+  </div>
+  <div *ngIf="party?.type === 'C'" fxLayout="row" class="footer" fxLayoutAlign="end">
+    <button type="button" class="u-button-cancel cancel" (click)="activeModal.dismiss()" mat-flat-button>Cancel</button>
+    <button type="submit" [disabled]="partyDetailFormCompany.invalid" class="u-button-save save"
+      (click)="saveParty(party)" mat-flat-button>Save</button>
+
+  </div>
+</div>

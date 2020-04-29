@@ -1,0 +1,8 @@
+.example-full-width {
+    width: 85%;
+}
+
+mat-label {
+    color: #9a9a9a;
+    font-size: 12px;
+  }

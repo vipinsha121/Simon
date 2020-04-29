@@ -1,0 +1,11 @@
+<div class="spinner-border text-success ng-star-inserted" role="status" *ngIf="isTableLoading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div *ngIf="currentMenu" fxFill>
+    <simon-grid></simon-grid>
+</div>
+<div (mouseup)="detectRightMouseClick($event)" >
+</div>
+<div class="rightClickPanel" [ngStyle]="rightPanelStyle" (clickOutside)="closeContextMenu()">
+</div>
+

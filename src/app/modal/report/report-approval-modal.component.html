@@ -1,0 +1,43 @@
+<!-- <div>
+   <div class="caption" style="display: inline-block; float: right;border-radius: 50px;border-color: #000000;margin-right: 15px;
+    margin-top: 0px;border-radius: 30px !important">
+        <span (click)="activeModal.dismiss()" style="border-color:black;cursor: pointer;border-color: black">X</span>
+    </div> 
+
+      <div class="form-group" style="margin-top:22px;margin-left: 20px" *ngIf="showShearchTextBox">
+        Search:<input type="text" [(ngModel)]="searchRequirement"
+          (keyup)="showReportById('QRRequirementCommentsByDeal')" ng-model="searchRequirement" title="Search"
+          class="form-control" style="border-radius: 50px !important;width:450px;margin-left: 100px;margin-top: -27px;"
+          placeholder="Search" />
+      </div>
+    
+  <form class="form-horizontal">
+    <div style=" height:100%; background-color: transparent">
+      <iframe [src]="reportUrl | safe" style="width:100%;height:600px"></iframe>
+    </div>
+  </form>
+</div> -->
+
+ <div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+      <div class="form-group" style="margin-left: 20px" *ngIf="showShearchTextBox">
+        Search:<input type="text" [(ngModel)]="searchRequirement"
+          (keyup)="filterReport($event)" ng-model="searchRequirement" title="Search"
+          class="form-control" style="border-radius: 50px !important;width:450px;margin-left: 100px;margin-top: -27px;"
+          placeholder="Search" />
+      </div> 
+    
+  <form>
+    <div style=" height:100%; background-color: transparent">
+      <iframe [src]="reportUrl | safe" style="width:100%;height:600px"></iframe>
+    </div>
+  </form>
+  </div>
+</div> 

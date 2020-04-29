@@ -1,0 +1,136 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title">{{openReqQuestionModal.type}} - Response Required</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="modal-body">
+      <table class="table req-form-table">
+                <thead>
+                    <tr>
+                      <th>Question</th>
+                      <th>Response</th>
+                       <th>Comparison</th>
+                      <th>Expected value</th>
+                      <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="requirement.isTickler != true && requirement.showCompareFlag=='1'">              
+                  <tr *ngFor="let q of requirement.baseReqQuestions">
+                       <td style="vertical-align:middle;">{{q.questionText}}</td>
+                       <td style="vertical-align:middle;">
+                          <div *ngIf="q.dataType == 'int'" ng-disabled="!requirement.actualValueEnabled">
+                            <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualIntValue" (change)="isExceptionForBaseReq();" type="number">
+                            </mat-form-field>
+                         </div>
+                            <div *ngIf="q.dataType == 'Percent'">
+                            <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualDecimalValue" (change)="isExceptionForBaseReq();">
+                            </mat-form-field>
+                          </div>
+                           <div *ngIf="q.dataType == 'Varchar'">
+                             <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualText" (change)="isExceptionForBaseReq();">
+                            </mat-form-field>
+                        </div>
+                            <div *ngIf="q.dataType == 'Date'">
+                          <mat-form-field>
+                             <input matInput [matDatepicker]="responsedate" 
+                                  [(ngModel)]="q.actualDate" (change)="isExceptionForBaseReq();" [ngModelOptions]="{standalone: true}" >
+                             <mat-datepicker-toggle matSuffix [for]="responsedate"></mat-datepicker-toggle>
+                             <mat-datepicker #responsedate></mat-datepicker>
+                          </mat-form-field>
+                          </div>
+                             <div *ngIf="q.dataType == 'bool'" ng-disabled="!requirement.actualValueEnabled">
+                           <mat-radio-group aria-label="Select an option" [(ngModel)]="q.actualBitValue" >
+                           <mat-radio-button  value="true">Yes</mat-radio-button>
+                       <br><mat-radio-button  value="false" >No</mat-radio-button>
+                           </mat-radio-group>
+                           </div>
+                       </td>
+                       <td>
+                         <div *ngIf="q.showLowExceptionFlag">
+                          {{q.expectedValueLowOperand}}
+                          </div>
+                           <div *ngIf="q.showHighExceptionFlag">
+                          {{q.expectedValueHighOperand}}
+                          </div>
+                       </td>
+                       <td>
+                         <div *ngIf="q.dataType == 'int'">{{q.expectedValueInt}}</div>
+                         <div *ngIf="q.dataType == 'Percent'">{{q.expectedValueDecimal}}</div>
+                         <div *ngIf="q.dataType == 'Varchar'">{{q.expectedValueVarchar}}</div>
+                         <div *ngIf="q.dataType == 'Date'">{{q.expectedValueDate}}</div>
+                         <div *ngIf="q.dataType == 'bool'">{{q.expectedValueBit}}</div>
+                       </td>
+                        <td>{{q.descriptionNotes}}</td>
+                 </tr>              
+                </tbody>
+                <tbody *ngIf="requirement.isTickler == true && requirement.showCompareFlag=='1'">
+                <!--<div >-->
+                  <tr *ngFor="let q of requirement.ticklerReqQuestions">
+                       <td>{{q.questionText}}</td>
+                        <td>
+                          <div *ngIf="q.dataType == 'Int'" ng-disabled="!requirement.actualValueEnabled">
+                            <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualIntValue" (change)="isExceptionForTickler();" type="number">
+                            </mat-form-field>
+                         </div>
+                            <div *ngIf="q.dataType == 'Percent'">
+                            <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualDecimalValue" >
+                            </mat-form-field>
+                          </div>
+                           <div *ngIf="q.dataType == 'Varchar'">
+                             <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                            <input matInput autocomplete="autocomplete_off_hack_xfr4!k" (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="q.actualText" >
+                            </mat-form-field>
+                      </div>
+                        <div *ngIf="q.dataType == 'Date'">
+                          <mat-form-field>
+                             <input matInput [matDatepicker]="responsedate" 
+                                  [(ngModel)]="q.actualDate" (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}">
+                             <mat-datepicker-toggle matSuffix [for]="responsedate"></mat-datepicker-toggle>
+                             <mat-datepicker #responsedate></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div *ngIf="q.dataType == 'Radio'" ng-disabled="!requirement.actualValueEnabled">
+                           <mat-radio-group aria-label="Select an option" [(ngModel)]="q.actualBitValue"> 
+                           <mat-radio-button value="true">Yes</mat-radio-button>
+                       <br><mat-radio-button value="false">No</mat-radio-button>
+                           </mat-radio-group>
+                           </div>
+                       </td>
+                          <td>
+                         <div *ngIf="q.showLowExceptionFlag">
+                          {{q.expectedValueLowOperand}}
+                          </div>
+                           <div *ngIf="q.showHighExceptionFlag">
+                          {{q.expectedValueHighOperand}}
+                          </div>
+                       </td>
+                       <td>
+                         <div *ngIf="q.dataType == 'Int'">{{q.expectedValueInt}}</div>
+                         <div *ngIf="q.dataType == 'Percent'">{{q.expectedValueDecimal}}</div>
+                         <div *ngIf="q.dataType == 'Varchar'">{{q.expectedValueVarchar}}</div>
+                         <div *ngIf="q.dataType == 'Date'">{{q.expectedValueDate}}</div>
+                         <div *ngIf="q.dataType == 'Radio'">{{q.expectedValueBit}}</div>
+                       </td>
+                       <td>{{q.descriptionNotes}}</td>
+                    </tr>
+                  <!--</div>-->
+                </tbody>
+           </table>
+        <button type="button" class="btn btn-primary" (click)="onApplyClick(requirement)">Apply</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary" (click)="NoCancel(requirement)">Cancel</button>
+    </div>
+</div>

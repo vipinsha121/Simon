@@ -1,0 +1,14 @@
+.save {
+  background: #34bfa3;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.cancel {
+  color: #b3b3b3;
+  text-transform: uppercase;
+}
+
+.party-detail-body {
+  width: 100%;
+}

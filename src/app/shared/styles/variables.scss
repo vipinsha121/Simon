@@ -1,0 +1,57 @@
+/********************************************************
+Basic Color Variables
+/********************************************************/
+
+$white-color:           #ffffff;
+$black-color:           #000000;
+$gray-raven-color:      #70798B;
+$gray-alto-color:       #DADADA;
+$picton-blue-color:     #3DC6EF;
+$porcelain-color:       #E2E6E8;
+$powder-blue-color:     #A8D9E3;
+$carissma-color:        #E98FAC;
+
+
+/********************************************************
+Theme Color Variables
+/********************************************************/
+
+$theme-color:             		 #E0245A !default; 
+$default-color:           		 #5f5f5f;
+$primary-color:           		 $theme-color;
+$primary-hover-color:            #9A022E;
+$secondary-color:          		 #4AC9EE;
+$secondary-hover-color:          #269BBE;
+$link-text-color:           	 #4C002E;
+$modal-text-color:           	 #46A9C8;
+
+
+/********************************************************
+Social Media
+/********************************************************/
+
+$facebook-bg:                    #3B5998;
+$google-bg:                      #EA4335;
+$youtube-bg:                     #cd3e27;
+
+
+/********************************************************
+Font family & Size Variables
+/********************************************************/
+
+$font-size-medium:    			 20px;
+$font-size-primary:   			 18px;
+$font-size-regular:   			 16px;
+$font-size-default:   			 14px; 
+$font-size-smallar:   			 12px;
+$font-size-smallest:  			 10px;
+$font-family-default: 			 'Nunito',sans-serif;
+$font-family-Comfortaa:  		 'Comfortaa',cursive;
+$font-awesome-family:            FontAwesome;
+
+ 
+/********************************************************
+Path Specification Variables
+/********************************************************/
+
+$section-title-leaf:        	url(/assets/images/title-bottom.png); 

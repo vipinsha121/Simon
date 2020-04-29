@@ -1,0 +1,11 @@
+<div *ngFor="let deal of dealMenu" style=" padding: 5px 0px;">
+  <!-- menu item section title -->
+  <div *ngIf="deal.dealId">
+    <div [ngClass]="{'active': deal.active===true, 'inactive': deal.active===false}"
+      (click)="showDeal(deal); sendToggle()" routerLink="{{deal.routerURL}}" routerLinkActive="active">
+      <span class="link">
+        {{deal.dealId}} - {{deal.dealName}}
+      </span>
+    </div>
+  </div>
+</div>

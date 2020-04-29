@@ -1,0 +1,17 @@
+<div>
+  <div class="modal-header">
+    <h4>Stage Send</h4>
+  </div>
+  <div class="modal-body">
+    <div fxLayout="column" fxFlex="45" style="margin-right: 10px">
+      <mat-select placeholder="Select" name="stageSend">
+        <mat-option value="option" *ngFor="let stage of sendStageDropDownData"
+                    (click)="selectedStage(stage.stageId)" [value]="stage.stageId">
+          {{stage.stageName}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <button aria-label="cancel" class="u-button-cancel" (click)="activeModal.close()" mat-raised-button>Cancel</button>
+  <button type="submit" class="button-save btn-info" [disabled]="!isChecked" mat-raised-button (click)="sendStage()">Send</button>
+</div>

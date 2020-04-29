@@ -1,0 +1,338 @@
+<div>
+
+  <div class="modal-header">
+    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <h4>{{title}}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="externalParticipantForm">
+      <div class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="20">Search company: </mat-label>
+            <mat-form-field fxFlex="65" appearance="outline" floatLabel="always">
+              <input matInput formControlName="selectedCompany" #searchCompany [matAutocomplete]="companyList"
+                [(ngModel)]="selectedCompany" name="selectedCompany" placeholder="Search company"
+                (keyup)="searchCompanies($event)" />
+            </mat-form-field>
+            <mat-autocomplete (optionSelected)="setSelectedCompanyFlag()" [displayWith]="displayFn"
+              #companyList="matAutocomplete">
+              <mat-option *ngFor="let company of filteredCompanies" [value]="company">
+                {{company.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <div fxLayout="column" fxFlex="15" fxLayoutAlign="center center">
+              <mat-icon (click)="addNewCompany()" class="add">control_point</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [hidden]="!isSelectedCompany" class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="20">Search person: </mat-label>
+            <mat-form-field fxFlex="65" appearance="outline" floatLabel="always">
+              <input matInput #searchPerson formControlName="selectedPerson" [matAutocomplete]="personList"
+                [(ngModel)]="selectedPerson" name="selectedPerson" placeholder="Search person" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnPerson" #personList="matAutocomplete">
+              <mat-option *ngFor="let person of filteredPersons | async" [value]="person.id">
+                {{person.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <div fxLayout="column" fxFlex="15" fxLayoutAlign="center center">
+              <mat-icon (click)="addNewPerson()" class="add">control_point</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [hidden]="!isSelectedCompany" class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Select participation: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="participationId" placeholder="Select Participation"
+                [(ngModel)]="participationId" name="participationId">
+                <mat-option *ngFor="let participation of externalParticipationArray" [value]="participation.id">
+                  {{participation.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Add New Company -->
+    <!-- <mat-card > -->
+    <form [hidden]="addNewCompanyFlag === false" [formGroup]="addNewCompanyForm" class="u-padding-large u-padding-standard">
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" [(ngModel)]="company.name" name="name" placeholder="Name" />
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>TIN</mat-label>
+            <input matInput [textMask]="{mask: TINmask}" type="text" formControlName="tin" [(ngModel)]="company.tin"
+              name="tin" autocomplete="new-username" placeholder="Tax ID Number" />
+          </mat-form-field>
+        </div>
+
+
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>CIF Id</mat-label>
+            <input matInput placeholder="Customer Info Number" formControlName="hostId" name="hostId"
+              autocomplete="new-username" [(ngModel)]="company.hostId">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+            <mat-label>Entity Type</mat-label>
+            <mat-select placeholder="Select" formControlName="type" [(ngModel)]="company.entityTypeCode">
+              <!-- <mat-option>None</mat-option> -->
+              <mat-option *ngFor="let entity of entityTypes" [value]="entity.id">{{entity.name}}</mat-option>
+            </mat-select>
+            <mat-error>Please Select Entity Type</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Addrees 1</mat-label>
+            <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="new-username"
+              [(ngModel)]="company.street1">
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Address 2</mat-label>
+            <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="new-username"
+              [(ngModel)]="company.street2">
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="40" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="Input" formControlName="city" autocomplete="new-username" name="city"
+              [(ngModel)]="company.city">
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="30" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state" name="state" [(ngModel)]="company.state">
+              <mat-select-trigger>{{company.state}}</mat-select-trigger>
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let state of stateList" [value]="state.abbrv">
+                {{state.abbrv}} - {{state.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="30" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Zip</mat-label>
+            <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="new-username" name="zip"
+              [(ngModel)]="company.zip">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="edit-row">
+        <mat-form-field appearance="outline" floatLabel="always" fxFlex="50" style="padding-right: 10px">
+          <mat-label>Phone</mat-label>
+          <input matInput placeholder="(000) 000-0000" formControlName="phone" name="phone" minlength="10"
+            autocomplete="new-username" maxlength="50" [(ngModel)]="company.phone">
+          <!-- <div *ngIf="phone.errors?.minLength">number must be 10 digit</div> -->
+        </mat-form-field>
+
+      </div>
+
+      <div class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+        <a aria-label="cancel" (click)="clearCompanyForm()" class="u-button-cancel" mat-raised-button>Cancel</a>
+        <button type="submit" class="u-button-save" mat-raised-button (click)="saveNewCompany()"
+          [disabled]="addNewCompanyForm.invalid || isLoading">Save</button>
+      </div>
+    </form>
+    <!-- </mat-card> -->
+
+    <!-- Add New Emplooye -->
+
+    <!-- <mat-card [hidden]="AddNewFormI === false"> -->
+    <!-- <mat-divider></mat-divider> -->
+
+    <form [hidden]="addNewPersonFlag === false" [formGroup]="addNewPersonForm" class="u-padding-large u-padding-standard">
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" [(ngModel)]="person.firstName" name="firstName"
+              autocomplete="new-username" placeholder="First Name" />
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>TIN</mat-label>
+            <input matInput formControlName="tin" [(ngModel)]="person.tin" name="tin" [textMask]="{mask: TINmask}"
+              autocomplete="new-username" placeholder="Tax ID Number" />
+          </mat-form-field>
+        </div>
+
+
+      </div>
+
+      <div class="edit-row">
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Middle Name</mat-label>
+            <input matInput placeholder="Middle Name" formControlName="middleName" name="middleName"
+              autocomplete="new-username" [(ngModel)]="person.middleName">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>CIF Id</mat-label>
+            <input matInput placeholder="Customer Info Number" formControlName="hostId" autocomplete="new-username"
+              [(ngModel)]="person.hostId">
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="edit-row">
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Last Name" formControlName="lastName" name="lastName"
+              autocomplete="new-username" [(ngModel)]="person.lastName">
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field>
+            <mat-label style="font-size: 11px;">BirthDate</mat-label>
+            <input readonly matInput [matDatepicker]="birthdate" placeholder="Choose a date" autocomplete="new-username"
+              formControlName="birthdate" [(ngModel)]="person.birthdate" name="birthdate">
+            <mat-datepicker-toggle matSuffix [for]="birthdate"></mat-datepicker-toggle>
+            <mat-datepicker #birthdate></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Address 1</mat-label>
+            <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="new-username"
+              [(ngModel)]="person.street1">
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="50">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Address 2</mat-label>
+            <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="new-username"
+              [(ngModel)]="person.street2">
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="40" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="Input" formControlName="city" autocomplete="new-username" name="city"
+              [(ngModel)]="person.city">
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="30" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state" [(ngModel)]="person.state" name="state">
+              <mat-select-trigger>{{person.state}}</mat-select-trigger>
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let states of stateList" [value]="states.abbrv">
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="30">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Zip</mat-label>
+            <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="new-username" name="zip"
+              [(ngModel)]="person.zip">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Phone</mat-label>
+            <input matInput placeholder="000-000-0000" formControlName="phone" name="phone" autocomplete="new-username"
+              [(ngModel)]="person.phone">
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Mobile</mat-label>
+            <input matInput placeholder="000-000-0000" formControlName="mobilePhone" name="mobile"
+              autocomplete="new-username" [(ngModel)]="person.mobilePhone">
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="60" style="padding-right: 10px">
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50" style="padding-right: 10px">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="example@eg.com" formControlName="email" name="email"
+              autocomplete="new-username" [(ngModel)]="person.email">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+
+        <a aria-label="cancel" class="u-button-cancel" (click)="clearPersonForm()" mat-raised-button>Cancel</a>
+        <button type="submit" class="u-button-save" mat-raised-button [disabled]="isLoading || addNewPersonForm.invalid"
+          (click)="saveNewPerson()">Save</button>
+
+      </div>
+    </form>
+    <!-- </mat-card> -->
+  </div>
+
+  <div class="modal-footer" style="position: initial;">
+    <div class="spinner-border text-success" role="status" *ngIf="isLoading">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+    <button type="button"
+      [disabled]="isLoading || externalParticipantForm.invalid || addNewPersonFlag || addNewCompanyFlag"
+      class="btn btn-primary" (click)="addParticipant()">Save</button>
+  </div>
+</div>

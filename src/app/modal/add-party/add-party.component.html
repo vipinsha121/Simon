@@ -1,0 +1,358 @@
+<div style="min-height: 300px; padding: 2rem">
+  <!--<app-loader></app-loader>-->
+  <div class="add-party-header">
+    <div>
+      <span class="add-party-header-title">{{title}}</span>
+    </div>
+    <div>
+      <span>Select Party Type ------------></span>
+    </div>
+    <div>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="selectPartyType">
+        <mat-radio-button (change)="getParty($event)" value="I">Individual</mat-radio-button>
+        <mat-radio-button (change)="getParty($event)" value="C">Company</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <button mat-icon-button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <mat-icon aria-hidden="true">close</mat-icon>
+    </button>
+
+
+  </div>
+  <div>
+    <div>
+      <div *ngIf="selectPartyType === 'I'">
+        <form (ngSubmit)="NewPartyForm_I(Search); addNewPartyI(party, IsOpenFromAddParty = true)"
+          [formGroup]="IndividualFields" id="newPartyI" fxLayout="row" fxLayoutAlign="space-evenly center"
+          class="add-party-label">
+          <mat-form-field style="margin-right: 15px;" appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="Search.firstName" autocomplete="new-username" formControlName="firstName"
+              (keyup)="getSearchData(Search.firstName)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 15px;" appearance="fill">
+            <mat-label>Middle Name</mat-label>
+            <input matInput [(ngModel)]="Search.middleName" autocomplete="new-username" formControlName="middleName"
+              (keyup)="getSearchData(Search.middleName)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="Search.lastName" autocomplete="new-username" formControlName="lastName"
+              (keyup)="getSearchData(Search.lastName)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+        </form>
+      </div>
+      <div *ngIf="selectPartyType === 'C'">
+        <form (ngSubmit)="NewPartyForm_C(Search); addNewPartyC(party, IsOpenFromAddParty = true)"
+          [formGroup]="CompanyFields" id="newPartyC" fxLayout="row" fxLayoutAlign="center" class="add-party-label">
+
+          <mat-form-field appearance="fill" fxFlex="100">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="Search.companyName" autocomplete="new-username" formControlName="companyName"
+              (keyup)="getSearchData($event)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+        </form>
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+  <div>
+    <div fxLayout="row" fxLayoutAlign="space-evenly center"
+      class="add-party-label">
+      <mat-form-field style="margin-right: 15px" appearance="fill">
+        <mat-label>Officer</mat-label>
+        <mat-select [(ngModel)]="Search.officer" #t (selectionChange)="getSearchData($event)" placeholder="Officer"
+          (click)="getofficer()">
+          <!-- <mat-select-trigger>{{Search.officer}}</mat-select-trigger> -->
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let role of officers" [value]="role.id">{{role.name}}</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field style="margin-right: 15px" appearance="fill">
+        <mat-label>TIN</mat-label>
+        <input matInput [(ngModel)]="Search.tin" autocomplete="new-username" (keyup)="getSearchData($event)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>CIF</mat-label>
+        <input matInput [(ngModel)]="Search.hostId" autocomplete="new-username" (keyup)="getSearchData($event)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div [hidden]="AddNewFormI === true || AddNewFormC  === true">
+    <div *ngIf="Search.partyType === 'I'" class="add-party-label">
+      <table mat-table [dataSource]="dataSource" style="width: -webkit-fill-available; border-top: 1px solid #e0e0e0">
+
+        <ng-container matColumnDef="checked">
+          <!-- <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+           <mat-cell *matCellDef="let element">
+             <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+           </mat-cell> -->
+          <th mat-header-cell *matHeaderCellDef><span style="color: transparent;">Check</span></th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.checked" (click)="addExistingParty(element, IsOpenFromAddParty = true)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="partyId">
+          <th mat-header-cell *matHeaderCellDef> Party ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.partyId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef> First </th>
+          <td mat-cell *matCellDef="let element">
+            <div [ngbTooltip]="element?.firstName" tooltipClass="tooltip-font-size-md" style="word-wrap: break-word; max-width: 100px">
+              {{(element?.firstName?.length > 12) ? (element?.firstName | slice: 0:12)+'...' : element?.firstName }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="middleName">
+          <th mat-header-cell *matHeaderCellDef> Middle </th>
+          <td mat-cell *matCellDef="let element">
+            <div [ngbTooltip]="element?.middleName" tooltipClass="tooltip-font-size-md" style="word-wrap: break-word; max-width: 100px">
+              {{(element?.middleName?.length > 12) ? (element?.middleName | slice: 0:12)+'...' : element?.middleName }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef> Last </th>
+          <td mat-cell *matCellDef="let element">
+            <div [ngbTooltip]="element?.lastName" tooltipClass="tooltip-font-size-md"
+              [disableTooltip]="element?.lastName?.length < 12"
+              style="word-wrap: break-word; max-width: 100px">
+              {{(element?.lastName?.length > 12) ? (element?.lastName | slice: 0:12)+'...' : element?.lastName }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tin">
+          <th mat-header-cell *matHeaderCellDef> TIN </th>
+          <td [ngbTooltip]="element.tin" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.tin?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.tin?.length > 12) ? (element.tin | slice: 0:12)+'...' : element.tin }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="hostId">
+          <th mat-header-cell *matHeaderCellDef> CIF </th>
+          <td [ngbTooltip]="element?.hostId" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.hostId?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.hostId?.length > 12) ? (element?.hostId | slice: 0:12)+'...' : element?.hostId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="street">
+          <th mat-header-cell *matHeaderCellDef> Street </th>
+          <td [ngbTooltip]="element.street" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.street?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.street?.length > 12) ? (element.street | slice: 0:12)+'...' : element.street }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef> City </th>
+          <td [ngbTooltip]="element?.city" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.city?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.city?.length > 12) ? (element?.city | slice: 0:12)+'...' : element?.city }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef> State </th>
+          <td [ngbTooltip]="element?.state" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.state?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.state?.length > 12) ? (element.state | slice: 0:12)+'...' : element.state }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="officer">
+          <th mat-header-cell *matHeaderCellDef> Officer </th>
+          <td [ngbTooltip]="element?.officer" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element?.officer?.length < 12" mat-cell
+            *matCellDef="let element">
+            {{(element?.officer?.length > 12) ? (element?.officer | slice: 0:12)+'...' : element?.officer }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="IndividualColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: IndividualColumns;"></tr>
+      </table>
+      <div fxLayout="row" fxLayoutAlign="center" style="padding: 20px">
+        <span style="padding: 10px 5px">Not finding what you're looking for?</span>
+        <span style="padding: 10px; font-weight: 400;">
+          Retry Search or
+        </span>
+        <button mat-flat-button class="add-party-header-button" type="submit" form="newPartyI">Add New
+          Individual</button>
+      </div>
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      <!-- </div> -->
+    </div>
+
+
+    <div *ngIf="Search.partyType === 'C'" class="example-container ">
+      <table mat-table [dataSource]="dataSource" style="width: -webkit-fill-available; border-top: 1px solid #e0e0e0">
+
+        <ng-container matColumnDef="checked">
+          <!-- <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+          </mat-cell> -->
+          <th mat-header-cell *matHeaderCellDef>
+            <span style="color: transparent;">Check</span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox *ngIf="urlPartyId" [(ngModel)]="element.checked" (click)="addExistingParty(element)">
+            </mat-checkbox>
+            <!-- <mat-checkbox *ngIf="!urlPartyId" routerLink='/main/deal/{{dealId}}/party/{{party.partyId}}/'
+             [(ngModel)]="element.checked" (click)="addExistingParty(element)"></mat-checkbox> -->
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="partyId">
+          <th mat-header-cell *matHeaderCellDef> Party ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.partyId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element" [ngbTooltip]="element.companyName" tooltipClass="tooltip-font-size-md"
+            [disableTooltip]="element.companyName && element?.companyName?.length < 25">
+            {{element.companyName | slice: 0:25}}
+            <span *ngIf="element.companyName && element?.companyName?.length > 25">...</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tin">
+          <th mat-header-cell *matHeaderCellDef> TIN </th>
+          <td mat-cell *matCellDef="let element">{{element.tin}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="hostId">
+          <th mat-header-cell *matHeaderCellDef> CIF </th>
+          <td mat-cell *matCellDef="let element"> {{element.hostId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="street">
+          <th mat-header-cell *matHeaderCellDef> Street </th>
+          <td mat-cell *matCellDef="let element"> {{element.street}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef> City </th>
+          <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef> State </th>
+          <td mat-cell *matCellDef="let element"> {{element.entityTypeCode}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="officer">
+          <th mat-header-cell *matHeaderCellDef> Officer </th>
+          <td mat-cell *matCellDef="let element"> {{element.officer}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="CompanyColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: CompanyColumns;"></tr>
+
+      </table>
+      <div fxLayout="row" fxLayoutAlign="center" style="padding: 20px">
+        <span style="padding: 10px">Not finding what you're looking for? Retry Search or </span>
+        <button mat-flat-button class="add-party-header-button" type="submit" form="newPartyC">Add New Company</button>
+      </div>
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      <!-- </div> -->
+    </div>
+
+    <div *ngIf="(selectPartyType !== 'I' && selectPartyType !== 'C')" class="example-container ">
+      <table mat-table [dataSource]="dataSource" style="width: -webkit-fill-available; border-top: 1px solid #e0e0e0">
+
+        <ng-container matColumnDef="checked">
+          <!-- <mat-header-cell *matHeaderCellDef>Check</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.checked"></mat-checkbox>
+          </mat-cell> -->
+          <th mat-header-cell *matHeaderCellDef>
+            <span style="color: transparent;">Check</span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox *ngIf="urlPartyId" [(ngModel)]="element.checked" (click)="addExistingParty(element)">
+            </mat-checkbox>
+            <!-- <mat-checkbox *ngIf="!urlPartyId" routerLink='/main/deal/{{dealId}}/party/{{party.partyId}}/'
+             [(ngModel)]="element.checked" (click)="addExistingParty(element)"></mat-checkbox> -->
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tin">
+          <th mat-header-cell *matHeaderCellDef> TIN </th>
+          <td mat-cell *matCellDef="let element">{{element.tin}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="hostId">
+          <th mat-header-cell *matHeaderCellDef> CIF </th>
+          <td mat-cell *matCellDef="let element"> {{element.hostId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="street">
+          <th mat-header-cell *matHeaderCellDef> Street </th>
+          <td mat-cell *matCellDef="let element"> {{element.street}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef> City </th>
+          <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef> State </th>
+          <td mat-cell *matCellDef="let element"> {{element.entityTypeCode}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="officer">
+          <th mat-header-cell *matHeaderCellDef> Officer </th>
+          <td mat-cell *matCellDef="let element"> {{element.officer}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="OfficerColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: OfficerColumns;"></tr>
+
+      </table>
+      <!-- <div fxLayout="row" fxLayoutAlign="center" style="padding: 20px">
+        <span style="padding: 10px">Not finding what you're looking for? Retry Search or </span>
+        <button mat-flat-button class="add-party-header-button" type="submit" form="newPartyC">Add New Company</button>
+      </div> -->
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+      <!-- </div> -->
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,80 @@
+<div class="m-portlet m-portlet--full-height  m-portlet--rounded">
+  <div class="m-portlet__body">
+    <div class="tab-content">
+      <div class="m-widget11">
+        <div #collateralDiv>
+          <div class="row">
+            <div class="col-xl-6 col-md-6">
+              <h3 style="color:cornflowerblue"><i style="color:cornflowerblue" class="fa fa-flag"></i>&nbsp;
+                Requirements {{requirementsCount}}
+              </h3>
+            </div>
+            <div class="col-xl-6 col-md-6">
+              <i class="fa fa-plus headerIcon"></i>
+              &nbsp;&nbsp;
+              <i class="fa fa-cloud headerIcon"></i>
+              &nbsp;&nbsp;
+              <i class="fa fa-flag headerIconFlag"></i>
+            </div>
+          </div>
+
+          <div class="row" style=" border-bottom : 1px solid gray">
+            <div class="col-lg-3 col-xl-3 col-md-3"><b>Related Entity</b></div>
+            <div class="col-lg-6 col-xl-6 col-md-6"><b>Type</b></div>
+            <div class="col-lg-3 col-xl-3 col-md-3"><b>Status</b></div>
+          </div>
+          <div class="row" *ngFor="let r of requirements | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize"
+            style=" border-bottom : 1px solid gray">
+            <ngb-accordion #acc="ngbAccordion" style=" width:100%">
+              <ngb-panel>
+                <ng-template ngbPanelTitle style=" width:100%">
+                  <div class="row">
+                    <div class="col-lg-3 col-xl-3 col-md-3">
+                      <h5>{{r.Name}}</h5>
+                    </div>
+                    <div class="col-lg-6 col-xl-6 col-md-6">
+                      <h5>{{r.Type}}</h5>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-3">
+                      <h5>
+
+                        <span title="Due Soon" *ngIf="r.DaysDue==2">
+                          <i class="fa fa-hourglass-half" style="font-size:16px;color:#F7CA18"></i>
+                        </span>
+                        <span title="Due Immediately" *ngIf="r.DaysDue<2">
+                          <i class="fa fa-hourglass-end" style="font-size:16px;color:#E26A6A"></i>
+                        </span>
+                        <span title="Exception" *ngIf="r.Exception==true">
+                          <i class="fa fa-exclamation-circle" style="font-size:16px;color:#ffa07a"></i>
+                        </span>
+
+                        <span [ngClass]="r.StatusDescription.indexOf('Open') >
+                        -1 ? 'reqStatusOpen' :
+                        r.StatusDescription.indexOf('Complete') > -1 ? 'reqStatusComplete' :
+                        r.StatusDescription.indexOf('Waive') > -1 ? 'reqStatusComplete' :
+                        r.StatusDescription.indexOf('Approved') > -1 ? 'reqStatusComplete' :
+                        r.StatusDescription.indexOf('In Process') > -1 ? 'reqStatusInProcess' :
+                        r.StatusDescription.indexOf('Pending') > -1 ? 'reqStatusPending' : 'reqStatusOther'">
+
+                          {{r.StatusDescription?'':'Open'}}
+
+                          {{r.StatusDescription}}
+                        </span>
+                      </h5>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <app-requirement-form [requirment]="r"></app-requirement-form>
+                </ng-template>
+              </ngb-panel>
+            </ngb-accordion>
+          </div>
+
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="requirements?.length"></ngb-pagination>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

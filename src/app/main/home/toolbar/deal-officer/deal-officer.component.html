@@ -1,0 +1,17 @@
+<div fxLayout="column" fxLayoutAlign="center end"
+  *ngIf="dealPrimaryOfficerForDeal">
+  <div
+    ngbTooltip="Officer: {{dealPrimaryOfficerForDeal.personName? dealPrimaryOfficerForDeal.personName : personId}}" tooltipClass="tooltip-font-size-md"
+    class="avatarContainer" fxLayout="row" fxFlex="100">
+    <div *ngIf="dealPrimaryOfficerForDeal.userProfileURL"
+      [style.backgroundImage]="dealPrimaryOfficerForDeal.userProfileURL ? 'url(' + dealPrimaryOfficerForDeal.userProfileURL +')' : none"
+     class="avatar">
+    </div>
+    <mat-icon *ngIf="!dealPrimaryOfficerForDeal.userProfileURL" class="u-mat-icon-grey-light">
+      account_circle
+    </mat-icon>
+  </div>
+</div>
+<!-- <span>
+    hello
+</span> -->

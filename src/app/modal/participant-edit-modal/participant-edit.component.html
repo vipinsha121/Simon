@@ -1,0 +1,36 @@
+<div>
+    <div class="modal-header">
+      <h4 class="modal-title">
+            <span style="color: #a685f5; font-size: 15px">Edit Participants</span>
+      </h4>
+  
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  
+    </div>
+    <div class="modal-body">
+        <div style="height: 200px;">
+            <div class="row" style="margin-top: 10px">
+                <div class="col-sm-6 col-md-6"><b>Name</b></div>
+                <div class="col-sm-4 col-md-4"><b>Role</b></div>
+                <div class="col-sm-2 col-md-2"><b>Primary</b></div>
+            </div>
+            <br />
+            <div *ngFor="let officer of dealOfficers">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="row" [(ngModel)]="selectedOfficer">
+                    <div class="col-sm-6 col-md-6">{{officer.personName}}</div>
+                    <div class="col-sm-4 col-md-4">{{officer.participation}}</div>
+                    <mat-radio-button class="col-sm-2 col-md-2" [value]="officer.dealUserId"></mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+    </div>
+    
+    <div class="edit-row footer-container-form" fxLayoutAlign="end center">
+    
+        <button aria-label="cancel" class="button-cancel" mat-raised-button (click)="activeModal.close()">Cancel</button>
+        <button type="submit" class="button-save" mat-raised-button (click)="editParticipantRole()">Save</button>
+      </div>
+
+</div>

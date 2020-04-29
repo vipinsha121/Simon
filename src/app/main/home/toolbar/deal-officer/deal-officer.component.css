@@ -1,0 +1,27 @@
+mat-icon {
+  color: #9a9a9a
+}
+
+.assigned-user-label {
+  vertical-align: bottom;
+  margin: 0 4px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 400;
+  color: #578da9;
+}
+
+.assigned-user-label:hover {
+  color: #ffc947;
+}
+
+.avatarContainer {
+  justify-content: center;
+}
+
+.avatarContainer .avatar {
+  width: 25px;
+  height: 25px;
+  /* background: lightgray; */
+  border-radius: 50%;
+}

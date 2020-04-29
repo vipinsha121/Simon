@@ -1,0 +1,25 @@
+<!--Assign Deal Dialog-->
+<div>
+    <div class="modal-header">
+        <h4>Assign Deal</h4>
+    </div>
+    <div class="modal-body">
+        <ng-select [items]="items" placeholder="Search Name" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)"> </ng-select>
+    </div>
+    <button aria-label="cancel" class="u-button-cancel" mat-raised-button (click)="activeModal.close()">Cancel</button>
+    <button type="submit" class="button-save btn-info" mat-raised-button (click)="updateAssignDealDetails()">Save and Close </button>
+</div>
+
+
+<style>
+    .button-cancel {
+        text-transform: uppercase;
+        color: #808080;
+        display: inline-block;
+        margin-left: 550px;
+    }
+
+    .button-save {
+        margin-left: 15px;
+    }
+</style>

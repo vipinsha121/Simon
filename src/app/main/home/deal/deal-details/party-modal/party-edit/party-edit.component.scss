@@ -1,0 +1,205 @@
+@import '../../../../../../../mat-theme.scss';
+
+.m-portlet {
+  height: 100%;
+}
+
+.m-portlet__body {
+  width: 100%;
+}
+
+::ng-deep .mat-tab-label .mat-tab-label-content {
+  text-transform: uppercase;
+
+}
+
+::ng-deep .mat-tab-label {
+  max-width: 33%;
+  min-width: 50px !important;
+}
+
+h4 {
+  font-family: 'Roboto';
+  margin-bottom: 0px;
+  padding: 20px;
+  color: #404040;
+}
+
+mat-icon {
+  color: #959595;
+  font-size: 30px;
+  height: 40px;
+  width: 40px;
+  background: #f5f5f5;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.top-align {
+  vertical-align: top !important;
+}
+
+::ng-deep .mat-tab-link {
+  min-width: 33.3% !important;
+  text-transform: uppercase !important;
+}
+
+mat-chip {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.mat-standard-chip {
+  padding: 2px 10px;
+  min-height: 20px;
+  border-radius: 4px;
+
+}
+
+mat-progress-bar {
+  margin-top: 15px !important;
+}
+
+.mat-list-primary > h5, mat-chip {
+  display: inline-block
+}
+
+.mat-icon-background {
+  background: #f5f5f5;
+  padding: 6px;
+}
+
+mat-list > mat-list-item {
+  margin-top: 20px;
+}
+
+.header {
+  border-bottom: 2px solid #e0e0e0
+}
+
+.header > * {
+  display: inline-block
+}
+
+.header > button {
+  float: right;
+  margin: 14px 15px;
+}
+
+
+.u-portlet-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 1px;
+  position: relative;
+}
+
+.u-portlet-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 2rem 5rem;
+  z-index: 0;
+}
+
+
+.u-footer-container {
+  background: #bdbdbd;
+  flex-shrink: 0;
+  padding: 10px 20px;
+}
+
+.u-footer-container-form {
+  flex-shrink: 0;
+  padding: 10px;
+}
+
+
+.u-scroll-vert {
+  overflow-y: scroll;
+}
+
+
+.m-portlet {
+  margin-right: 10px;
+}
+
+.party-list-itme.active{
+  background: #f5f5f5;
+}
+
+
+a {
+  font-size: 16px;
+  text-transform: none;
+  font-family: 'Roboto';
+}
+
+.edit-party-table > div {
+  padding: 20px 0px;
+    border-bottom: 1px solid #ececec;
+    height: 80px;
+    line-height: 45px;
+}
+
+.button-save {
+  padding-left: 40px;
+  padding-right: 40px;
+  text-transform: uppercase;
+  background: #808080;
+  color: #fff;
+  display: inline-block;
+}
+
+.button-cancel {
+  text-transform: uppercase;
+  color: #808080;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.edit-role-button {
+  float: right;
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.edit-role-button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.header > button {
+  float: right;
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.header > button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.party-list-text {
+  vertical-align: bottom;
+  margin-right: 20px;
+  cursor: pointer;
+  font-weight: 400;
+  color: #578da9;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.party-list-text:hover {
+  color: mat-color($accent)
+}

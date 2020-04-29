@@ -1,0 +1,318 @@
+<div fxFill>
+  <form *ngIf="party?.type === 'I'" [formGroup]="partyDetailForm" fxFill
+    [ngClass]="partyDetailForm.dirty ? 'u-height-95' : 'u-height-100'">
+    <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+      <div fxFill>
+        <div class="party-detail-body">
+          <div fxLayout="row" class="edit-row-top">
+            <div style="padding-right: 10px">
+              <mat-form-field class="party-detail-form-field" appearance="outline" floatLabel="always">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" [(ngModel)]="party.firstName" name="firstName"
+                  autocomplete="off" required placeholder="First Name" />
+                <mat-error *ngIf="firstName?.value?.length === 0">First name is required.</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="party-detail-form-field" appearance="outline" floatLabel="always">
+                <mat-label>TIN</mat-label>
+                <input matInput formControlName="tin" autocomplete="off" placeholder="Tax ID Number"
+                  [textMask]="{mask: TINmask}" [(ngModel)]="party.tin" name="tin" />
+                <mat-error *ngIf="partyDetailForm.get('tin').hasError('invalidSsn')">
+                  That doesn't look quite right. Please enter a valid TIN.</mat-error>
+                <mat-error *ngIf="partyDetailForm.get('tin').hasError('required')">TIN field is
+                  required.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Middle Name</mat-label>
+                <input matInput placeholder="Middle Name" formControlName="middleName" name="middleName"
+                  autocomplete="off" [(ngModel)]="party.middleName">
+                <mat-error *ngIf="middleName.invalid">Too much.</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>CIF</mat-label>
+                <input matInput placeholder="CIF ID" autocomplete="off" formControlName="hostId" autocomplete="off"
+                  [(ngModel)]="party.hostId">
+                <mat-error *ngIf="partyDetailForm.get('hostId').hasError('invalidCif')">
+                  (3 characters + 4 numbers, e.g.
+                  AAA1234)</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Last Name" #lastName formControlName="lastName" name="lastName"
+                  autocomplete="off" required [(ngModel)]="party.lastName">
+                <mat-error *ngIf="partyDetailForm.get('lastName').invalid">Last name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Birthdate</mat-label>
+                <input matInput [min]="minDate" [matDatepicker]="birthdate"  placeholder="MM/DD/YYYY*" autocomplete="off"
+                  formControlName="birthdate" [(ngModel)]="party.birthdate" name="birthdate">
+                <mat-datepicker-toggle matSuffix [for]="birthdate"></mat-datepicker-toggle>
+                <mat-datepicker #birthdate></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                <mat-label>Role</mat-label>
+                <mat-select required placeholder="{{party.primary==true ? 'Borrower' : 'Select'}}"
+                  formControlName="role" name="role" [disabled]="party.primary == true"
+                  [(ngModel)]="party.participation">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="role.invalid">Please Select Entity Type</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 1</mat-label>
+                <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="off"
+                  [(ngModel)]="party.street1">
+                <mat-error *ngIf="street1.invalid">Not a valid address.</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 2</mat-label>
+                <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="off"
+                  [(ngModel)]="party.street2">
+                <mat-error *ngIf="street2.invalid">Not a valid address.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="edit-row-three-line">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Input" formControlName="city" autocomplete="off" name="city"
+                  [(ngModel)]="party.city">
+                <mat-error *ngIf="city.invalid">Not a valid city.</mat-error>
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>State</mat-label>
+                <mat-select placeholder="state" formControlName="state" [(ngModel)]="party.state" name="state">
+                  <mat-select-trigger>{{party.state}}</mat-select-trigger>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let s of stateList" [value]="s.abbrv">
+                    {{s.abbrv}} - {{s.name}}
+                  </mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="state.invalid">Not a valid address.</mat-error> -->
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Zip</mat-label>
+                <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="off" name="zip"
+                  [(ngModel)]="party.zip">
+                <mat-error *ngIf="zip?.hasError('invalidZip')">
+                  Please enter a valid ZIP.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Phone</mat-label>
+                <input matInput placeholder="000-000-0000" formControlName="phone" name="phone"
+                  autocomplete="autocomplete_off_hack_xfr4!k" [(ngModel)]="party.phone">
+                <mat-error *ngIf="partyDetailForm.get('phone').hasError('invalidNumber')">
+                  Please enter a valid US phone number.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Mobile</mat-label>
+                <input matInput placeholder="000-000-0000" formControlName="phoneMobile" name="mobile"
+                  autocomplete="autocomplete_off_hack_xfr4!k" [(ngModel)]="party.mobilePhone">
+                <mat-error *ngIf="partyDetailForm.get('phoneMobile').hasError('invalidNumber')">
+                  Please enter a valid US phone number.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="example@eg.com" formControlName="email" name="email" email
+                  autocomplete="autocomplete_off_hack_xfr4!k" [(ngModel)]="party.email">
+                <mat-error *ngIf="email.invalid">
+                  That doesn't look quite right.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start end" [ngClass]="partyDetailForm.dirty ? 'u-height-5' : 'u-height-0'">
+      <div style="width: 100%; z-index: 999; background: #ebedf2">
+        <button *ngIf="partyDetailForm.dirty && !partyDetailForm.invalid" [disabled]="partyDetailForm.invalid" type="submit"
+          class="party-button-save" (click)="saveParty(party); openSnackBarSave('', 'Dismiss'); clearDirty()"
+          mat-flat-button>Save</button>
+        <button *ngIf="partyDetailForm.dirty" type="button" class="party-button-cancel"
+          (click)="Navigate(); resetFlags(); openSnackBarCancel(); clearDirty()" mat-flat-button>Cancel</button>
+      </div>
+    </div>
+  </form>
+  <form *ngIf="party?.type === 'C'" [formGroup]="partyDetailFormBus" fxFill>
+    <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+      <div fxFill>
+        <div class="party-detail-body">
+          <div fxLayout="row" class="edit-row-top">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" required formControlName="name" [(ngModel)]="party.name" name="name"
+                  autocomplete="off" placeholder="Name" />
+                <mat-error *ngIf="name?.hasError('required')">Please enter the business name.</mat-error>
+                <mat-error *ngIf="name?.hasError('maxLength')">That's a lot of characters. Try shortening it a bit.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>TIN</mat-label>
+                <input matInput type="text" formControlName="tinBus" [textMask]="{mask: TINbusMask}"
+                  [(ngModel)]="party.tin" name="tinBus" autocomplete="off" placeholder="Tax ID Number" />
+                <mat-error *ngIf="tinBus?.hasError('invalidEin')">That doesn't look quite right.
+                  Please enter a valid TIN.</mat-error>
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>CIF</mat-label>
+                <input matInput placeholder="CIF ID" formControlName="hostId" name="hostId" autocomplete="off"
+                  [(ngModel)]="party.hostId">
+                <mat-error *ngIf="partyDetailFormBus.get('hostId').hasError('invalidCif')">(3
+                  characters + 4
+                  numbers,
+                  e.g. AAA1234)
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Entity Type</mat-label>
+                <mat-select placeholder="Select" required formControlName="type" name="type"
+                  [(ngModel)]="party.entityTypeCode">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let entity of entityType" [value]="entity.id">{{entity.name}}</mat-option>
+                </mat-select>
+                <mat-error>Please Select Entity Type</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Role</mat-label>
+                <mat-select required placeholder="{{party.primary==true ? 'Borrower' : 'Select'}}"
+                  formControlName="role" name="role" [disabled]="party.primary == true"
+                  [(ngModel)]="party.participation">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                </mat-select>
+                <mat-error>Please Select Entity Type</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Addrees 1</mat-label>
+                <input matInput placeholder="Address 1" formControlName="street1" name="street1" autocomplete="off"
+                  [(ngModel)]="party.street1">
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Address 2</mat-label>
+                <input matInput placeholder="Address 2" formControlName="street2" name="street2" autocomplete="off"
+                  [(ngModel)]="party.street2">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="edit-row-three-line">
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Input" formControlName="city" autocomplete="off" name="city"
+                  [(ngModel)]="party.city">
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>State</mat-label>
+                <mat-select formControlName="state" name="state" [(ngModel)]="party.state">
+                  <mat-select-trigger>{{party.state}}</mat-select-trigger>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let s of stateList" [value]="s.abbrv">
+                    {{s.abbrv}} - {{s.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div style="padding-right: 10px">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Zip</mat-label>
+                <input matInput placeholder="Zip Code" formControlName="zip" autocomplete="off" name="zip"
+                  [(ngModel)]="party.zip">
+                <mat-error *ngIf="zipBus.invalid">Please enter a valid zip code.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" class="edit-row">
+            <div>
+              <mat-form-field appearance="outline" floatLabel="always" style="padding-right: 10px">
+                <mat-label>Phone</mat-label>
+                <input matInput placeholder="(000) 000-0000" formControlName="phone" name="phone" autocomplete="off"
+                  [(ngModel)]="party.phone">
+                <mat-error *ngIf="partyDetailFormBus.get('phone').hasError('invalidNumber')">
+                  Please enter a valid US phone #.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start end" style="height: 5%">
+      <div style="width: 100%; z-index: 999; background: #ebedf2;">
+        <button *ngIf="partyDetailFormBus.dirty && !partyDetailFormBus.invalid" [disabled]="partyDetailFormBus.invalid"
+          type="submit"
+          class="party-button-save" (click)="saveParty(party); openSnackBarSave('', 'Dismiss'); clearDirtyBus()"
+          mat-flat-button [disabled]="partyDetailFormBus.invalid">Save</button>
+        <button *ngIf="partyDetailFormBus.dirty" class="party-button-cancel"
+          (click)="Navigate(); resetFlags(); openSnackBarCancel(); clearDirtyBus()" mat-flat-button>Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

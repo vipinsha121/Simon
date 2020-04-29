@@ -1,0 +1,267 @@
+@import '../../../../../../../mat-theme.scss';
+
+
+mat-tab-group.party-tab-group > div.mat-tab-body-wrapper > mat-tab-body {
+  overflow: visible;
+}
+
+mat-tab-group.party-tab-group > div.mat-tab-body-wrapper > mat-tab-body > div.mat-tab-body-content {
+  overflow: visible !important;
+}
+
+.party-detail-body {
+  height: 100%;
+  overflow-y: auto;
+  padding: 1rem 2rem 2rem 2rem
+}
+
+.party-detail-body::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.party-detail-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.26);
+}
+
+.party-detail-padding {
+  padding: 1rem 2.5rem 0rem 1rem;
+}
+
+.party-detail-three-line > div:first-child {
+  width: 50%;
+  display: inline-block
+}
+
+.party-detail-three-line > div:nth-child(2) {
+  width: 20%;
+  display: inline-block;
+  padding-right: 10px
+}
+
+.party-detail-three-line > div:last-child {
+  width: 30%;
+  display: inline-block
+}
+
+.party-button-save {
+  float: right;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  text-transform: uppercase;
+  background: #34bfa3 !important;
+  color: #fff !important;
+  margin: 1.5rem 1.5rem 1.5rem 0px
+}
+
+.party-button-cancel {
+  float: right;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  background: rgb(167, 167, 167) !important;
+  color: #fff !important;
+  margin: 1.5rem
+}
+
+.relatedDealsTable {
+
+  .active-deals {
+    margin: 0rem 2rem;
+  }
+
+  tr {
+    height: 50px;
+  }
+
+  td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    padding: 4px;
+    width: 59px;
+    text-align: center;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+
+  th {
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #bdbdbd;
+    font-weight: 400;
+  }
+
+}
+.party-button-remove {
+  float: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  background: rgb(231, 115, 115);
+  color: #fff;
+  margin: 1.5rem
+}
+
+
+.party-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 1px;
+  position: relative;
+}
+
+.u-portlet-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0 30px;
+  z-index: 0;
+}
+
+.u-footer-container {
+  background: #bbbbbb;
+  flex-shrink: 0;
+  padding: 5px 20px;
+}
+
+.u-footer-container-form {
+  flex-shrink: 0;
+  padding: 10px;
+}
+
+.u-scroll-vert {
+  overflow-y: scroll;
+}
+
+.hint-error {
+  color: red
+}
+
+mat-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+// mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix {
+//   width: 100%;
+// }
+
+.mat-form-field {
+  width: 100%
+}
+
+.button-text-read-only {
+  color: #a7a7a7
+}
+
+.edit-row {
+  padding: 5px 0px
+}
+
+.edit-row > div > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix {
+  width: 100%;
+}
+
+.edit-row > div {
+  width: 50%
+}
+
+.edit-row-three-line > div:first-child {
+  width: 50%;
+  display: inline-block
+}
+
+.edit-row-three-line > div:nth-child(2) {
+  width: 25%;
+  display: inline-block
+}
+
+.edit-row-three-line > div:last-child {
+  width: 25%;
+  display: inline-block
+}
+
+.edit-row-top {
+  padding: 2rem 0rem 0.5rem 0rem;
+}
+
+.edit-row-top > div > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix {
+  width: 100%;
+}
+
+.edit-row-top > div {
+  width: 50%
+}
+
+h5 {
+  margin-bottom: 0px;
+  vertical-align: middle;
+  line-height: 36px;
+  color: #565656
+}
+
+.u-footer-container {
+  background: #cfd8dc;
+  flex-shrink: 0;
+  padding: 5px 20px;
+}
+
+.u-footer-container-form {
+  flex-shrink: 0;
+  padding: 10px;
+}
+
+.mat-badge-content {
+  color: #fff;
+  background: #3f51b5;
+}
+
+.mat-badge-warn .mat-badge-content {
+  color: white;
+  background: #f44336;
+}
+
+p {
+  font-size: 12px !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.edit-role-button {
+  float: right;
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.edit-role-button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.header > button {
+  float: right;
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.header > button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.button-remove {
+  color: #f00 !important;
+}
+

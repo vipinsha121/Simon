@@ -1,0 +1,26 @@
+
+
+.link {
+  color: rgba(0,0,0,.54);
+  cursor: pointer;
+}
+
+.link:hover {
+  color: rgba(0, 0, 0);
+}
+
+.active {
+  font-weight: bold;
+}
+
+.inactive {
+  font-weight: normal !important;
+}
+
+.inactive .link {
+  color: rgba(0, 0, 0, .54) !important;
+}
+
+.active .link {
+  color: rgba(0, 0, 0);
+}

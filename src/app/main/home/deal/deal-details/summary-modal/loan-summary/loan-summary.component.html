@@ -1,0 +1,45 @@
+<mat-list-item>
+    <span matLine class="loan-list-text-label">Product</span>
+    <mat-icon matListIcon class="mat-icon-background">money</mat-icon>
+    <div matLine>
+        <a class="loan-list-text inline-block" routerLink='loan/{{primaryId}}'>
+            {{ primaryProductName | slice:0:40 }}
+            <span style="margin: 0px 10px" routerLink='loan/{{primaryId}}/'>|</span>
+            {{ primaryLoanAmount | currency }}
+        </a>
+        <span class="inline-block chip chip-text u-background-grey-dark"
+            style="margin: 0 15px">{{primaryRequestType}}</span>
+    </div>
+    <span matLine style="font-size: 12px">Primary Purpose : {{primaryPurpose}}</span>
+    <!--SECONDARY PURPOSE NOT NEEDED HERE-->
+    <p matLine *ngIf="nonPrimaryDeal?.length > 0" matLine style="cursor: pointer; margin: 0"
+        (click)="toggleBorrowers()">
+        <span *ngIf="!showOtherLoans">+{{nonPrimaryDeal?.length}} {{ nonPrimaryDeal?.length === 1 ? 'Loan' : 'Loans'}}
+            <mat-icon class="inline-block u-mat-icon-grey" style="font-size: 15px; position: relative; top: 3px">
+                expand_more</mat-icon>
+        </span>
+        <span *ngIf="showOtherLoans">Hide Additional Loans
+            <mat-icon class="inline-block u-mat-icon-grey" style="font-size: 15px; position: relative; top: 3px">
+                expand_less</mat-icon>
+        </span>
+    </p>
+    <mat-progress-bar matLine mode="determinate" value="0" color="primary"></mat-progress-bar>
+</mat-list-item>
+<div *ngIf="showOtherLoans">
+    <mat-list-item *ngFor="let loan of nonPrimaryDeal" style="margin: 1rem 4rem">
+        <mat-icon matListIcon class="mat-icon-background">money</mat-icon>
+        <div matLine>
+            <a matLine class="inline-block" routerLink='loan/{{loan.id}}/' style="vertical-align: bottom">
+                {{loan.productName | slice:0:30}}
+                <span style="margin: 0 10px" routerLink='loan/{{primaryId}}/'>|</span>
+                {{loan.amount | currency}}
+            </a>
+            <span class="inline-block chip chip-text u-background-grey-dark"
+                style="margin: 0 15px">{{loan.requestTypeDescription}}</span>
+            <!-- <span class="chip chip-text u-background-grey-dark ilnline-block"></span> -->
+        </div>
+        <div matLine>
+            <span class="loan-list-text-sub-header">{{loan.primaryPurpose}}</span>
+        </div>
+    </mat-list-item>
+</div>

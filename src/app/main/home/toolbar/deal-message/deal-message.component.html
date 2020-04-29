@@ -1,0 +1,54 @@
+<ng-template #questionModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Deal Message</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeMessageModal($event)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+  <div class="card mb-3">
+    <table class="table table-hover table-striped card-body">
+      <thead class="card-header">
+        <tr>
+          
+          <th>Deleted</th>
+          <th>Memo To File</th>
+          <th>Subject</th>
+          <th>Comments</th>
+          <th>Date/Time</th>
+          <th>Actions</th>
+       
+        </tr>
+      </thead>
+      <tbody >
+      <tr *ngFor="let deal of dealMessagesList; index as i;">
+          <td>
+            <input type="checkbox" [checked]="deal.archive" (change)="CheckDealArchive($event, deal)">
+          </td>
+          <td>
+            <input type="checkbox" [checked]="deal.memoToFile" (change)="CheckMemoToFile($event, deal)">
+          </td>
+         
+          <td>{{deal.subject}}</td>
+          <td>
+              <span *ngIf="enableEditIndex != i">{{deal.plainContent}}</span>
+              <input type="text" [(ngModel)]="deal.plainContent" *ngIf="enableEdit && enableEditIndex == i"/>
+          <td>{{deal.createdDate | date:'short'}}</td>
+          <td><a *ngIf="i != enableEditIndex || enableEditIndex == null" (click)='messageEdit($event, i)'><i class="fa fa-edit"></i></a>
+            <a *ngIf="enableEdit && enableEditIndex == i" (click)='messageSave(deal)'><i class="fa fa-save"></i></a>
+            <a *ngIf="enableEdit && enableEditIndex == i" (click)='enableEdit=false; messageCancel()'><i class="ml-3 fa fa-undo"></i></a></td> 
+         
+        </tr> 
+      </tbody>
+    </table>
+   
+    <div layout="row" flex="100" style="margin: 10px 50px;">
+      <div layout="column" flex="50" style="display: inline; margin-right: 8px;">
+          <button class="btn btn-circle btn-success" style="float: left; width: 30%;" (click)="onclickreport('Messages')">Create Report</button>
+      </div>
+      <div layout="column" flex="50" style="display: inline; margin-left: -15px;">
+        <button (click)="closeMessageModal()" style="float: right; width: 30%;" class="btn btn-danger">Close</button>
+    </div>
+  </div>
+
+  </div>  
+</ng-template>

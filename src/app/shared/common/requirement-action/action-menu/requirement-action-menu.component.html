@@ -1,0 +1,49 @@
+<button aria-label="matMenuButton" (click)="getActionForRequirement(requirement)" mat-icon-button style="float: right"
+  [matMenuTriggerFor]="moreMenu">
+  <mat-icon aria-label="menu" aria-hidden="false"
+    class="u-mat-icon-small u-mat-icon-grey">
+    more_vert</mat-icon>
+  <!-- <span *ngIf="requirement.showCompareFlag">Open</span> -->
+</button>
+<mat-menu #moreMenu="matMenu">
+  <button aria-label="matMenuButton" *ngFor="let action of getActionStages(requirement.stageDrop)" mat-menu-item
+    (menuOpened)="onDeferUserMenuOpen(requirement, action);"
+    (click)="setAssignedTo(requirement.ddlActions, requirement, $index); setDirty(requirement);requirement.editRequirementRow=true;">
+    {{action.name}}
+  </button>
+  <button aria-label="matMenuButton" *ngFor="let action of getMenuStages(requirement.stageDrop)" mat-menu-item
+    [matMenuTriggerFor]="U" [matMenuTriggerData]="{actionType: action.type}"
+    (menuOpened)="onDeferUserMenuOpen(requirement, action);"
+    (click)="setAssignedTo(requirement.ddlActions, requirement, $index); setDirty(requirement);requirement.editRequirementRow=true;">
+    {{action.name}}
+  </button>
+</mat-menu>
+<mat-menu #U="matMenu" xPosition="before">
+  <ng-template matMenuContent let-actionType="actionType">
+    <form mat-menu-item [formGroup]="assignForm" (click)="stopPropagation($event)" *ngIf="actionType == 'U'">
+      <mat-form-field class="req-form-field">
+        <input type="text" placeholder="Search name" aria-label="Number" matInput name="filterUserDrop"
+          [formControl]="filterUserDrop" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='setAssignToUser($event, requirement)'>
+          <mat-option *ngFor="let user of filterUser()" [value]="user.userId">
+            {{user.firstName}} {{user.lastName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </form>
+    <form mat-menu-item [formGroup]="deferForm" (click)="stopPropagation($event)" *ngIf="actionType == 'D'">
+      <mat-form-field class="req-form-field">
+        <mat-select [(value)]="requirement.selectedDeferDrop" (selectionChange)='setDifferTo($event, requirement)'>
+          <mat-option>Defer To</mat-option>
+          <mat-option *ngFor="let p of requirement.deferDrop" value="{{p.id}}">
+            {{p.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <button mat-flat-button color="primary">select</button> -->
+    </form>
+
+  </ng-template>
+</mat-menu>

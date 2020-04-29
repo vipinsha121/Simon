@@ -1,0 +1,49 @@
+<mat-list-item>
+  <span matLine class="collateral-list-text-label">Collateral</span>
+  <mat-icon matListIcon class="mat-icon-background">home</mat-icon>
+  <div matLine>
+    <!--  <a class="loan-list-text inline-block" routerLink='loan/{{primaryId}}'>-->
+    <a class="collateral-list-text inline-block" routerLink='collateral/{{primaryCollateralId}}'>
+      {{ group }}
+      <span style="margin: 0 10px">|</span>
+      {{ category }}
+    </a>
+
+  </div>
+  <p matLine *ngIf="nonPrimaryCollateral?.length > 0" matLine style="cursor: pointer; margin: 0"
+    (click)="toggleBorrowers()">
+    <span *ngIf="!showOtherCollaterals">+{{nonPrimaryCollateral?.length}}
+      {{ nonPrimaryCollateral?.length === 1 ? 'Piece' : 'Pieces'}}
+      <mat-icon class="inline-block u-mat-icon-grey" style="font-size: 15px; position: relative; top: 3px">expand_more
+      </mat-icon>
+    </span>
+    <span *ngIf="showOtherCollaterals">Hide Additional Collateral
+      <mat-icon class="inline-block u-mat-icon-grey" style="font-size: 15px; position: relative; top: 3px">expand_less
+      </mat-icon>
+    </span>
+  </p>
+  <mat-progress-bar matLine mode="determinate" value="0" color="primary"></mat-progress-bar>
+</mat-list-item>
+<div *ngIf="showOtherCollaterals">
+  <mat-list-item *ngFor="let collateral of nonPrimaryCollateral" style="margin: 1rem 4rem">
+    <mat-icon matListIcon class="mat-icon-background">home</mat-icon>
+    <div matLine>
+      <a matLine class="inline-block" routerLink='collateral/{{collateral.collateralId}}/' style="vertical-align: bottom">
+        {{collateral.category}}
+      </a>
+      <!-- <span class="chip chip-text u-background-grey-dark ilnline-block"></span> -->
+    </div>
+    <div matLine>
+      <span class="collateral-list-text-sub-header">{{collateral.group}}</span>
+    </div>
+  </mat-list-item>
+</div>
+
+<mat-list-item *ngIf="!primaryCollateralId && nonPrimaryCollateral?.length < 1" style="cursor: pointer">
+  <mat-icon matListIcon class="mat-icon-background">home</mat-icon>
+  <span matLine class="deal-list-text inline-block" style="text-transform: uppercase;color: #828282;font-size: 16px; text-align: center;
+  margin-right: 2rem;">Missing Collateral - Click Here to Add
+    <mat-icon class="u-mat-icon-blue u-mat-icon-small"
+      ngbTooltip="Hint: if a loan is unsecured, add collateral and select unsecured as the group" tooltipClass="tooltip-font-size-md">info</mat-icon>
+  </span>
+</mat-list-item>

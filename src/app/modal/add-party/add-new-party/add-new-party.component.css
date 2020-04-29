@@ -1,0 +1,42 @@
+.modal-title {
+  color: #6167e0;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 18px;
+  padding: 5px 10px;
+}
+
+.modal-header-add-party {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: .3rem;
+  border-top-right-radius: .3rem;
+}
+
+.modal-header-button {
+  float: right;
+  font-size: 12px !important;
+  height: 30px;
+  line-height: 30px;
+  color: #707070 !important;
+  text-transform: uppercase;
+  background: #f5f5f5 !important;
+}
+
+.footer {
+  background: #e0e0e0;
+  height: 75px;
+}
+
+.save {
+  height: 35px;
+  margin: 20px
+}
+
+.cancel {
+  height: 35px;
+  margin: 20px
+}

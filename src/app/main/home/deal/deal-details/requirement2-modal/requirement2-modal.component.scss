@@ -1,0 +1,345 @@
+a {
+  color: #36a3f7
+}
+
+.header-container {
+  width:100%;
+}
+
+.req-header {
+  padding: 5px 0px;
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  z-index: 100
+}
+
+.requirements-container {
+  height: calc(100% - 6rem);
+  margin-top: 5rem;
+}
+
+mat-form-field.req-mat-form-field > div.mat-form-field-wrapper {
+  padding-bottom: 0px !important;
+}
+
+.req-table-body::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.req-table-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.26);
+}
+
+.req-table-body {
+  max-height: calc(100vh - 27rem);
+  overflow-y: auto;
+  display: block;
+}
+
+.req-table {
+  margin-bottom: 0px;
+  height: inherit;
+}
+
+table.req-table {
+  thead {
+    tr {
+      th {
+        float: left;
+      }
+    }
+  }
+  tbody {
+    td {
+      float: left;
+      vertical-align: middle;
+      height: 45px;
+      line-height: 2;
+    }
+  }
+}
+
+table.req-table {
+  thead, tbody, tr, td, th {
+    display: block
+  }
+}
+
+table.req-table td {
+  vertical-align: middle;
+  font-family: 'Roboto';
+}
+
+.req-button-save {
+  background-color: #8debb7;
+  width: 24px;
+  height: 24px;
+  margin: 4px;
+  line-height: 24px;
+  color: #9a9a9a;
+}
+
+.req-button-save > span > mat-icon {
+  font-size: 16px !important
+}
+
+.req-button-cancel {
+  display: inline-block;
+  width: 24px;
+  margin: 4px;
+  height: 24px;
+  line-height: 24px;
+  color: #fff !important;
+}
+
+.req-button-cancel > span > mat-icon {
+  font-size: 16px !important
+}
+
+.req-button-group {
+  float: right;
+  padding: 5px 0px;
+}
+
+.req-button-group > div {
+  padding: 0px 5px;
+  display: inline-block;
+}
+
+.req-button-group > div > button {
+  background: #f5f5f5;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.req-button-group > div > button:hover {
+  background: #e2e5f3;
+}
+
+.req-header-button-icon {
+  font-size: 18px !important
+}
+
+.req-header-button {
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.req-table-form-field {
+  position: relative;
+  bottom: 9px
+}
+
+.req-table-defer {
+  position: relative;
+  bottom: 9px;
+}
+
+/* .req-table-form-field > mat-form-field > div.mat-form-field-wrapper {
+
+ } */
+
+ .req-table-form-field > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex  {
+    padding-top: 0px
+ }
+
+ div.req-table-form-field > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix {
+    border-top: 0px;
+    width: 80px
+ }
+
+ mat-form-field.req-table-form-field-assign {
+   bottom: 9px;
+ }
+
+mat-form-field.req-table-form-field-assign > div.mat-form-field-wrapper > div.mat-form-field-flex  {
+  padding-top: 0px
+}
+
+mat-form-field.req-table-form-field-assign > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix {
+  border-top: 0px;
+  width: 100px
+}
+
+
+ .req-header-input-container {
+  width: 20%;
+  margin-left: .5%
+}
+
+.req-header-input-container > * {
+  display: inline-block;
+}
+
+.req-header-input-container > input {
+  height: 35px;
+  border-radius: 20px;
+  background: #f5f5f5;
+  border-color: transparent;
+}
+
+.req-header-input-container > input:focus {
+  background: #f5f5f5;
+  border-color: transparent;
+}
+
+.req-table-checkbox > mat-checkbox > label {
+  margin-bottom: 0px
+}
+
+.req-table-badge {
+  position: relative;
+  right: 30px;
+  bottom: 18px;
+  color: #fff;
+  background: #36a3f7;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+.req-table-button-question {
+  position: relative;
+  bottom: 8px;
+}
+
+.req-table-button-paperclip {
+  position: relative;
+  top: 2px;
+}
+
+.req-table-button-save-cancel {
+  display: inline-block;
+  min-width: 100px;
+  position: relative;
+  right: 20px;
+  bottom: 15px;
+  z-index: 100;
+}
+
+.req-table-button-save-cancel > button {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+
+}
+
+.req-table-button-save {
+  background-color: #8debb7 !important;
+  color: #fff;
+}
+
+.req-table-button-save > span > mat-icon {
+  font-size: 16px !important
+}
+
+.req-table-button-cancel {
+  /* background-color: #f00; */
+  color: #fff !important;
+}
+
+.req-table-button-cancel > span > mat-icon {
+  font-size: 18px !important
+}
+
+.mat-menu-panel.doc-menu {
+  min-width: 500px;
+  width: 500px;
+  max-width: 550px;
+  overflow: visible;
+  /* height: 400px; */
+  /* -webkit-overflow-scrolling: touch; */
+  max-height: calc(100vh - 48px);
+  border-radius: 4px;
+  outline: 0;
+}
+
+.req-doc-title {
+  font-weight: 500;
+  color: #578da9;
+  font-family: 'Roboto';
+  position: relative;
+  cursor: pointer;
+  top: 5px;
+}
+
+.req-doc-subtitle {
+  font-size: 11px;
+  color: #578da9;
+  font-family: 'Roboto';
+  position: relative;
+  cursor: pointer;
+}
+
+.req-doc-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  z-index: 0;
+  padding: 0px 5px;
+}
+
+.req-doc-button {
+  float: right;
+  font-size: 12px;
+  margin: 0px 5px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.req-doc-button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.req-doc-button-icon {
+  float: right;
+  background: #f5f5f5;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  margin: 0px 5px;
+}
+
+.req-doc-button-icon > span > mat-icon {
+  font-size: 18px !important;
+}
+
+.req-doc-button-icon-upload > span > mat-icon {
+  color: #7ec7ff;
+  font-size: 30px !important;
+  line-height: 20px;
+}
+
+.required-doc {
+  padding: 12px;
+  border-radius: 5px;
+  margin: 4px;
+}
+
+.selected-requirement {
+  background: #f5f5f5;
+}
+
+.avatar {
+  height: 35px;
+  width: 35px;
+  border: 1px solid #c3c3c3;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.sideform {
+  z-index: 9999;
+  background-color: #fff;
+}

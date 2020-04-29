@@ -1,0 +1,14 @@
+<div>
+  <div class="portlet light bordered reportModal" style="overflow-y: hidden;height:auto !important">
+    <div class="caption" style="display: inline-block; float: right;margin: 6px 10px 0px 10px">
+      <!--<span ng-click="closeReportModal()" style="cursor: pointer; color: lightgray; font-size: 18px">
+          <i class="fa fa-times" aria-hidden="true"></i>
+      </span>-->
+    </div>
+    <form class="form-horizontal" style="height: 100%;">
+      <div style=" height:100%; background-color: transparent">
+        <iframe [src]="reportUrl | safe" style="width:100%;height:600px"></iframe>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+@import '../../../../../../mat-theme.scss';
+
+.m-portlet {
+  height: 100%;
+}
+
+.m-portlet__body {
+  width: 100%;
+}
+
+.loan-list-item-subtext {
+  font-size: 12px !important;
+}
+
+.loan-list-item-remove {
+  text-transform: uppercase;
+  z-index: 100;
+  font-size: 11px;
+  background: transparent;
+  position: absolute;
+  right: 1rem
+}
+
+::ng-deep .mat-tab-label .mat-tab-label-content {
+  text-transform: uppercase;
+
+}
+
+::ng-deep .mat-tab-label {
+  max-width: 33%;
+  min-width: 50px !important;
+}
+
+h4 {
+  font-family: 'Roboto';
+  margin-bottom: 0px;
+  padding: 20px;
+  color: #404040;
+}
+
+mat-icon {
+  color: #959595;
+  font-size: 30px;
+}
+
+.top-align {
+  vertical-align: top !important;
+}
+
+::ng-deep .mat-tab-link {
+  min-width: 33.3% !important;
+  text-transform: uppercase !important;
+}
+
+mat-chip {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.mat-standard-chip {
+  padding: 2px 10px;
+  min-height: 20px;
+  border-radius: 4px;
+
+}
+
+mat-progress-bar {
+  margin-top: 15px !important;
+}
+
+.mat-list-primary > h5, mat-chip {
+  display: inline-block
+}
+
+.mat-icon-background {
+  background: #e8e8e8;
+  padding: 6px;
+}
+
+mat-list > mat-list-item {
+  margin-top: 20px;
+}
+
+.header {
+  border-bottom: 2px solid #e0e0e0
+}
+
+.header > * {
+  display: inline-block
+}
+
+.portlet-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 1px;
+  position: relative;
+}
+
+.portlet-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0 30px;
+  z-index: 0;
+}
+
+.u-scroll-vert {
+  overflow-y: scroll;
+}
+
+
+.m-portlet {
+  margin-right: 10px;
+}
+
+.header > button {
+  float: right;
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f5f5f5
+}
+
+.header > button:hover {
+  color: #474747;
+  background: #d1e6e8
+}
+
+.loan-list-text {
+  vertical-align: bottom;
+  cursor: pointer;
+  font-weight: 400;
+  color: #578da9;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.loan-list-text:hover {
+  color: mat-color($accent)
+}
+
+.loan-list-item {
+  padding: 15px 0px !important;
+  border-radius: 8px;
+  cursor: pointer
+}
+
+.loan-list-item.active{
+  background: #f5f5f5;
+}
+
+.loan-list-text.active {
+  color: mat-color($accent);
+  font-weight: 400;
+}
+
+
+.loan-list-item:hover {
+  background: #f5f5f5
+}
+
+.loan-list-text-label {
+  font-size: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}

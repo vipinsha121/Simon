@@ -1,0 +1,23 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+
+    <!-- <div style="overflow: scroll;" *ngFor="let reportLoan of reportLoanData ">
+      <div  *ngFor="let loan of reportLoan | keyvalue">      
+        {{loan.key}}:{{loan.value}}
+      </div>
+    </div> -->
+    <p>{{reportLoanData}}</p>
+    <button type="button" class="btn btn-primary" (click)="onYesClick()">Yes</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">No</button>
+  </div>
+  <!-- <div class="modal-footer">
+    
+  </div> -->
+</div>

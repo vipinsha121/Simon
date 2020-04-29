@@ -1,0 +1,117 @@
+<!--<app-loader></app-loader>-->
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+        <div class="header">
+            <span ngbTooltip="{{loancount}} Loan(s) associated with this deal" tooltipClass="tooltip-font-size-md"
+              class="u-header-title">Loan</span>
+            <div>
+                <span matBadgeOverlap="true" matBadge="{{loancount}}" matBadgeSize="medium" matBadgeColor="accent"
+                    style="vertical-align: middle; margin-left: -5px;">
+                </span>
+            </div>
+            <!-- <mat-icon style="vertical-align: middle; margin-right: 11px;" [matMenuTriggerFor]="cloudMenu"
+                ngbTooltip="Click here to view Loan-related links and documents">cloud_circle</mat-icon> -->
+            <mat-menu #cloudMenu="matMenu">
+                <button mat-menu-item (click)="openloanDocs()">
+                    Loan Docs
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="calendarsMenu">
+                    Calendars
+                </button>
+                <mat-menu #calendarsMenu>
+                    <button mat-menu-item [value]="exl.id" (click)="openCalenderDocs(exl)" *ngFor="let exl of loLinksCal">
+                        {{exl.text}}
+                        <i class="mdButtonIcon fa {{ exl.icon }}"></i>
+                    </button>
+                </mat-menu>
+
+                <button mat-menu-item [matMenuTriggerFor]="constructionMenu">
+                    Construction Loans
+                </button>
+                <mat-menu #constructionMenu>
+                    <button mat-menu-item  (click)="openConstDocs(lc)" *ngFor="let lc of loLinksConst">
+                        {{lc.text}}
+                        <i class="mdButtonIcon fa {{ lc.icon }}"></i>
+                    </button>
+                </mat-menu>
+
+                <button mat-menu-item [matMenuTriggerFor]="FormsMenu">
+                    Forms
+                </button>
+                <mat-menu #FormsMenu>
+                    <button mat-menu-item  (click)="openForms(lmc)" *ngFor="let lmc of loLinksMisc">
+                        {{lmc.text}}
+                        <i class="mdButtonIcon fa {{ lmc.icon }}"></i>
+                    </button>
+                </mat-menu>
+            </mat-menu>
+
+
+            <button aria-label="matMenuButton" mat-flat-button [matMenuTriggerFor]="inboxMenu">Add Loan</button>
+            <mat-menu #inboxMenu="matMenu">
+                <button mat-menu-item [value]="req.id" *ngFor="let req of reqType" (click)="onReqTypeClick(req.id)">
+                    {{req.name}}
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="existingLoanMenu">
+                    Existing
+                </button>
+                <mat-menu #existingLoanMenu>
+                    <button mat-menu-item [value]="exl.id" (click)="onExLoanClick(exl)"
+                        *ngFor="let exl of exstingLoanType">
+                        {{exl.productName + ' - ' + exl.amount}}
+                    </button>
+                </mat-menu>
+            </mat-menu>
+            <mat-icon ngbTooltip="You have {{loanRequirementOpenCnt}} loan requirements remaining" tooltipClass="tooltip-font-size-md"
+              style="margin-top: 5px; margin-right: 16px; float: right;">flag
+            </mat-icon>
+
+        </div>
+
+        <div class="portlet-container">
+            <mat-list class="portlet-body u-scroll-vert">
+                <!-- <div style="padding: 20px 8px;" *ngIf="loanData.length == 0" fxLayout="row" fxLayoutAlign="center center">
+                    <h3 style="color: #5a5a5a;">no. loan(s) associated with this deal.</h3>
+                </div> -->
+                <mat-list-item *ngFor="let loan of loanData" routerLinkActive="active"
+                    routerLink='/main/deal/{{dealId}}/loan/{{loan.id}}/'
+                    (click)="routeToLoanComponent(loan)" class="loan-list-item"
+                    [ngClass]="loanId == loan.id ? 'active' : ''">
+                    <mat-icon matListIcon class="mat-icon-background">money</mat-icon>
+                    <span *ngIf="loan.primary" matLine class="loan-list-text-label">Primary Loan</span>
+                    <div matLine>
+                        <span *ngIf="loan.id>0" class="inline-block" hidden="true">{{loan.id}}</span>
+                        <span routerLinkActive="active" ngbTooltip="{{loan.productName}}" tooltipClass="tooltip-font-size-md"
+                            [ngClass]="loanId == loan.id ? 'active' : ''" class="loan-list-text inline-block">
+                            {{(loan.productName.length > 25)?(loan.productName | slice:0:25)+'...' : loan.productName}}
+                        </span>
+                        <span routerLinkActive="active" [ngClass]="loanId == loan.id ? 'active' : ''" class="inline-block" style="margin: 0px 10px">|</span>
+                        <span routerLinkActive="active" [ngClass]="loanId == loan.id ? 'active' : ''" class="loan-list-text inline-block">{{loan.amount | currency}}</span>
+                    </div>
+                    <div matLine>
+                        <span class="loan-list-item-subtext">Purpose: {{loan.purposePrimaryName}}</span>
+                        <button aria-label="cancel" class="chip chip-text loan-list-item-remove" mat-flat-button (click)="onRemoveClick(loan)">Remove</button>
+                    </div>
+                    <div matLine>
+                      <span class="loan-list-item-subtext">Rate: {{loan.noteRate}}%</span>
+                    </div>
+                    <div matLine>
+                      <span class="loan-list-item-subtext">Financing: {{loan.financingTypeCode}}</span>
+                    </div>
+                    <mat-progress-bar matLine mode="determinate"
+                        ngbTooltip="{{ loan.openRequirements }} requirements remaining" tooltipClass="tooltip-font-size-md" value="{{ loan.requirements }}"
+                        class="{{ loan.cssClass }}">
+                    </mat-progress-bar>
+                </mat-list-item>
+
+            </mat-list>
+        </div>
+        <div class="u-footer-container">
+
+        </div>
+    </div>
+    <!-- [hidden]="fullWidth" -->
+    <div class="u-scrn-flex" *ngIf="!fullWidth">
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="doc-header">
+    <div class="doc-header-input-container">
+        <input class="form-control inline-block" placeholder="Search..." name="srhdocs" [(ngModel)]="searchText">
+    </div>
+    <div class="inline-block">
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">filter_list</mat-icon>
+        </button>
+        <span style="margin: 0px 10px">|</span>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">person</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">money</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">home</mat-icon>
+        </button>
+      </div>
+    <div class="doc-button-group">
+        <button mat-flat-button class="doc-header-button-reset" ngbTooltip="Save All" tooltipClass="tooltip-font-size-md" (click)="resetSelectedDocuments(synergyDocs,0)">Reset
+          <!-- <mat-icon class="u-mat-icon-grey doc-header-button-icon">publish</mat-icon> -->
+        </button>
+    </div>
+</div>
+<div class="table-responsive" [ngClass]="{'doc-table-margin' : showToolbarExported}">
+  <table class="table">
+    <thead>
+      <tr style="color: #5a5a5a">
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">As of Date</th>
+        <th scope="col">Entity</th>
+        <th scope="col">Tax ID</th>
+        <th scope="col">CIF ID</th>
+        <th scope="col">Comment</th>
+        <!-- <th scope="col">Export Status</th> -->
+        <th scope="col">Cabinet</th>
+        <th scope="col">
+          <mat-checkbox ngbTooltip="Select All" tooltipClass="tooltip-font-size-md" (change)="onChange($event)"></mat-checkbox>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of synergyDocs |searchDocs:{documentName: searchText,asOfDate:searchText,  documentDefinitionName: searchText,comment:searchText,cabinetName:searchText};">
+          <td>          
+            <div matTooltip="{{d.alternateName}}"
+            [matTooltipDisabled]="d.alternateName?.length < 24">
+            {{(d.alternateName?.length>24)? (d.alternateName | slice:0:24)+'...':(d.alternateName)}}
+           </div>
+          </td>
+          <td>{{d.documentDefinitionName}}</td>
+          <td>{{d.asOfDate | date: 'MM/dd/yyyy'}}</td>
+          <td>Monica Bloomquist</td>
+          <td>123-45-6789</td>
+          <td></td>
+          <td> <div matTooltip="{{d.comment}}"
+            [matTooltipDisabled]="d.comment?.length < 25"> 
+            {{(d.comment?.length>25)? (d.comment | slice:0:25)+'...':(d.comment)}}
+          </div></td>
+          <!-- <td></td> -->
+          <td>{{d.cabinetName}}</td>
+          <td>
+            <mat-checkbox [(ngModel)]="d.isResetExportReady"></mat-checkbox>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

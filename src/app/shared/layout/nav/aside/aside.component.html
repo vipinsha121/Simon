@@ -1,0 +1,47 @@
+
+<div>
+    <div mMenuAside (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()"
+        m-menu-vertical="1" [attr.m-menu-dropdown]="true" [attr.m-menu-scrollable]="true">
+        <ul>
+          <ng-container [ngTemplateOutlet]="mMenuListing"></ng-container>
+        </ul>
+    </div>
+  
+    <ng-template #mMenuListing>
+      <mat-divider></mat-divider>
+      <mat-divider></mat-divider>
+      <mat-accordion>
+          <mat-expansion-panel [expanded]="true"
+              style="box-shadow: none">
+              <mat-expansion-panel-header [@.disabled]="true">
+                  <mat-panel-title>
+                      Inbox
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+  
+              <ng-container>
+                  <inbox-section [menu]="recentInboxes"></inbox-section>
+              </ng-container>
+          </mat-expansion-panel>
+      </mat-accordion>
+      <mat-divider></mat-divider>
+      <mat-accordion>
+          <mat-expansion-panel [expanded]="true"
+              style="box-shadow: none">
+              <mat-expansion-panel-header [@.disabled]="true">
+                  <mat-panel-title>
+                      Deals
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+                  <ng-container>
+                      <deal-section [dealMenu]="recentDeals"></deal-section>
+                  </ng-container>
+          </mat-expansion-panel>
+      </mat-accordion>
+      <mat-divider></mat-divider>
+    </ng-template>
+  
+  </div>
+  
+  
+  

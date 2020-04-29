@@ -1,0 +1,41 @@
+<button mat-icon-button class="navbar-icon-button" (click)="openDealNoteModal()">
+    <mat-icon aria-hidden="false" aria-label="menu">note</mat-icon>
+  </button>
+
+ <p-dialog [ngClass]="{hidden: hidden}" header="Deal Notepad" class="widthEditor boxDiloge" [style]="{'width':'50%'}" [(visible)]="showDealUser" >
+        <p-header style="position: absolute; right: 40px;top:10px;">
+         <button type="button" style="padding: 0;border: none;color: #777;background: transparent;" pButton (click)="dialog_body = !dialog_body" class="pi pi-window-minimize"></button>
+        </p-header>
+         <!-- <p:commandButton update="idofdialog" oncomplete="dlg.show()" actionListener="#{bean.changeHeaderText}"/> 
+       <button style="position: absolute; top: -10px; z-index: 10">Minimize</buttonxscdx>  -->
+        <div *ngIf="dialog_body">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-5"><B>DealId:</B> {{ dealId }}</div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5 Date">
+            <span style="font-size:10px;">Last Saved By</span> &nbsp;
+            <span *ngIf="dealNoteData" style="font-weight: 700; font-size: 11px;">{{ dealNoteData.lastModByName }}{{"("+dealNoteData.role+")"}}</span>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"><B>UserId:</B> {{ currentUser.userId }}</div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+              <div *ngIf="dealNoteData"><span style="font-size:10px;">{{ dealNoteData.lastModByDate | date:'MMM d, y,  h:mm a'}}</span></div>
+              </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-5"><B>Note</B></div>
+    </div>
+  </div>
+      <angular-editor  [placeholder]="'Enter text here...'" [config]="editorConfig" #note [(ngModel)]="htmlContent"></angular-editor>
+        <footer>
+          <input type="button" value="Save"  (click)="saveDealNote()" class="btn-success">
+        </footer>
+      </div>
+   
+      <!-- <div>
+          <span style="font-size:10px;">{{dealUserData.lastModByDate | date:'MMM d, y,  h:mm a'}}</span>
+      </div> -->
+    </p-dialog> 

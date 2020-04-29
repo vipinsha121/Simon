@@ -1,0 +1,155 @@
+<deal-stages></deal-stages>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <div>
+      <div class="header-row-left">
+        <h6 *ngIf="dealId">
+          {{currentDealData.dealId}} - {{currentDealData.dealName}} | {{ dealDates?.amount | currency }}
+        </h6>
+      </div>
+      <div class="header-row-left header-tab-text">
+        <button mat-button routerLink='/main/deal/{{dealId}}' routerLinkActive="active">
+          Deal
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/party/' routerLinkActive="active" (click)="sendFull()"
+          class="header-tab-text-border" [ngClass]="href.indexOf('party') > -1 ? 'active' : ''">
+          Party
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/loan/' routerLinkActive="active" (click)="onclickLoan()"
+          class="header-tab-text-border" [ngClass]="href.indexOf('loan') > -1 ? 'active' : ''">
+          Loan
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/collateral/' routerLinkActive="active"
+          (click)="onclickCollateral()" class="header-tab-text-border"
+          [ngClass]="href.indexOf('col') > -1 ? 'active' : ''">
+          Col
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/reqs/' routerLinkActive="active" (click)="onclickParty()"
+          class="header-tab-text-border" [ngClass]="href.indexOf('req') > -1 ? 'active' : ''">
+          Reqs
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/docs/' routerLinkActive="active"
+          class="header-tab-text-border" [ngClass]="href.indexOf('docs') > -1 ? 'active' : ''">
+          Docs
+        </button>
+        <button mat-button routerLink='/main/deal/{{dealId}}/dealmessages/' routerLinkActive="active"
+            class="header-tab-text-border" [ngClass]="href.indexOf('dealmessages') > -1 ? 'active' : ''">
+          Msg
+        </button>
+        <button mat-button *ngIf="!mobileQuery.matches && !mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/process/' routerLinkActive="active"
+            class="header-tab-text-border" [ngClass]="href.indexOf('process') > -1 ? 'active' : ''">
+          Process
+        </button>
+        <button mat-button *ngIf="!mobileQuery.matches && !mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/event/' routerLinkActive="active"
+          class="header-tab-text-border" [ngClass]="href.indexOf('events') > -1 ? 'active' : ''">
+          Events
+        </button>
+        <button mat-button *ngIf="!mobileQuery.matches && !mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/date/' routerLinkActive="active"
+          class="header-tab-text-border" [ngClass]="href.indexOf('dates') > -1 ? 'active' : ''">
+          Dates
+        </button>
+        <button mat-button *ngIf="!mobileQuery.matches && !mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/tickler/' routerLinkActive="active"
+          class="header-tab-text-border" [ngClass]="href.indexOf('tickler') > -1 ? 'active' : ''">
+          Tickler
+        </button>
+
+      </div>
+
+    </div>
+    <div class="spacer">
+
+    </div>
+    <div>
+      <div *ngIf="!windowQueryMid.matches" class="date-container">
+        <div>
+            <span >Closing</span>
+            <span >{{ (dealDates?.estimatedClosingDate) ? (dealDates?.estimatedClosingDate | date:"MM/dd") : '-' }}</span>
+        </div>
+        <div>
+            <span >App</span>
+            <span >{{ (dealDates?.applicationDate) ? (dealDates?.applicationDate | date:"MM/dd") : '-' }}</span>
+        </div>
+        <div>
+            <span >App C</span>
+            <span >{{ (dealDates?.applicationCompleteDate) ? (dealDates?.applicationCompleteDate | date:"MM/dd") : '-' }}</span>
+        </div>
+        <div>
+            <span>Dec Due</span>
+            <span >{{ (dealDates?.decisionDueDate) ? (dealDates?.decisionDueDate | date:"MM/dd") : '-' }}</span>
+        </div>
+        <div>
+            <span >CONOAT</span>
+            <span >{{ (dealDates?.conoatDate) ? (dealDates?.conoatDate | date:"MM/dd") : '-' }}</span>
+        </div>
+        <div>
+            <span >Aprvd</span>
+            <span >{{ (dealDates?.approvedDate) ? (dealDates?.approvedDate | date:"MM/dd") : '-' }}</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="spacer"></div>
+
+    <div class="inline-block">
+
+      <div fxLayout="row">
+        <toolbar-deal-notes></toolbar-deal-notes>
+        <toolbar-add-external-participant></toolbar-add-external-participant>
+        <toolbar-participants [currentMenu]=currentMenu></toolbar-participants>
+        <!-- <toolbar-external-participants *ngIf="!mobileQuery.matches" [currentMenu]=currentMenu></toolbar-external-participants> -->
+        <toolbar-reports *ngIf="!mobileQueryMid.matches"></toolbar-reports>
+        <button *ngIf="!mobileQueryMid.matches" mat-icon-button>
+          <toolbar-quickview></toolbar-quickview>
+        </button>
+        <button *ngIf="windowQueryMid.matches" mat-icon-button>
+          <mat-icon aria-hidden="false">event</mat-icon>
+        </button>
+        <button aria-label="matMenuButton" mat-icon-button>
+          <mat-icon aria-label="menu" aria-hidden="false">account_circle</mat-icon>
+        </button>
+
+        <toolbar-assign-deal [isExistAssignedUserFullNameForDeal]="isExistAssignedUserFullName"></toolbar-assign-deal>
+        <toolbar-deal-officer [dealPrimaryOfficerForDeal]="dealPrimaryOfficer"></toolbar-deal-officer>
+        <button *ngIf="!mobileQueryLg.matches" aria-label="matMenuButton" mat-icon-button [matMenuTriggerFor]="moreMenu">
+          <mat-icon aria-label="menu" aria-hidden="false">more_vert</mat-icon>
+        </button>
+        <mat-menu #moreMenu="matMenu" class="date-menu">
+          <button mat-menu-item *ngIf="mobileQuery.matches || mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/process/' routerLinkActive="active">
+            <mat-icon aria-label="menu" aria-hidden="false">linear_scale</mat-icon>Process
+          </button>
+          <button mat-menu-item *ngIf="mobileQuery.matches || mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/event/' routerLinkActive="active">
+            <mat-icon aria-label="menu" aria-hidden="false">label_important</mat-icon>Events
+          </button>
+          <button mat-menu-item *ngIf="mobileQuery.matches || mobileQueryMid.matches" routerLink='/main/deal/{{dealId}}/tickler/' routerLinkActive="active">
+            <mat-icon aria-label="menu" aria-hidden="false">notifications_active</mat-icon>Tickler
+          </button>
+          <button mat-menu-item *ngIf="mobileQuery.matches || mobileQueryMid.matches">
+              <toolbar-quickview></toolbar-quickview>
+              <span>Quickview</span>
+          </button>
+          <button mat-menu-item *ngIf="!mobileQueryLg.matches">
+              <toolbar-reports [dealId]="currentDealData.dealId"></toolbar-reports>
+              <span>Reports</span>
+          </button>
+          <toolbar-history></toolbar-history>
+          <button mat-menu-item (click)="onClickReqDue()">
+              <mat-icon aria-label="menu" aria-hidden="false">timer</mat-icon>Due
+          </button>
+        </mat-menu>
+      </div>
+      <div>
+
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- <style>
+  .temp-align {
+    font-size: 10px;
+    height: 8px;
+  }
+  .temp-vert-separater{
+    border-left: 2px solid red;
+  }
+</style> -->

@@ -1,0 +1,99 @@
+
+.req-doc-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 1px;
+    position: relative;
+  }
+  
+  .req-doc-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    z-index: 0;
+  }
+  
+  .req-doc-button {
+    float: right;
+    font-size: 12px;
+    margin: 0px 5px;
+    height: 30px;
+    line-height: 30px;
+    color: #707070;
+    text-transform: uppercase;
+    background: #f5f5f5
+  }
+  
+  .req-doc-button:hover {
+    color: #474747;
+    background: #d1e6e8
+  }
+  
+  .req-doc-button-icon {
+    float: right;
+    background: #f5f5f5;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0px 5px;
+  }
+  
+  .req-doc-button-icon>span>mat-icon {
+    font-size: 18px !important;
+  }
+  
+  
+  .req-doc-button-icon-upload>span>mat-icon {
+    color: #7ec7ff;
+    font-size: 30px !important;
+    line-height: 20px;
+  }
+  
+  .req-doc-title {
+    font-weight: 500;
+    position: relative;
+    top: 5px;
+  }
+  
+  .req-doc-subtitle {
+    font-size: 11px;
+  }
+  
+  .req-doc-list-item {
+    border-radius: 4px;
+    margin: 2rem 0px;
+  }
+  
+  .req-doc-list-item:first-child {
+    border-radius: 4px;
+    margin: 0rem 0px 2rem 0px;
+  }
+  
+  .req-doc-input {
+    width: 50%
+  }
+  
+  .req-doc-input>input {
+    height: 35px;
+    border-radius: 20px;
+  }
+  
+  mat-list.req-doc-body>mat-list-item.req-doc-list-item>div.mat-list-item-content>div.mat-list-text {
+    border-bottom: 1px solid #e0e0e0;
+    margin-left: 16px;
+    padding-left: 0px !important;
+    padding-bottom: 10px;
+  }
+  
+  .mat-form-field-prefix {
+    top: 0em !important;
+  }
+  
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px !important;
+}
+::-webkit-scrollbar-thumb {
+    /* border-radius: 4px; */
+    background-color: rgba(146, 132, 132, 0.5);
+}

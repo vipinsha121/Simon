@@ -1,0 +1,230 @@
+<requirement-details></requirement-details>
+
+<!-- <mat-tab-group mat-align-tabs="center" mat-stretch-tabs>
+    <mat-tab label="Detail">
+        <ng-template matTabContent>
+          <div fxFill>
+              <div>
+                  <div class="m-portlet__head-label">
+                    <span class="inline-block" style="font-size: 20px; color: #a685f5; font-family: roboto; padding-top: 10px"
+                      ngbTooltip="{{requirement.name}}">
+                      {{ (requirement.name.length>10)? (requirement.name | slice:0:10)+'...':(requirement.name) }}
+                      {{requirement.type}}
+                    </span>
+                  </div>
+
+                  <div class="m-portlet__head-toolbar">
+                    <div class="m-portlet__head-actions">
+                      <div>
+                        <a ngbTooltip="Cancel" (click)="clearSideForm();">
+                          <mat-icon style=" cursor: pointer;">highlight_off</mat-icon>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                <form id="formCQ" name="formCQ" role="form" data-name="Requirement-Comments" [formGroup]="reqsideform">
+                  <div class="m-portlet__body">
+                    <div class="overlay-wrapper">
+                      <div style="max-height: 575px; overflow-y: scroll; overflow-x: hidden;">
+                        <div>
+                          <div class="animate-if">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="row" style="width: 100%;margin: 0px 10px">
+                                  <div class="col-md-3">
+                                    Status
+                                  </div>
+                                  <div class="col-md-3">
+                                <span title="Due Soon" *ngIf="requirement.daysDue==2 && requirement.complete != true">
+
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F7CA18">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                      d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                                  </svg>
+                                </span>
+                                <span title="Due Immediately" *ngIf="requirement.daysDue<2 && requirement.complete != true">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#E26A6A">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                      d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                                  </svg>
+                                </span>
+                                    <span title="Exception" *ngIf="requirement.exception==true">
+                                      <i class="fa fa-exclamation-circle" style="font-size:16px;color:#ffa07a"></i>
+                                    </span>
+                                    <span style="padding: 3px 7px; font-size: 11.5px"
+                                      [ngClass]="requirement.statusDescription.indexOf('Open') >
+                                        -1 ? 'reqStatusOpen' :
+                                        requirement.statusDescription.indexOf('Complete') > -1 ? 'reqStatusComplete' :
+                                        requirement.statusDescription.indexOf('Waive') > -1 ? 'reqStatusComplete' :
+                                        requirement.statusDescription.indexOf('Approved') > -1 ? 'reqStatusComplete' :
+                                        requirement.statusDescription.indexOf('In Process') > -1 ? 'reqStatusInProcess' :
+                                        requirement.statusDescription.indexOf('Pending') > -1 ? 'reqStatusPending' : 'reqStatusOther'">
+
+                                      {{requirement.statusDescription}}
+                                    </span>
+                                  </div>
+                                  <div class="col-md-3" style="text-align: center;">Due Date</div>
+                                  <div class="col-md-3" style="text-align: center;">Expiration Date</div>
+                                </div>
+                                <div class="row" style="width: 100%;margin: 0px 10px">
+                                  <div class="col-md-3">Deferred Stage </div>
+                                  <div class="col-md-3"> {{requirement.deferStageName}}</div>
+                                  <div class="col-md-4">
+
+                                    <mat-form-field>
+                                      <input matInput [matDatepicker]="duedate" placeholder="Choose a date" name="duedateval"
+                                        formControlName="duedateval" [(ngModel)]="requirement.dueDate" style="width:80px;"
+                                        autocomplete="off">
+                                      <mat-datepicker-toggle matSuffix [for]="duedate"></mat-datepicker-toggle>
+                                      <mat-datepicker #duedate></mat-datepicker>
+                                    </mat-form-field>
+
+                                  </div>
+                                  <div class="col-md-3" style="text-align: center;margin-top: 5px;">
+                                    {{requirement.expirationDate | date : 'MM/dd/yyyy'}}
+                                  </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                  <div class="col-md-12" style="margin-bottom: 10px;">
+                                    <label style="font-size: 16px; padding-left: 5px; color: #4295db">Mitigating Factors</label>
+                                    <mat-checkbox value="ReqOpen" name="isMitigatingFactors" formControlName="isMitigatingFactorsval"
+                                      [(ngModel)]="requirement.isMitigatingFactors" style="margin:0px 10px; float: right">
+                                    </mat-checkbox>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12" style="margin-bottom: 10px;">
+                                    <div style="padding-left:0px;" *ngIf="requirement.isMitigatingFactors">
+                                      <div style="padding-left:5px;">
+                                        <textarea style="width: 100%; margin-bottom: 20px; border-color: #d4d4d4;"
+                                          formControlName="mitigatingFactorsval"
+                                          class="form-control ng-pristine ng-valid ng-binding ng-empty ng-touched"
+                                          name="mitigatingFactors" [(ngModel)]="requirement.mitigatingFactors" rows="7"></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px;">
+                                  <div class="col-md-12">
+                                    <label style="font-size: 16px; padding-left: 5px; color: #4295db">Approval Subject to</label>
+                                    <mat-checkbox name="isSubjectTo" [(ngModel)]="requirement.isSubjectTo"
+                                      formControlName="isSubjectToval" style="margin:0px 10px; float: right">
+                                    </mat-checkbox>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div style="padding-left:0px;" *ngIf="requirement.isSubjectTo">
+                                      <div style="padding-left:5px;">
+                                        <textarea style="width: 100%; margin-bottom: 20px; border-color: #d4d4d4;"
+                                          class="form-control ng-pristine ng-valid ng-binding ng-empty ng-touched"
+                                          formControlName="SubjectToval" [(ngModel)]="requirement.subjectTo" rows="7"
+                                          name="subjectTo"></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row req-portlet-table-row-footer" style="margin:0px 10px;">
+                          <div class="col-md-5" style="text-align:left; padding-left: 10px">
+                            <div class="inline-block">
+                              <label style="font-size:10px; color: #808080; text-align: left">Last Saved By</label>
+                              <span style="font-weight: 700; text-align: left; color: #808080">
+
+                                {{requirement.lastModbyFirstname}}&nbsp;{{requirement.lastModbyLastname}}&nbsp;&nbsp;
+
+                              </span><br />
+                              <span style="font-size:10px; color: #808080; text-align: left">
+                                {{requirement.lastModByDate | date: 'MMM d, y h:mm a'}}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="col-md-7" style="padding-right: 0px">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="m-portlet__foot">
+                    <div class="form__actions">
+                      <button id="closeCommentsQuestion" (click)="clearSideForm(); inboxRowClear();" class="btn btn-secondary">
+                        <span class="req-portlet-table-row-footer-text-cancel">Cancel</span>
+                      </button>
+                      &nbsp;&nbsp;&nbsp;
+                      <button (click)="saveRequirement(requirement);" class="btn btn-primary" [disabled]="reqsideform.invalid">
+                        <span class=" req-portlet-table-row-footer-text-save">Apply</span>
+                      </button>
+                    </div>
+
+                  </div>
+                </form>
+
+              </div>
+          </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Tasks">
+        <ng-template matTabContent>
+          <div fxFill>
+            Tasks
+          </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Message">
+        <ng-template matTabContent>
+          <div fxFill>
+            Message
+          </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="History">
+        <ng-template matTabContent>
+          <div fxFill>
+              <div class="row">
+                  <div layout="row" style="margin: 15px;">
+                    <a (click)="toggleHistory()">{{ showHistory ? 'Hide History' : 'Show History'}}</a>
+                  </div>
+                  <div layout="row" style="margin-left:auto; margin-right:auto; margin-top:20px; margin-bottom:10px; background-color:#fff;
+                    width:96%;text-align:center;">
+                    <div class="col-xs-12" id="sta" *ngIf="showHistory==true">
+                      <table class="table table-striped table-condensed table-hover">
+                        <thead>
+                          <tr>
+                            <th>Stage</th>
+                            <th>Initiated By</th>
+                            <th>Initiated Date</th>
+                            <th>Completed By</th>
+                            <th>Completed Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let h of stageHis">
+                            <td style="vertical-align:middle;">{{h?.stageName}}</td>
+                            <td style="vertical-align:middle;">{{h?.createdBy}}</td>
+                            <td style="vertical-align:middle;">{{h?.createdDate| date : 'short'}}</td>
+                            <td style="vertical-align:middle;">{{h?.completedBy}}</td>
+                            <td style="vertical-align:middle;">{{h?.completedDate| date : 'short'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group> -->
+
+

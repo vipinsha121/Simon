@@ -1,0 +1,593 @@
+<div class="m-body" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded col-md-12" style="padding: 0px">
+        <mat-tab-group mat-align-tabs="left" mat-stretch-tabs disableRipple class="tab-primary"
+        [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event);onPrimaryTabChange($event);">
+          <mat-tab>
+              <ng-template matTabLabel>
+                <span>Documents</span>
+                <button *ngIf="!showToolbar" mat-icon-button (click)="toggleToolbar()">
+                  <mat-icon ngbTooltip="Show toolbar" tooltipClass="tooltip-font-size-md"
+                    class="u-mat-icon-grey doc-header-button-icon">build</mat-icon>
+                </button>
+              </ng-template>
+              <ng-template matTabContent>
+                  <div class="doc-header" [hidden]="!showToolbar">
+                      <div class="doc-header-input-container">
+                          <input class="form-control inline-block" placeholder="Search..." name="srhdocs" [(ngModel)]="searchText"
+                          (keyup)="applyFilter($event.target.value)">
+                      </div>
+                      <div class="inline-block doc-header-filter-container">
+
+                        <button mat-icon-button [disabled]="filterIcon" (click)="clearFilter()">
+                          <mat-icon *ngIf="filterIcon" class="u-mat-icon-grey">filter_list</mat-icon>
+                          <mat-icon *ngIf="!filterIcon" class="u-mat-icon-grey">close</mat-icon>
+                        </button>
+
+                        <span style="padding: 0px 0.5rem">|</span>
+
+                        <button mat-icon-button [matMenuTriggerFor]="partyList">
+                          <mat-icon class="u-mat-icon-grey">person</mat-icon>
+                        </button>
+                        <mat-menu #partyList="matMenu">
+                          <button mat-menu-item *ngFor="let party of parties" (click)="filter(party.name)">{{ party.name }}</button>
+                        </mat-menu>
+
+                        <button mat-icon-button [matMenuTriggerFor]="loanList">
+                          <mat-icon class="u-mat-icon-grey">money</mat-icon>
+                        </button>
+                        <mat-menu #loanList="matMenu">
+                          <button mat-menu-item *ngFor="let loan of loans" (click)="filter(loan.productName)">{{ loan.productName }}</button>
+                        </mat-menu>
+
+                        <button mat-icon-button [matMenuTriggerFor]="collateralist">
+                          <mat-icon class="u-mat-icon-grey">home</mat-icon>
+                        </button>
+                        <mat-menu #collateralist="matMenu">
+                          <button mat-menu-item *ngFor="let c of collateral" (click)="filter(c.category)">{{ c.category }}</button>
+                        </mat-menu>
+
+
+                      </div>
+
+                      <div class="doc-button-group">
+                          <div>
+                              <mat-slide-toggle [(ngModel)]="activedocs"
+                                [ngbTooltip]="!activedocs ? 'Show All' : 'Show Only Active'"></mat-slide-toggle>
+                          </div>
+                          <div>
+                              <button mat-icon-button (click)="openDocumentUploadMOdal()">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon" ngbTooltip="Add Documents" tooltipClass="tooltip-font-size-md">attach_file</mat-icon>
+                              </button>
+                          </div>
+                          <div *ngIf="showEditAll">
+                              <button mat-icon-button (click)="dataSource.editAll;DocumentsRow=true;editAllDocuments(); showEditAll=false;"
+                                      ngbTooltip="Edit All" tooltipClass="tooltip-font-size-md">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon">edit</mat-icon>
+                              </button>
+                          </div>
+                          <div *ngIf="!showEditAll">
+                              <button mat-icon-button (click)="dataSource.editAll;DocumentsRow=false;closeAllDocuments(); showEditAll=true;" ngbTooltip="Close All" tooltipClass="tooltip-font-size-md">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon">close</mat-icon>
+                              </button>
+                          </div>
+                          <div>
+                              <button mat-icon-button (click)="saveAllDocuments(dataSource.data);showEditAll=true;" [ngClass]="!showEditAll ? 'u-background-green' : '' " ngbTooltip="Save All" tooltipClass="tooltip-font-size-md">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon">check</mat-icon>
+                              </button>
+                          </div>
+                          <div>
+                              <button mat-icon-button (click)="OpenRelatedSelectedModal();" ngbTooltip="Relate Selected" tooltipClass="tooltip-font-size-md">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon">share</mat-icon>
+                              </button>
+                          </div>
+                          <div>
+                              <button mat-icon-button (click)="getDocsForDeal()"  ngbTooltip="Refresh" tooltipClass="tooltip-font-size-md">
+                                <mat-icon class="u-mat-icon-grey doc-header-button-icon">cached</mat-icon>
+                              </button>
+                          </div>
+                          <div>
+                              <button mat-icon-button (click)="toggleToolbar()" ngbTooltip="Hide Toolbar" tooltipClass="tooltip-font-size-md">
+                                  <mat-icon class="u-mat-icon-grey doc-header-button-icon">arrow_drop_up</mat-icon>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="table-responsive example-container" [ngClass]="{'doc-table-margin' : showToolbar}">
+
+                  <table  mat-table [dataSource]="dataSource" style="width: -webkit-fill-available;" matSort>
+
+                      <!-- Info Column -->
+                      <ng-container matColumnDef="Info">
+                       <th mat-header-cell *matHeaderCellDef> Info </th>
+                       <td mat-cell *matCellDef="let element">
+                          <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                              <mat-slide-toggle class="doc-table-toggle" style="margin-right: 10px"
+                                (click)="activateOrDeactivateDoc(element)" *ngIf="element.active" [checked]="true"
+                                ngbTooltip="Active" tooltipClass="tooltip-font-size-md">
+                              </mat-slide-toggle>
+                              <mat-slide-toggle class="doc-table-toggle" (click)="activateOrDeactivateDoc(element)" *ngIf="!element.active" [checked]="false"
+                              ngbTooltip="Not Needed" tooltipClass="tooltip-font-size-md">
+                              </mat-slide-toggle>
+                              <!-- <button mat-icon-button (click)="openDocument(element.id)">
+                                                                  <mat-icon class="u-mat-icon-blue" ngbTooltip="Open Document">open_in_new</mat-icon>
+                                                              </button> -->
+                              <button *ngIf="element.ecmUploadEnabled && element.ecmExported" mat-icon-button matTooltip="Exported">
+                                <mat-icon matIcon class="u-mat-icon-green">cloud_done</mat-icon>
+                              </button>
+                              <button *ngIf="element.ecmUploadEnabled && !element.ecmExported" mat-icon-button matTooltip="This doc-type will upload to Synergy">
+                                <mat-icon matIcon class="u-mat-icon-blue">cloud_queue</mat-icon>
+                              </button>
+                              <button *ngIf="!element.ecmUploadEnabled" mat-icon-button ngbTooltip="This doc-type will NOT upload to Synergy" tooltipClass="tooltip-font-size-md">
+                                <mat-icon matIcon class="u-mat-icon-grey">cloud_off</mat-icon>
+                              </button>
+                              <button mat-icon-button (click)="openDocument(element.id)" ngbTooltip="Open" tooltipClass="tooltip-font-size-md">
+                                <span class="inline-block pointer">
+                                  <i aria-hidden="false" class="u-mat-icon-grey doc-fa-icon"
+                                    [ngClass]="element.alternateName.indexOf('.pdf') > -1 ? 'fa fa-file-pdf' :
+                                    element.alternateName.indexOf('.doc') > -1 ? 'fa fa-file-word' :
+                                    element.alternateName.indexOf('.xlsx') > -1 ? 'fa fa-file-excel' :
+                                    element.alternateName.indexOf('.jpeg') > -1 ? 'fa fa-file-image' :
+                                    element.alternateName.indexOf('.png') > -1 ? 'fa fa-file-image' :
+                                    element.alternateName.indexOf('.zip') > -1 ? 'fa fa-file-archive' : 'documentTableIconLink iconHoverBlueLink fa fa-file'">
+                                  </i>
+                                </span>
+                              </button>
+                              <button mat-icon-button ngbTooltip="Edit In Adobe" tooltipClass="tooltip-font-size-md">
+                                <mat-icon matIcon class="u-mat-icon-grey">post_add</mat-icon>
+                              </button>
+                            </div>
+                       </td>
+                     </ng-container>
+
+                   <!-- Doc Name Column -->
+                   <ng-container matColumnDef="alternateName">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                     <td mat-cell *matCellDef="let element">
+                      <form #alterNameForm="ngForm">
+                        <mat-form-field floatLabel="never" *ngIf="element.editDocumentRow">
+                          <!-- <mat-label>Document Name</mat-label> -->
+                          <input matInput #alternateName="ngModel" name="alternateName" [(ngModel)]="element.alternateName" type="text"
+                             style="border-radius: 6px !important; width: 156px; margin-top: 2px; font-size: 12px"
+                             id="docName-{{element.id}}" placeholder="Document Name">
+                        </mat-form-field>
+                      </form>
+                      <div ngbTooltip="{{element.alternateName}}" tooltipClass="tooltip-font-size-md"
+                        [disableTooltip]="element.alternateName?.length < 24" *ngIf="!element.editDocumentRow"
+                        (click)="element.editDocumentRow = true;">
+                        {{(element.alternateName?.length>24)? (element.alternateName | slice:0:24)+'...':(element.alternateName)}}
+                      </div>
+                     </td>
+                   </ng-container>
+
+                   <!-- AsofDate Column -->
+                   <ng-container matColumnDef="asOfDate">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> AsofDate </th>
+                     <td mat-cell *matCellDef="let element">
+                      <form #asOfDateForm="ngForm" style="max-width: 150px">
+                        <mat-form-field *ngIf="element.editDocumentRow" floatLabel="never" class="doc-asofdate">
+                          <input matInput matInput name="date" [matDatepicker]="asOfDate"
+                            [(ngModel)]="element.asOfDate" required placeholder="Choose a date">
+                          <mat-datepicker-toggle matSuffix [for]="asOfDate"></mat-datepicker-toggle>
+                          <mat-datepicker #asOfDate></mat-datepicker>
+                        </mat-form-field>
+                      </form>
+                     <div *ngIf="!element.editDocumentRow" (click)="element.editDocumentRow = true;" style="max-width: 80px">
+                        {{element.asOfDate | date: 'MM/dd/yyyy'}}
+                     </div>
+                     <div *ngIf="!element.asOfDate && !element.editDocumentRow" class="u-text-red" (click)="element.editDocumentRow = true;">
+                        Select Date
+                     </div>
+                     </td>
+                   </ng-container>
+
+                   <!-- ReceiveDate Column -->
+                   <ng-container matColumnDef="recievedDate">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Rec'd Date </th>
+                     <td mat-cell *matCellDef="let element">
+                        <form #receiveDateForm="ngForm" style="max-width: 150px">
+                          <mat-form-field *ngIf="element.editDocumentRow" floatLabel="never" class="doc-asofdate">
+                            <input matInput matInput name="recievedDate" [matDatepicker]="recievedDate"
+                              [(ngModel)]="element.recievedDate" required placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="recievedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #recievedDate></mat-datepicker>
+                          </mat-form-field>
+                        </form>
+                        <div *ngIf="!element.editDocumentRow" (click)="element.editDocumentRow = true;"
+                          style="max-width: 80px">
+                          {{element.recievedDate | date: 'MM/dd/yyyy'}}
+                        </div>
+                        <div *ngIf="!element.recievedDate && !element.editDocumentRow" class="u-text-red"
+                          (click)="element.editDocumentRow = true;">
+                          Select Date
+                        </div>
+                     </td>
+                   </ng-container>
+             
+                    <!-- ADD requirement Column -->
+                    <ng-container matColumnDef="ADDrequirement">
+                     <th mat-header-cell *matHeaderCellDef>  </th>
+                     <td mat-cell *matCellDef="let element">
+                          <!--MULTI - SELECT MENU-->
+                          <button mat-icon-button (click)="SelectedDealRequirement = []; searchReqs = '';hideReqList= true;bindData(element);"
+                            (click)="mySelect.open()">
+                            <mat-icon class="u-mat-icon-grey; cursor: pointer;">keyboard_arrow_down</mat-icon>
+
+                            <div>
+                            <mat-select #mySelect [(ngModel)]="SelectedDealRequirement" [multiple]="true" class="langSelect"
+                            (ngModelChange)="onSelectedOptionsChange(element, $event)" >
+                              <div class="search-header-container">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                  <div fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                      <button mat-flat-button class="doc-menu-list-button u-text-purple"
+                                        (click)="OpenAddManualModal(element, reqs); mySelect.close()">
+                                        Add manual requirement
+                                      </button>
+                                    </div>
+                                    <div class="search-container" fxLayout="row">
+                                      <ngx-mat-select-search (change)="hideReqList = false" [(ngModel)]="searchReqs"
+                                        [placeholderLabel]="'Search...'"
+                                        [noEntriesFoundLabel]="''">
+                                      </ngx-mat-select-search>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <mat-list class="req-list" [hidden]="!searchReqs && hideReqList"
+                                (click)="$event.stopPropagation(); false;">
+                                <mat-option
+                                  *ngFor="let reqs of element.requirementsShow | searchDocs:{description: searchReqs, name: searchReqs}"
+                                  [(value)]="reqs">
+                                  <div fxLayout="row">
+                                    <mat-chip-list fxFlex="20">
+
+                                       <!-- <span fxFlex="20" [disableTooltip]="reqs.statusDescription?.length < 10"
+                                         ngbTooltip="{{reqs.statusDescription}}" placement="auto"
+                                         tooltipClass="tooltip-font-size-md">
+                                         <mat-chip-list>
+                                           <mat-chip>
+
+                                             {{reqs.statusDescription?(reqs.statusDescription | slice:0:10):'Open'}}
+                                           </mat-chip>
+                                         </mat-chip-list>
+                                       </span> -->
+                                      <mat-chip [disableTooltip]="reqs.statusDescription?.length < 10"
+                                        ngbTooltip="{{reqs.statusDescription}}" placement="left"
+                                        tooltipClass="tooltip-font-size-md">
+                                        {{reqs.statusDescription?(reqs.statusDescription | slice:0:10):'Open'}}
+                                      </mat-chip>
+                                      <!-- <mat-chip *ngIf="reqs.statusDescription?.length < 10">
+                                          {{reqs.statusDescription?reqs.statusDescription:'Open'}}
+                                      </mat-chip> -->
+                                    </mat-chip-list>
+                                    <div fxFlex="55" ngbTooltip="{{reqs.description}}"
+                                      tooltipClass="tooltip-font-size-md" placement="left"
+                                      [disableTooltip]="reqs.description?.length < 40" class="inline-block">
+                                      {{(reqs.description?.length > 40)? (reqs.description | slice:0:40)+'...' : (reqs.description)}}
+                                    </div>
+                                    <div fxFlex="25" class="inline-block">
+                                      <span ngbTooltip="{{reqs.name}}" tooltipClass="tooltip-font-size-md"
+                                        [disableTooltip]="reqs.name?.length <15" placement="right">
+                                        {{(reqs.name?.length>15)? (reqs.name | slice:0:15)+'...' : (reqs.name)}}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </mat-option>
+                              </mat-list>
+                              <div class="actions-container">
+                                <button mat-flat-button class="doc-menu-list-button-save"
+                                  (click)="apply();mySelect.close();
+                                  element.editDocumentRow=true;requirementAdded=true;hideReqList=true">Apply</button>
+                                <button mat-flat-button class="doc-menu-list-button-cancel"
+                                  (click)="mySelect.close();hideReqList=true">Cancel</button>
+                              </div>
+                             </mat-select>
+                            </div>
+                          </button>
+
+
+                            <!-- <mat-menu #menu="matMenu" class="doc-menu">
+                              <div>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                  <button mat-flat-button class="doc-menu-list-button u-text-purple"
+                                    (click)="OpenAddManualModal(d, reqs)">
+                                    Add manual requirement
+                                  </button>
+                                </div>
+                                <mat-divider></mat-divider>
+                              <div fxLayout="row">
+                                <div fxFlex="100">
+                                  <span (click)="$event.stopPropagation(); false;">
+                                    <input class="form-control doc-menu-input" type="text" [(ngModel)]="serachReqs"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Search..."> -->
+                                    <!-- <ngx-mat-select-search class="form-control doc-menu-input" [(ngModel)]="searchReqs"></ngx-mat-select-search> -->
+                                  <!-- </span>
+                                </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                              <div class="doc-menu-list-container">
+                                <mat-list [hidden]="!serachReqs"
+                                  (click)="$event.stopPropagation(); false;"> -->
+                                  <!-- <mat-selection-list style="padding-top: 0px">
+                                    <mat-list-option *ngFor="let reqs of requirementsShow | searchDocs:{description: serachReqs, name: serachReqs}"
+                                        (click)="getDocs(d, reqs); reqs.selected = !reqs.selected;" [selected]="reqs.selected" class="mat-list-option-text" [(value)]="reqs">
+                                        <div fxLayout="row">
+                                            <mat-chip-list fxFlex="20">
+                                                <mat-chip ngbTooltip="{{reqs.statusDescription}}" ngbTooltipPosition="before" >
+                                                    {{reqs.statusDescription?(reqs.statusDescription | slice:0:10):'Open'}}
+                                                </mat-chip> -->
+                                                <!-- <mat-chip *ngIf="reqs.statusDescription?.length < 10">
+                                                    {{reqs.statusDescription?reqs.statusDescription:'Open'}}
+                                                </mat-chip> -->
+                                            <!-- </mat-chip-list>
+                                            <div fxFlex="55" class="inline-block">
+                                                {{reqs.description}}
+                                            </div>
+                                            <div fxFlex="25" class="inline-block">
+                                                <span ngbTooltip="{{reqs.name}}" [disableTooltip]="reqs.name.length <15">
+                                                    {{(reqs.name.length>15)? (reqs.name | slice:0:15)+'...' : (reqs.name)}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </mat-list-option>
+                                  </mat-selection-list> -->
+
+                                  <!-- <mat-select  [(ngModel)]="SelectedDealRequirement" [multiple]="true"
+                                  (ngModelChange)="onSelectedOptionsChange($event)" #mySelect>
+                                     <ngx-mat-select-search [(ngModel)]="searchReqs"></ngx-mat-select-search>
+                                     <mat-option *ngFor="let reqs of requirementsShow | searchDocs:{description: serachReqs, name: serachReqs}" [(value)]="reqs">
+                                      <div fxLayout="row">
+                                        <mat-chip-list fxFlex="20">
+                                            <mat-chip ngbTooltip="{{reqs.statusDescription}}" ngbTooltipPosition="before" >
+                                                {{reqs.statusDescription?(reqs.statusDescription | slice:0:10):'Open'}}
+                                            </mat-chip> -->
+                                            <!-- <mat-chip *ngIf="reqs.statusDescription?.length < 10">
+                                                {{reqs.statusDescription?reqs.statusDescription:'Open'}}
+                                            </mat-chip> -->
+                                        <!-- </mat-chip-list>
+                                        <div fxFlex="55" class="inline-block">
+                                            {{reqs.description}}
+                                        </div>
+                                        <div fxFlex="25" class="inline-block">
+                                            <span ngbTooltip="{{reqs.name}}" [matTooltipDisabled]="reqs.name.length <15">
+                                                {{(reqs.name.length>15)? (reqs.name | slice:0:15)+'...' : (reqs.name)}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                     </mat-option>
+                                   </mat-select>
+                                </mat-list>
+                              </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                              <div style="padding: 10px 0px">
+                                <button mat-flat-button class="doc-menu-list-button-save" (click)="apply();d.editDocumentRow=true;requirementAdded=true">Apply</button>
+                                <button mat-flat-button class="doc-menu-list-button-cancel">Cancel</button>
+                              </div>
+                            </mat-menu> -->
+                     </td>
+                   </ng-container>
+
+                   <!-- Requirement Column -->
+                   <ng-container matColumnDef="attachedRequirements">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Requirement </th>
+                     <td mat-cell *matCellDef="let element">
+                          <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.attachedRequirements?.length == 0">
+                            <span class="u-text-red">Click arrow to select requirement</span>
+                          </div>
+                          <div fxLayout="row" *ngFor="let docReq of element.attachedRequirements" style="overflow: hidden">
+                            <a ngbTooltip="{{docReq.displayValue}}" tooltipClass="tooltip-font-size-md"
+                               [disableTooltip]="docReq.displayValue?.length < 30" class="inline-block"
+                               (click)="showRequirementDetails(docReq, element);"
+                               style="color:#6495ed !important;overflow: hidden; line-height: 30px;
+                              text-transform: none">
+                                {{ mobileQueryMid.matches ? (docReq.displayValue | slice:0:30)+'...':(docReq.displayValue)}}
+                            </a>
+                            <span ngbTooltip="{{docReq.statusDescription}}" tooltipClass="tooltip-font-size-md"
+                                  [disableTooltip]="docReq.statusDescription?.length < 10"
+                                  [ngClass]="{'u-background-green' : docReq.statusDescription.includes('Complete')
+                                    || docReq.statusDescription.includes('Approved')
+                                    || docReq.statusDescription.includes('Received')
+                                    || docReq.statusDescription.includes('Review')
+                                    || docReq.statusDescription.includes('Ready')
+                                    || docReq.statusDescription.includes('Waived'),
+                                    'u-background-purple' : docReq.statusDescription.includes('In Process'),
+                                    'u-background-red' : docReq.statusDescription.includes('Open'),
+                                    'u-background-blue' : docReq.statusDescription.includes('Exception')
+                                    || docReq.statusDescription.includes('NA') 
+                                    || docReq.statusDescription.includes('Deferred') 
+                                    || docReq.statusDescription.includes('Credit')
+                                    || docReq.statusDescription.includes('Document')
+                                    || docReq.statusDescription.includes('Started'),
+                                    'u-background-orange': docReq.statusDescription.includes('Prelim') ||
+                                    docReq.statusDescription.includes('Pending')
+                                    || docReq.statusDescription.includes('Past Due')}"
+                                  style="height: 20px; margin: 0px 10px"
+                                  class="chip chip-text">
+                                {{docReq.statusDescription?(docReq.statusDescription | slice:0:10):'Open'}}
+                            </span>
+                            <a class="inline-block" (click)="onRemoveClick(element.id,docReq.requirementId, element)" *ngIf="docReq.documentId">
+                                <mat-icon class="u-mat-icon-grey" ngbTooltip="Remove Requirement" tooltipClass="tooltip-font-size-md"  style="cursor: pointer; font-size: 20px">cancel</mat-icon>
+                            </a>
+                            <!-- <div> -->
+                            <!-- <md-tooltip ng-if="docReq.statusDescription.length > 12" md-direction="top">{{docReq.statusDescription}}</md-tooltip> -->
+                            <!-- <div style="position: relative;height: 19px;top: 7px; line-height: 15px;">
+  {{docReq.statusDescription?docReq.statusDescription:'Open' | slice:0:12}}
+  <span ng-if="docReq.statusDescription.length > 12">...</span>
+</div>  -->
+                            <!-- </div> -->
+                        </div>
+                     </td>
+                   </ng-container>
+
+                   <!-- Type Column -->
+                   <ng-container matColumnDef="documentDefinitionName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                      <td mat-cell *matCellDef="let element">
+                          <div ngbTooltip="{{element.documentDefinitionName}}" tooltipClass="tooltip-font-size-md"
+                          [disableTooltip]="element.documentDefinitionName?.length < 23"
+                          *ngIf="element.documentDefinitionId!= 147 && !element.editDocumentRow"
+                          (click)="element.editDocumentRow=true;">
+                           {{(mobileQueryMid.matches)? (element.documentDefinitionName | slice:0:23)+'...':(element.documentDefinitionName)}}
+                        </div>
+                        <div *ngIf="element.documentDefinitionId === 147 && !element.editDocumentRow" (click)="element.editDocumentRow=true;" class="u-text-red">
+                           Select Document
+                        </div>
+                        <!-- <form #entityForm="ngForm"> -->
+                            <!-- <mat-form-field *ngIf="element.editDocumentRow" floatLabel="never" fxFlex="100"> -->
+                                           <!-- <mat-label>Type</mat-label> -->
+                                <!-- <mat-select name="entity" #entity="ngModel" [(ngModel)]="element.documentDefinitionId">
+                                    <input class="form-control doc-menu-input" type="text" [(ngModel)]="searchDocT" [ngModelOptions]="{standalone: true}"
+                                           placeholder="Search..."> -->
+                                    <!-- <mat-select-trigger>{{(d.documentDefinitionName.length>23)? (d.documentDefinitionName | slice:0:23)+'...':(d.documentDefinitionName)}}</mat-select-trigger> -->
+                                    <!-- <mat-option *ngFor="let doc of docTypes | searchDocs:{name: searchDocT}" [value]="doc.id" style="height: 77px;">
+                                        {{doc.name}}
+                                        <br><p style="color: #6495ed" *ngIf="doc.ecmUploadEnabled == true">
+                                            Synergy Document Type: {{doc.ecmName}}
+                                        </p>
+                                        <p style="color: red" [hidden]="doc.Id == 147" *ngIf="doc.ecmUploadEnabled == false || doc.ecmUploadEnabled == null">Not available in Synergy</p>
+                                    </mat-option>
+                                </mat-select>
+                              <mat-error>Please Select Entity Type</mat-error>
+                            </mat-form-field> -->
+
+                            <!-- new control -->
+                            <mat-form-field *ngIf="element.editDocumentRow" floatLabel="never">
+                            <input class="form-control doc-menu-input" type="text" matInput [matAutocomplete]="new" placeholder="Search..."
+                            [(ngModel)]="element.documentDefinitionName" (keyup)="searchDocTypes($event.target.value)">
+                            <mat-autocomplete #new="matAutocomplete">
+                              <mat-option *ngFor="let doc of docTypes | searchDocs:{name: DocTypeValue}" [value]="doc.name" style="height: 77px;"
+                              (click)="element.documentDefinitionId = doc.id;" ngbTooltip="{{doc.name}}">
+                                {{doc.name}}
+                                <br><p style="color: #6495ed;margin-top: -23px;" *ngIf="doc.ecmUploadEnabled == true">
+                                    Synergy Document Type: {{doc.ecmName}}
+                                </p>
+                                <p style="color: red;margin-top: -23px;" [hidden]="doc.Id == 147" *ngIf="doc.ecmUploadEnabled == false || doc.ecmUploadEnabled == null">Not available in Synergy</p>
+                             </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+
+                            <!-- <mat-form-field *ngIf="element.editDocumentRow" fxFlex="100">
+                              <input type="text" class="form-control doc-menu-input" placeholder="Search..."
+                                     matInput [matAutocomplete]="autoType" [(ngModel)]="searchDocT" [ngModelOptions]="{standalone: true}">
+
+                              <mat-autocomplete [displayWith]="displayFnDocumentType.bind(this)" #autoType="matAutocomplete">
+                                 <mat-option *ngFor="let doc of docTypes | searchDocs:{name: searchDocT}" [value]="doc" style="height: 77px;"
+                                 (click)="getDocId(doc.id)">
+                                   {{doc.name}}
+                                   <br><p style="color: #6495ed" *ngIf="doc.ecmUploadEnabled == true">
+                                       Synergy Document Type: {{doc.ecmName}}
+                                   </p>
+                                   <p style="color: red" [hidden]="doc.Id == 147" *ngIf="doc.ecmUploadEnabled == false || doc.ecmUploadEnabled == null">Not available in Synergy</p>
+                                </mat-option>
+                              </mat-autocomplete>
+                       </mat-form-field> -->
+                        <!-- </form> -->
+                      </td>
+                   </ng-container>
+
+                   <!-- Comment Column -->
+                   <ng-container matColumnDef="notes">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
+                     <td mat-cell *matCellDef="let element">
+                      <form #commentsForm="ngForm">
+                        <div *ngIf="element.editDocumentRow">
+                          <mat-form-field floatLabel="never" [ngClass]="{'doc-comment': !mobileQueryLg.matches}">
+                            <input matInput #comment="ngModel" name="comment" [(ngModel)]="element.notes" type="text"
+                              style="border-radius: 6px !important;" maxlength="80" placeholder="Add Comment">
+                            <mat-icon matSuffix class="u-mat-icon-grey"
+                            ngbTooltip="Copy document name" tooltipClass="tooltip-font-size-md"
+                              (click)="element.notes = element.alternateName;false;">file_copy</mat-icon>
+                          </mat-form-field>
+                        </div>
+
+                            <!-- <a (click)="d.notes=d.alternateName;false;" href>Copy</a> -->
+                      </form>
+                      <div  ngbTooltip="{{element.notes}}" tooltipClass="tooltip-font-size-md"
+                        [disableTooltip]="element.notes?.length < 30" *ngIf="!element.editDocumentRow"
+                        (click)="element.editDocumentRow=true;">
+                        {{(element.notes?.length>25)? (element.notes | slice:0:25)+'...':(element.notes)}}
+                      </div>
+                     </td>
+                   </ng-container>
+
+                    <!-- Select Column -->
+                    <ng-container matColumnDef="Select">
+                     <th mat-header-cell *matHeaderCellDef> Select </th>
+                     <td mat-cell *matCellDef="let element">
+                      <div fxLayour="row" fxLayoutAlign="center center">
+                        <div fxLayout="column">
+                          <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-checkbox [(ngModel)]="element.relateChecked" (click)="checkRelateToDeal(element)">
+                            </mat-checkbox>
+                          </div>
+                          <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="element.editDocumentRow"
+                            class="doc-button-save-cancel">
+                            <button mat-icon-button class="u-background-red doc-button-cancel"
+                              (click)="element.editDocumentRow=false; updateCurrentDoc(element);">
+                              <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-icon-button class="doc-button-save u-background-green"
+                              (click)="onUpdateClick(element);">
+                              <!--[disabled]="alterNameForm.invalid || asOfDateForm.invalid"
+                                *ngIf="alterNameForm?.dirty || asOfDateForm?.dirty ||
+                              entityForm?.dirty || commentsForm?.dirty || element.requirementChanged" -->
+                              <mat-icon>check</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                     </td>
+                   </ng-container>
+
+                      <!-- Officer Column -->
+                      <!-- <ng-container matColumnDef="officer">
+                       <th mat-header-cell *matHeaderCellDef> Officer </th>
+                       <td mat-cell *matCellDef="let element"> {{element.officer}} </td>
+                     </ng-container> -->
+
+                   <!-- Star Column -->
+                   <!-- <ng-container matColumnDef="star" stickyEnd>
+                     <th mat-header-cell *matHeaderCellDef></th>
+                     <td mat-cell *matCellDef="let element">
+                       <mat-icon>more_vert</mat-icon>
+                     </td>
+                   </ng-container> -->
+
+                   <tr mat-header-row *matHeaderRowDef="DocColumns sticky: true"></tr>
+                   <tr mat-row *matRowDef="let row; columns: DocColumns;"></tr>
+                  </table>
+
+                      <!-- <mat-paginator [length]="maxpagesize" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                      (page)="getRequirementListByPage($event)">
+                    </mat-paginator> -->
+                    <!-- <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"></mat-paginator> -->
+
+                    <mat-paginator [length]="TotalDocuments" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                      (page)="getDocumentsByPage($event)">
+                      </mat-paginator>
+
+                    </div>
+              </ng-template>
+          </mat-tab>
+          <mat-tab>
+              <ng-template matTabLabel>
+                  <span>Pending Export</span>
+                  <!-- <button mat-icon-button (click)="toggleToolbar()">
+                    <mat-icon [hidden]="showToolbar" class="u-mat-icon-grey doc-header-button-icon">build</mat-icon>
+                  </button> -->
+              </ng-template>
+              <app-document-export  *ngIf="selectedIndex==1"></app-document-export>
+          </mat-tab>
+          <mat-tab label="Exported">
+              <app-document-exported  *ngIf="selectedIndex==2"></app-document-exported>
+          </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+
+
+
+
+
+

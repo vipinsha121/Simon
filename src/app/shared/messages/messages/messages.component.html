@@ -1,0 +1,95 @@
+<!--TOP-->
+<div fxLayout="row" fxLayoutAlign="start stretch" style="height: 50%;">
+  <div class="message-container">
+    <div class="header">
+      <div style="width: 30%; margin-right: 20px">
+        <span *ngIf="!editTitle && this.requirementId==0" class="u-header-title">{{currenThread.title}}</span>
+        <input *ngIf="editTitle && this.requirementId==0" [(ngModel)]="currenThread.title" required>
+        <a class="inline-block" (click)="editTitle=true" *ngIf="!isUserMessages && !editTitle && this.requirementId==0">
+          <mat-icon class="u-mat-icon-grey" ngbTooltip="Edit Thread Title" tooltipClass="tooltip-font-size-md" style="cursor: pointer; font-size: 20px">
+            create</mat-icon>
+        </a>
+        <a class="inline-block" (click)="updateThreadTitle();editTitle=false"
+          *ngIf="editTitle && this.requirementId==0">
+          <mat-icon class="u-mat-icon-grey" ngbTooltip="Save" tooltipClass="tooltip-font-size-md" style="cursor: pointer; font-size: 20px">check</mat-icon>
+        </a>
+        <a class="inline-block" (click)="refreshThread();editTitle=false" *ngIf="editTitle && this.requirementId==0">
+          <mat-icon class="u-mat-icon-grey" ngbTooltip="Cancel Edit" tooltipClass="tooltip-font-size-md" style="cursor: pointer; font-size: 20px">clear
+          </mat-icon>
+        </a>
+      </div>
+      <div *ngIf="this.requirementId==0" style="text-align: center; width: 35%;margin-left: 0.5rem; padding: 9px 0px;">
+        <input type="text" class="form-control message-input-search" [(ngModel)]="searchText"
+          [ngModelOptions]="{standalone: true}" placeholder="Search...">
+      </div>
+      <div style="float: right">
+        <button class="message-header-button" aria-label="matMenuButton" mat-icon-button (click)="getMessages()">
+          <mat-icon class="message-header-button-icon u-mat-icon-grey" aria-label="refresh" aria-hidden="false"
+            stlye="font-size: 18px">refresh</mat-icon>
+        </button>
+        <button class="message-header-button" *ngIf="this.requirementId==0" aria-label="matMenuButton" mat-icon-button
+          (click)="closeMessage()">
+          <mat-icon class="message-header-button-icon u-mat-icon-grey" aria-label="close" aria-hidden="false">close
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+    <div>
+      <span *ngIf="this.requirementId !=0" class="u-header-title">{{currenThread.title}}</span>
+    </div>
+    <div class="message-body" appScrollToBottom>
+      <div>
+        <div *ngIf="messages?.length==0 && !isMessagingLoading">No messages to show..</div>
+        <div *ngIf="isMessagingLoading==true">Loading messages...</div>
+
+                <div class="message-body-2" *ngFor="let msg of messages | searchDocs:{plainContent: searchText, author: searchText, createdDate: searchText} ">
+                  <div>
+                    <span style="padding-right: 8px;">
+                          <img class="avatar" src="{{msg.userProfileURL}}">
+                    </span>
+                    <span class="message-body-sender">{{msg.author}}</span>
+                    <span class="message-body-timestamp">{{msg.createdDate | date: 'MM/dd/yyyy' + '   ' + 'hh:mm a'}}</span>
+                    <mat-checkbox style="float: right" name="taskchk">Task</mat-checkbox>
+                  </div>
+                  <div class="message-body-message">
+                    {{msg.plainContent}}
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+  </div>
+<!--<h4>ashish rocks</h4>-->
+<!--BOTTOM -->
+<div fxLayout="row" fxLayoutAlign="start end" style="height: 50%">
+  <div style="background: #f1f1f1; width: 100%; height: 100%;">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-form-field appearance="fill" fxFlex="95">
+        <mat-select placeholder="Participants" [(ngModel)]="selectedUsers" [multiple]="true" #mySelect>
+          <ngx-mat-select-search [placeholderLabel]="'Search...'" [(ngModel)]="searchUser"></ngx-mat-select-search>
+          <mat-option #matOption (click)="user.selected = !user.selected;addParticipant(user,matOption.selected);"
+            *ngFor="let user of users | searchDocs:{text: searchUser}" [value]="user.id">
+            {{user.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+    </div>
+    <div fxLayout="row">
+      <div class="message-action-container" fxLayout="column">
+        <div fxLayout="row">
+          <span class="memo-label">Memo To File</span>
+          <mat-checkbox [(ngModel)]="memoToFile"></mat-checkbox>
+        </div>
+        <div class="m-chat__editor">
+          <textarea style="resize: none;" class="form-control" rows="6" placeholder="Type here..."
+            [(ngModel)]="message.plainContent"></textarea>
+        </div>
+        <div class="button-container" fxLayout="column" fxLayoutAlign="start end">
+          <button mat-flat-button type="button" [disabled]="!message.plainContent" (click)="send();">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

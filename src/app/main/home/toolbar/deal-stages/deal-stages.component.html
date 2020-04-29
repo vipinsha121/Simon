@@ -1,0 +1,31 @@
+<div [hidden]="mobileQueryMid.matches">
+    <div class="arrow-steps clearfix">
+        <div *ngFor="let stage of stages" [ngClass]="{'current' : stage.active}" class="step" (click)="doDealAction('Send')">
+            <span style="cursor: pointer">{{ stage.label }}</span>
+        </div>
+    </div>
+</div>
+<div [hidden]="!mobileQueryMid.matches">
+    <div class="arrow-steps-m clearfix">
+        <div *ngFor="let stage of stages" [ngClass]="{'current-m' : stage.active}" class="step-m">
+            <span style="cursor: pointer">{{ stage.label | slice:0:4}}</span>
+        </div>
+    </div>
+</div>
+
+<!-- <div ng-if="stageLoss" class="deal-display-container-top">
+    <div class="arrow-steps-3 clearfix">
+        <div style="cursor: pointer"
+             ng-class="stageLossLA ? 'step-3 current-3' : 'step-3'">
+            <span> - LA Review</span>
+        </div>
+        <div style="cursor: pointer"
+             ng-class="stageLossCP ? 'step-3 current-3' : 'step-3'">
+            <span> - CP Review</span>
+        </div>
+        <div style="cursor: pointer"
+             ng-class="!stageLossLA && !stageLossCP ? 'step-3 current-3' : 'step-3'">
+            <span></span>
+        </div>
+    </div>
+</div> -->

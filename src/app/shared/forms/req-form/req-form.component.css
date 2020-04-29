@@ -1,0 +1,155 @@
+tr.req-list-row {
+  height: 50px;
+}
+
+tr.req-list-row > td > div > p {
+  margin: 0px;
+}
+
+.table.req-list-table th, .table.req-list-table td {
+  vertical-align: middle;
+}
+
+table.req-list-table {
+  font-size: 13px;
+  width: 100%;
+}
+
+table.req-form-table {
+  padding: 0px 2rem
+}
+
+table.req-form-table > tbody > tr > td:first-child {
+  width: 20%;
+}
+
+table.req-form-table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+td.border-none {
+  border-top: 0px;
+}
+
+.req-list-container {
+  padding: 1rem 2rem 2rem 2rem;
+}
+
+.portlet-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 1px;
+  position: relative;
+}
+
+.portlet-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0 30px;
+  z-index: 0;
+}
+
+.u-footer-container {
+  background: #ceade6;
+  flex-shrink: 0;
+  padding: 10px 20px;
+}
+
+mat-chip {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.mat-standard-chip {
+  padding: 2px 10px;
+  min-height: 20px;
+  border-radius: 4px;
+
+}
+
+.req-form-header {
+  margin: 10px 0px;
+
+}
+
+.button-save {
+  padding-left: 40px;
+  padding-right: 40px;
+  text-transform: uppercase;
+  background: #808080;
+  color: #fff;
+  display: inline-block;
+}
+
+.req-button-cancel {
+  text-transform: uppercase;
+  color: #808080;
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.req-button-save-action {
+  text-transform: uppercase;
+  background: #808080;
+  color: #fff;
+  padding: 0px 50px;
+
+}
+
+.req-button-cancel-action {
+  text-transform: uppercase;
+  color: #808080;
+  margin: 2px 10px;
+  float: right;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+mat-form-field.req-form-field {
+  width: 100%;
+}
+
+.mat-menu-panel.doc-menu {
+  width: 400px
+}
+
+.doc-menu {
+  min-width: 400px !important;
+  overflow-x: hidden;
+}
+
+.doc-menu-add {
+  padding: 10px 10px 10px 20px;
+  background: #f5f5f5;
+  cursor: pointer
+}
+
+.doc-menu-add:hover {
+  background:#bdbdbd;
+  color: #fff
+}
+
+.doc-menu-date-attach {
+  font-size: 10px;
+  padding-left: 10px;
+  padding-top: 1px;
+}
+
+.chip {
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+a.req-button-edit {
+  font-size: 10px;
+  cursor: pointer;
+  color: #585858 !important;
+}
+
+a.req-button-edit:hover {
+  color: #0041ff !important
+}
+

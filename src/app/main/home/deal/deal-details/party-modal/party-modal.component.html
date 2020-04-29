@@ -1,0 +1,70 @@
+
+<!--<app-loader></app-loader>-->
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+   <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+         <div class="u-header">
+
+               <span ngbTooltip="{{parties?.length}} party(s) associated with this deal" tooltipClass="tooltip-font-size-md"
+                 class="u-header-title">Party</span>
+               <div matBadge="{{parties?.length}}"
+               matBadgeSize="medium" matBadgeColor="accent" style="vertical-align: middle;">
+               </div>
+               <mat-icon style="vertical-align: middle; margin-left: 16px;" [matMenuTriggerFor]="menu"
+               ngbTooltip="Click here to view Party-related links and documents" tooltipClass="tooltip-font-size-md">cloud_circle</mat-icon>
+               <mat-menu #menu="matMenu">
+                  <button mat-menu-item>Secretory of state - Business Serach <mat-icon>open_in_new</mat-icon></button>
+                  <button mat-menu-item>Military Lending Act Status <mat-icon>open_in_new</mat-icon></button>
+                  <button mat-menu-item>Home Ownership Counseling <mat-icon>open_in_new</mat-icon></button>
+                  <button mat-menu-item>Abilty to Repay</button>
+                </mat-menu>
+               <!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
+
+             <mat-icon ngbTooltip="You have {{partyRequirementOpen}} party requirements remaining" tooltipClass="tooltip-font-size-md"
+               style="margin-top: 5px; margin-right: 16px; float: right;">flag
+             </mat-icon>
+             <button aria-label="matMenuButton" mat-flat-button (click)="addPartyModal($event)"
+               style="margin-right: 5px;">Add Party
+             </button>
+
+            <button aria-label="matMenuButton" mat-flat-button routerLink='/main/deal/{{dealId}}/edit-party'>
+               Edit Roles
+            </button>
+
+         </div>
+
+      <div class="u-portlet-container party-list">
+         <mat-list class="u-portlet-body u-scroll-vert">
+            <mat-list-item *ngFor="let party of parties" style="border-radius: 8px; cursor: pointer" class="party-list-item" 
+               [ngClass]="partyId == party.partyId ? 'active' : ''">
+               <span (click)="routeToPartyComponent(party)" matLine *ngIf="party.primary" class="party-list-text-label">Primary Borrower</span>
+               <span (click)="routeToPartyComponent(party)" matLine *ngIf="!party.primary" class="party-list-text-label">{{party.role}}</span>
+               <mat-icon (click)="routeToPartyComponent(party)" ngbTooltip="Company" tooltipClass="tooltip-font-size-md" *ngIf="party.type === 'C'" matListIcon class="mat-icon-background">business</mat-icon>
+               <mat-icon (click)="routeToPartyComponent(party)" ngbTooltip="Individual" tooltipClass="tooltip-font-size-md" *ngIf="party.type === 'I'" matListIcon class="mat-icon-background">person</mat-icon>
+               <div matLine (click)="routeToPartyComponent(party)" style="width: 434px;">
+                  <span matLine [ngbTooltip]="party.name"
+                    class="party-list-text inline-block"
+                    routerLink='/main/deal/{{dealId}}/party/{{party.partyId}}/'>
+                     {{party.name | slice: 0:25}}
+                  </span>
+                  <div matLine>
+                    <span *ngIf="party?.tin > 1">{{ party?.tin }}</span>
+        
+                  </div>
+               </div>
+               <span *ngIf="party.primary" routerLink='/main/deal/{{dealId}}/edit-party' mat-icon-button class="chip chip-text Doc-name" style="float: right; text-transform: uppercase">Edit Role</span>
+               <span *ngIf="!party.primary" mat-icon-button (click)="deleteParty(party)" class="chip chip-text Doc-name" style="float: right; text-transform: uppercase">Remove</span>
+             
+               <mat-progress-bar matLine mode="determinate" ngbTooltip="{{ party.openRequirements }} requirements remaining" tooltipClass="tooltip-font-size-md"
+                  value="{{ party.requirements }}"
+                  class="{{ party.cssClass }}">
+                </mat-progress-bar>
+            </mat-list-item>
+         </mat-list>
+      </div>
+      <div class="u-footer-container"></div>
+   </div>
+   <div class="u-scrn-flex" [hidden]="partyFull" *ngIf="partyId > 0">
+      <router-outlet (activate)='onPartyDetailsActivate($event)'></router-outlet>
+
+   </div>
+</div>

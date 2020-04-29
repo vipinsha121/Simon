@@ -1,0 +1,228 @@
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded u-scrn-flex-single" fxLayout="column" style="margin-bottom: 0px">
+        <div class="u-header">
+            <span class="u-header-title">Dates</span>
+            <div style="float: right">
+                <button class="dates-header-button" (click)="refreshDates()" aria-label="matMenuButton" mat-icon-button>
+                    <mat-icon class="dates-header-button-icon u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">refresh</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="u-portlet-container">
+            <div class="u-portlet-body u-scroll-vert">
+              <div>
+                  <mat-form-field floatLabel="never" >
+                      <mat-select placeholder="Most Recent" (selectionChange)="assignLoanDates($event)">
+                        <mat-option>Most Recent</mat-option>
+                        <mat-option *ngFor="let loan of loanList" [value]="loan" >
+                          {{ loan?.productName }} - {{ loan?.amount | currency }} - {{ loan?.description}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+              <form fxLayout="column" [formGroup]="datesFormRecent" fxLayoutAlign="start" fxFill>
+                <div fxLayout="row" class="date-row">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always" >
+                          <mat-label>Application</mat-label>
+                          <input matInput [matDatepicker]="applicationDate" (change)="setChangedDate('appDate')"
+                          autocomplete="off" formControlName="applicationDate" [(ngModel)]="summary.applicationDate" name="applicationDate">
+                          <mat-datepicker-toggle matSuffix [for]="applicationDate"></mat-datepicker-toggle>
+                          <mat-datepicker #applicationDate ></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div *ngIf="summary.applicationDate != null">
+                        <span *ngIf='showAppDateDiff == "approaching"'>Approaching {{appDateDiff}} days</span>
+                        <span *ngIf='showAppDateDiff == "due"'>Due soon {{appDateDiff}} days left</span>
+                        <span *ngIf='showAppDateDiff == "closed"'>Closed {{appDateDiff}} days ago</span>
+                        <span>Loan: {{ appDateLoan.appDateLoanName }}</span>
+                        <span>Amount: {{ appDateLoan.appDateLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                    <div>
+                        <button class="message-header-button" ngbTooltip="Create Task" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                            <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                        </button>
+                        <button class="message-header-button" ngbTooltip="Create Message" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                            <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                        </button>
+                    </div>
+
+                  </div>
+                </div>
+                <div fxLayout="row" class="date-row">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>App Complete</mat-label>
+                          <input matInput [matDatepicker]="applicationComplete" (change)="setChangedDate('appCompleteDate')"
+                          autocomplete="off" formControlName="applicationComplete" name="applicationComplete" [(ngModel)]="summary.applicationComplete">
+                          <mat-datepicker-toggle matSuffix [for]="applicationComplete"></mat-datepicker-toggle>
+                          <mat-datepicker #applicationComplete></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div *ngIf="summary.applicationComplete != null">
+                         <span *ngIf='showAppCompleteDiff == "approaching"'>Approaching {{appCompleteDiff}} days</span>
+                        <span *ngIf='showAppCompleteDiff == "due"'>Due soon {{appCompleteDiff}} days left</span>
+                        <span *ngIf='showAppCompleteDiff == "closed"'>Closed {{appCompleteDiff}} days ago</span>
+                        <span>Loan: {{ appCompleteLoan.appCompleteLoanName }}</span>
+                        <span>Amount: {{ appCompleteLoan.appCompleteLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                      <div>
+                          <button class="message-header-button" ngbTooltip="Create Task" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                          </button>
+                          <button class="message-header-button" ngbTooltip="Create Message" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                          </button>
+                      </div>
+                  </div>
+                </div>
+                <div fxLayout="row" class="date-row">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>Decision Due</mat-label>
+                          <input matInput [matDatepicker]="decisionDue" 
+                          autocomplete="off" formControlName="decisionDue" name="decisionDue" [(ngModel)]="summary.decisionDue">
+                          <mat-datepicker-toggle matSuffix [for]="decisionDue"></mat-datepicker-toggle>
+                          <mat-datepicker #decisionDue></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div *ngIf="summary.decisionDue != null">
+                        <span *ngIf='showDecisionDueDiff == "approaching"'>Approaching {{decisionDueDiff}} days</span>
+                        <span *ngIf='showDecisionDueDiff == "due"'>Due soon {{decisionDueDiff}} days left</span>
+                        <span *ngIf='showDecisionDueDiff == "closed"'>Closed {{decisionDueDiff}} days ago</span>
+                        <span>Loan: {{ decisionDueLoan.decisionDueLoanName }}</span>
+                        <span>Amount: {{ decisionDueLoan.decisionDueLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                      <div>
+                          <button class="message-header-button" ngbTooltip="Create Task" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                          </button>
+                          <button class="message-header-button" ngbTooltip="Create Message" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                          </button>
+                      </div>
+                  </div>
+                </div>
+            <div fxLayout="row" class="date-row">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>Closing Date</mat-label>
+                          <input matInput [matDatepicker]="estimatedClosing" (change)="setChangedDate('closing')"
+                          autocomplete="off" formControlName="estimatedClosing" name="closingDate" [(ngModel)]="summary.estimatedClosing">
+                          <mat-datepicker-toggle matSuffix [for]="estimatedClosing"></mat-datepicker-toggle>
+                          <mat-datepicker #estimatedClosing></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div *ngIf="summary.estimatedClosing != null">
+                        <span *ngIf='showCLosingDiff == "approaching"'>Approaching {{appDateDiffClose}} days</span>
+                        <span *ngIf='showCLosingDiff == "due"'>Due soon {{appDateDiffClose}} days left</span>
+                        <span *ngIf='showCLosingDiff == "closed"'>Closed {{appDateDiffClose}} days ago</span>
+                        <span>Loan: {{ closingDateLoan.closingDateLoanName }}</span>
+                        <span>Amount: {{ closingDateLoan.closingDateLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                      <div>
+                          <button class="message-header-button" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                          </button>
+                          <button class="message-header-button" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                          </button>
+                      </div>
+                  </div>           
+                </div>
+                <div fxLayout="row" class="date-row" [hidden]="true">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>Approved</mat-label>
+                          <input matInput [matDatepicker]="approvedDate" 
+                          autocomplete="off" formControlName="approvedDate" name="approvedDate" >
+                          <mat-datepicker-toggle matSuffix [for]="approvedDate"></mat-datepicker-toggle>
+                          <mat-datepicker #approvedDate></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div>
+                        <span>Approved {{conoatDiff}} days ago</span>
+                        <span>Loan: {{ approvedLoan.approvedLoanName }}</span>
+                        <span>Amount: {{ approvedLoan.approvedLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                      <div>
+                          <button class="message-header-button" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                          </button>
+                          <button class="message-header-button" aria-label="matMenuButton" mat-icon-button>
+                              <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                          </button>
+                      </div>
+                  </div>           
+                </div>
+                <div fxLayout="row" class="date-row">
+                  <div fxFlex="40">
+                      <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>CONOAT</mat-label>
+                          <input matInput [matDatepicker]="conoat"  (change)="setChangedDate('conoat')"
+                          autocomplete="off" formControlName="conoat" name="conoat" [(ngModel)]="summary.conoat">
+                          <mat-datepicker-toggle matSuffix [for]="conoat"></mat-datepicker-toggle>
+                          <mat-datepicker #conoat ></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div fxLayout="column" class="date-column-2" fxFlex="45">
+                    <div *ngIf='summary.conoat != null'>
+                        <span *ngIf='showConoatDiff == "approaching"'>Approaching {{conoatDiff}} days</span>
+                        <span *ngIf='showConoatDiff == "due"'>Due soon {{conoatDiff}} days left</span>
+                        <span *ngIf='showConoatDiff == "sent"'>Sent {{conoatDiff}} days ago</span>                 
+                        <span>Loan: {{ conoatLoan.conoatLoanName }}</span>
+                        <span>Amount: {{ conoatLoan.conoatLoanAmount | currency }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" class="date-column-3" fxFlex="15">
+                    <div>
+                        <button class="message-header-button" ngbTooltip="Create Task" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                            <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">check_box</mat-icon>
+                        </button>
+                        <button class="message-header-button" ngbTooltip="Create Message" tooltipClass="tooltip-font-size-md" aria-label="matMenuButton" mat-icon-button>
+                            <mat-icon class=" u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">message</mat-icon>
+                        </button>
+                    </div>
+
+                  </div>
+
+                </div>
+          
+                      <div fxLayout="row" class="date-row">
+                    <div fxLayout="column" class="date-column-2" fxFlex="45">
+                            <mat-checkbox  [(ngModel)]="summary.isSaveForAllLoans" [ngModelOptions]="{standalone: true}">Save to All Loans
+                            </mat-checkbox>
+                    </div>
+                    <div fxLayout="column" class="date-column-2" fxFlex="45">
+                       <button type="submit" class="loan-detail-button-save" 
+                        (click)="saveLoansDates(summary);"
+                          mat-flat-button>Save</button>
+                    </div>
+                    <div fxLayout="column" class="date-column-2" fxFlex="45">
+                        <button  type="button" class="loan-detail-button-cancel"
+                              (click)="cancelDates()" mat-flat-button>Cancel</button>
+                        </div>
+                </div>
+              </form>
+            </div>
+        </div>
+        <div class="u-footer-container">
+
+        </div>
+    </div>
+  </div>

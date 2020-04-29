@@ -1,0 +1,37 @@
+<div fxFlex="50" style="margin-right: 10px">
+  <mat-form-field [formGroup]="reqDetailForm" appearance="outline" class="req-form-field">
+    <mat-label>Action</mat-label>
+    <mat-select formControlName="action" [(value)]="requirement.action"
+      (selectionChange)='setAssignedTo(requirement.action, requirement); checkOption(requirement.action)'>
+      <mat-option [value]="action" *ngFor="let action of requirement.stageDrop">
+        {{action.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error></mat-error>
+  </mat-form-field>
+</div>
+<!-- showUserDrop -->
+<div fxFlex="50">
+  <mat-form-field [formGroup]="reqDetailForm" class="req-form-field" appearance="outline"
+    *ngIf="requirement.showUserDrop">
+    <input type="text" placeholder="Search name" aria-label="Number" matInput name="filterUserDrop"
+      [formControl]="filterUserDrop" formControlName="assignForm" required [matAutocomplete]="auto"
+      [(ngModel)]="requirement.assignedToFullName" (keyup)="requirement.assignedTo = null;">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='setAssignToUser($event, requirement, desableAction = true)'>
+      <mat-option *ngFor="let user of filterUser()" [value]="user.userId">
+        {{user.firstName}} {{user.lastName}}
+      </mat-option>
+    </mat-autocomplete>
+
+  </mat-form-field>
+  <mat-form-field [formGroup]="reqDetailForm" appearance="outline" class="req-form-field"
+    *ngIf="requirement.showDeferDrop">
+    <mat-select formControlName="deferForm" placeholder="Defer To" [(value)]="requirement.selectedDeferDrop"
+      (selectionChange)='setDifferTo($event, requirement)' required [(ngModel)]="requirement.deferToStage" >
+      <mat-option>Defer To</mat-option>
+      <mat-option *ngFor="let p of requirement.deferDrop" value="{{p.id}}">
+        {{p.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

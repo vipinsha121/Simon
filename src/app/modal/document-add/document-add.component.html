@@ -1,0 +1,162 @@
+<div>
+    <div class="modal-header">
+      <div class="modal-title">
+        Add Document
+      </div>
+      <div class="modal-button-close">
+        <mat-icon class="u-mat-icon-grey" (click)="activeModal.dismiss()">close</mat-icon>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- <div>--- Drag & Drop Goes Here ---</div> -->
+      <div class="uploadfilecontainer"
+        [ngClass]="{'borderRequired': !NewDocument.alternateName || files.length == 0}"
+        (click)="fileInput.click()" appDragDrop
+        (onFileDropped)="uploadFile($event)">
+          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+          {{files}}
+        </div>
+        <!-- <div  class="files-list" *ngFor="let file of files;let i= index">
+            <p> {{ file }} </p>
+            <button class="delete-file">
+              <img src="../../assets/Recycle_Bin_Full.png">
+            </button>
+         </div> -->
+
+      <form [formGroup]="DocumentAddForm">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-label fxFlex="40">Requirement: </mat-label>
+            <p fxFlex="60">{{requirement.type}}</p>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+             <mat-label fxFlex="40">Primary: </mat-label>
+             <mat-checkbox fxFlex="60" [(ngModel)]="NewDocument.primary"
+             [ngModelOptions]="{standalone: true}"></mat-checkbox>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Document: </mat-label>
+              <!--<mat-form-field appearance="outline" floatLabel="always" style="margin-left: 82px;">
+                  <mat-label>Document</mat-label>
+                  <input ng-show="NewDocument.primary!='1'" matInput formControlName="documentDefinitionName" [(ngModel)]="NewDocument.documentDefinitionId"
+                  autocomplete="off" />
+                </mat-form-field>-->
+                <mat-label fxFlex="60" *ngIf="NewDocument.primary==true" >{{DocTypeName}} </mat-label><br>
+
+                <!-- <ng-select [items]="items" placeholder="Search Name"
+                (data)="refreshValue($event)"
+                ></ng-select> -->
+
+
+                <!-- <mat-form-field *ngIf="NewDocument.primary!=true" style="margin-left: 82px;" appearance="outline" floatLabel="always">
+                  <mat-label>Document</mat-label>
+                  <input type="text" placeholder="Select document" [(ngModel)]="NewDocument.name" matInput formControlName="name" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let docdef of options" [value]="docdef.name">
+                      {{docdef.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field> -->
+              <mat-form-field fxFlex="60" *ngIf="NewDocument.primary!=true"
+                appearance="outline" floatLabel="always">
+                <mat-label>Document</mat-label>
+                <input #stateInput (keyup)="0" required matInput [(ngModel)]="NewDocument.name"
+                  [matAutocomplete]="auto" [formControl]="DocCtrl">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let doc of filteredDocs | async" [value]="doc.name">
+                    <span [ngbTooltip]="doc.name" tooltipClass="tooltip-font-size-md">{{ doc.name }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+
+                <!-- <mat-form-field *ngIf="NewDocument.primary!=true" style="margin-left: 82px;" appearance="outline" floatLabel="always">
+                      <mat-label>Document</mat-label>
+                      <mat-select placeholder="Select" formControlName="documentDefinitionId"
+                        [(ngModel)]="NewDocument.documentDefinitionId">
+                        <mat-option *ngFor="let docdef of docDefinitionList" [value]="docdef.id">{{docdef.name}}</mat-option>
+                      </mat-select>
+                      <mat-error>Please Select Entity Type</mat-error>
+                </mat-form-field> -->
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Document Name: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <mat-label>Document Name</mat-label>
+                  <input matInput formControlName="alternateName" required [(ngModel)]="NewDocument.alternateName"
+                    name="alternateName"
+                  autocomplete="off" />
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Synergy Notes: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <mat-label>Synergy Notes</mat-label>
+                  <textarea matInput formControlName="description" [(ngModel)]="NewDocument.description" name="description"
+                  autocomplete="off" ></textarea>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">As Of Date: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <mat-label>As Of Date: </mat-label>
+                  <input matInput [matDatepicker]="picker" required
+                    [(ngModel)]="NewDocument.asOfDate"
+                   placeholder="Choose a date" autocomplete="off" formControlName="asOfDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Received: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <mat-label>Received: </mat-label>
+                  <input matInput [matDatepicker]="ReceivedDate" [(ngModel)]="NewDocument.recievedDate"
+                   placeholder="Choose a date" autocomplete="off"
+                   formControlName="recievedDate">
+                  <mat-datepicker-toggle matSuffix [for]="ReceivedDate"></mat-datepicker-toggle>
+                  <mat-datepicker #ReceivedDate></mat-datepicker>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row">
+              <mat-label>Uploaded: </mat-label>
+              <!-- <mat-checkbox></mat-checkbox> -->
+           </div>
+
+           <div fxLayout="row">
+              <mat-label>Last Modified: </mat-label>
+              <!-- <mat-checkbox></mat-checkbox> -->
+           </div>
+
+            <br>
+            <mat-divider></mat-divider>
+            <div>
+              <br>
+              <p>What your document info looks like to Synergy -</p>
+              <mat-card style="background-color: grey;text-align: center;">
+                <span style="color: #fff">{{requirement.type}}</span>&nbsp;&nbsp;&nbsp;
+                <span style="color: #a2dafb">{{ NewDocument.asOfDate | date: 'MM/dd/yyyy' }}</span>&nbsp;&nbsp;&nbsp;
+                <!-- <span>123456789</span> -->
+                <span style="color: #ffd390">- {{NewDocument.description}}</span>
+              </mat-card>
+            </div>
+
+
+           <div fxLayoutAlign="end center" style="margin: 18px;">
+
+              <button aria-label="cancel" (click)="activeModal.dismiss()" mat-flat-button>Cancel</button>
+              <button type="submit" [disabled]="DocumentAddForm.invalid || DocCtrl.invalid || files.length == 0" class="u-button-save"
+                (click)="SaveDocument(NewDocument)"
+                mat-raised-button>Save Document</button>
+          </div>
+        </form>
+    </div>
+
+
+
+  </div>

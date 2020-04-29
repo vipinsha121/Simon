@@ -1,0 +1,67 @@
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+        <div fxLayout="row" class="header">
+            <span class="u-header-title">Message Thread</span>
+            <div *ngIf="isUserMessages" matBadge="{{userUnreadMsgCnt}}" matBadgeSize="medium" matBadgeColor="accent"
+                style="vertical-align: middle;">
+            </div>
+            <div *ngIf="isUserMessages" style="text-align: center; width: 35%;margin-left: 0.5rem; padding: 9px 0px;" >
+                    <input type="text" class="form-control message-input-search" [(ngModel)]="searchText"
+                    [ngModelOptions]="{standalone: true}" placeholder="Search...">
+                </div>
+            <button *ngIf="!isUserMessages" (click)="newThread=true;" aria-label="matMenuButton" mat-flat-button>
+                Add Thread
+            </button>
+            <button *ngIf="isUserMessages" class="message-header-button" aria-label="matMenuButton" mat-icon-button (click)="getUserMessages()">
+                    <mat-icon class="message-header-button-icon u-mat-icon-grey" aria-label="refresh" aria-hidden="false" stlye="font-size: 18px">refresh</mat-icon>
+            </button>
+        </div>
+        <div>
+            <div>
+                <input *ngIf="newThread" [(ngModel)]="threadTitle" placeholder="Enter New Thread Title..." />
+                <a class="inline-block" (click)="createNewThread(threadTitle);newThread=false" *ngIf="newThread">
+                    <mat-icon class="u-mat-icon-grey" ngbTooltip="Save" tooltipClass="tooltip-font-size-md" style="cursor: pointer; font-size: 20px">check</mat-icon>
+                </a>
+                <a class="inline-block" (click)="newThread=false" *ngIf="newThread">
+                    <mat-icon class="u-mat-icon-grey" ngbTooltip="Cancel" tooltipClass="tooltip-font-size-md" style="cursor: pointer; font-size: 20px">clear</mat-icon>
+                </a>
+            </div>
+        </div>
+        <div class="u-portlet-container thread-list">
+            <mat-list class="u-portlet-body u-scroll-vert thread-list">
+                <mat-list-item *ngFor="let th of threads | searchDocs:{topic: searchText,dealId :searchText,lastMessage :searchText,lastPostDate :searchText,lastPostBy :searchText} | orderBy: isUserMessages? 'lastPostDate':'threadId' " class="thread-list-item" (click)="selectThread(th)"
+                    [ngClass]="thread.threadId == th.threadId ? 'active' : ''">
+                    <mat-icon matListIcon class="mat-icon-background thread-icon">chat</mat-icon>
+                    <div matLine>
+                        <a matLine *ngIf="isUserMessages" class="thread-title" (click)="openDeal(th.dealId);" style="display: inline-block;vertical-align: sub;">
+                                {{th.dealId}} -
+                        </a>
+                        <a matLine class="thread-title" style="display: inline-block;vertical-align: baseline;">
+                            {{th.topic}}
+                        </a>
+                    </div>
+                    <div matLine class="message-preview">
+                      <span *ngIf="!th.lastMessage">null</span>
+                      <span [ngStyle]="{ 'font-weight' : (th.hasBeenRead== false)? 'bold' : '' }">{{th.lastMessage | slice: 0:35}}</span>
+                      <span *ngIf="th.lastMessage">{{th.lastMessage?.length > 35 ? '...' : ''}}</span>
+                    </div>
+                    <div matLine class="message-last">
+                            <span class="msg-last">Last post by {{th.lastPostBy}},</span>
+                            <span class="msg-last">{{th.lastPostDate | date:'MM/dd/yy'}}</span>
+                            <span class="msg-last">{{th.lastPostDate | date:'hh:mm a'}}</span>
+
+                        </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <div class="u-footer-container"></div>
+    </div>
+    <div class="u-scrn-flex" [hidden]="messageFull">
+        <div class="m-portlet m-portlet--rounded" style="height: 100%">
+            <messages [dealId]="dealId" [threadId]="thread.threadId" [threadName]="thread.topic" [isUserMessages]="isUserMessages"
+                (onCloseMessage)="onCloseMessage()">
+            </messages>
+        </div>
+
+    </div>
+</div>

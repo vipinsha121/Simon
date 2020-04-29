@@ -1,0 +1,63 @@
+@import '../../../mat-theme.scss';
+
+.mat-select-panel:not([class*='mat-elevation-z']) {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    width: 126px;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    z-index: 99999 !important;
+ }
+
+ .add-party-header {
+    padding-bottom: 30px
+ }
+
+ .add-party-header > div {
+    display: inline-block;
+ }
+
+ .add-party-header > button {
+  position: relative;
+  bottom: 10px;
+ }
+
+.add-party-header > div > span {
+  font-weight: 500;
+}
+
+.add-party-header > div:not(:first-child) {
+  margin: 0px 15px
+}
+
+ .add-party-header > div > mat-radio-group > mat-radio-button:first-child {
+  margin-right: 15px
+}
+
+.add-party-header-button {
+  font-size: 12px;
+  color: #585858 !important;
+  text-transform: uppercase;
+  background: #e9daf7
+}
+
+.add-party-header-button:hover {
+  color: #383838 !important;
+  background: #dcbdfa !important;
+}
+
+ .add-party-header-title {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: mat-color($primary)
+ }
+
+ .add-party-label > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix > span.mat-form-field-label-wrapper > label > mat-label {
+  font-weight: 300;
+  font-size: 14px;
+ }
+
+ .add-party-label > mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-suffix > mat-icon {
+  color: #ababab
+ }

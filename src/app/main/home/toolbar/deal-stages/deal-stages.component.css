@@ -1,0 +1,469 @@
+.step-send {
+  font-size: 13px;
+  text-align: center;
+  color: #585858;
+  margin: 0 0.4% 0 0;
+  padding: 5px 10px 5px 30px;
+  float: left;
+  position: relative;
+  background-color: #e4e4e4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.arrow-steps {
+  width: 100%;
+}
+
+.arrow-steps .step:last-child:after {
+  border: none;
+}
+
+.arrow-steps .step:last-child {
+  font-size: 13px;
+  text-align: center;
+  color: #585858;
+  margin: 0px;
+  padding: 5px 10px 5px 30px;
+  min-width: 13.6%;
+  float: left;
+  position: relative;
+  background-color: #e4e4e4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+/*.arrow-steps .step:hover {
+   background-color: #a685f5;
+   color: #FFF
+}*/
+
+.arrow-steps .step:last-child:hover > span > svg:hover {
+  fill: #FFF
+}
+
+.arrow-steps .step:last-child > span > svg {
+  fill: #585858
+}
+
+.arrow-steps .step {
+  font-size: 13px;
+  text-align: center;
+  color: #585858;
+  cursor: default;
+  margin: 0 0.4% 0 0;
+  padding: 5px 10px 5px 30px;
+  min-width: 14%;
+  float: left;
+  position: relative;
+  background-color: #e4e4e4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+  .arrow-steps .step:after,
+  .arrow-steps .step:before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      right: -13px;
+      width: 0;
+      height: 0;
+      border-top: 15px solid transparent;
+      border-bottom: 13px solid transparent;
+      border-left: 13px solid #e4e4e4;
+      z-index: 2;
+      transition: border-color 0.2s ease;
+  }
+
+  .arrow-steps .step:before {
+      right: auto;
+      left: 0;
+      border-left: 13px solid #d8d8d8;
+      z-index: 0;
+  }
+
+  .arrow-steps .step:first-child:before {
+      border: none;
+  }
+
+  /*.arrow-steps .step:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+  }*/
+
+  .arrow-steps .step span {
+      position: relative;
+  }
+
+      .arrow-steps .step span:before {
+          opacity: 0;
+          position: absolute;
+          top: -2px;
+          left: -20px;
+      }
+
+  .arrow-steps .step.done span:before {
+      opacity: 1;
+      -webkit-transition: opacity 0.3s ease 0.5s;
+      -moz-transition: opacity 0.3s ease 0.5s;
+      -ms-transition: opacity 0.3s ease 0.5s;
+      transition: opacity 0.3s ease 0.5s;
+  }
+
+  .arrow-steps .step.current {
+      color: #FFF;
+      background-color: #47bfa8;
+  }
+
+      .arrow-steps .step.current:after {
+          border-left: 13px solid #47bfa8;
+      }
+
+/* STEPS THREE WIDE*/
+
+  .arrow-steps-3 .step-3:last-child:after {
+      border: none;
+  }
+
+  .arrow-steps-3 .step-3:last-child {
+      font-size: 13px;
+      height: 28px;
+      text-align: center;
+      color: #585858;
+      margin: 0 3px;
+      padding: 5px 10px 5px 30px;
+      min-width: 32.15%;
+      float: left;
+      position: relative;
+      background-color: #c0c8cc;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      transition: background-color 0.2s ease;
+  }
+
+
+.arrow-steps-3 .step-3 {
+  font-size: 13px;
+  text-align: center;
+  color: #585858;
+  cursor: default;
+  margin: 0 3px;
+  padding: 5px 10px 5px 30px;
+  min-width: 33%;
+  float: left;
+  position: relative;
+  background-color: #e4e4e4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+  .arrow-steps-3 .step-3:after,
+  .arrow-steps-3 .step-3:before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      right: -13px;
+      width: 0;
+      height: 0;
+      border-top: 15px solid transparent;
+      border-bottom: 13px solid transparent;
+      border-left: 13px solid #e4e4e4;
+      z-index: 2;
+      transition: border-color 0.2s ease;
+  }
+
+  .arrow-steps-3 .step-3:before {
+      right: auto;
+      left: 0;
+      border-left: 13px solid #e9ebf2;
+      z-index: 0;
+  }
+
+  .arrow-steps-3 .step-3:first-child:before {
+      border: none;
+  }
+
+  /*.arrow-steps .step:first-child {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+  }*/
+
+  .arrow-steps-3 .step-3 span {
+      position: relative;
+  }
+
+      .arrow-steps-3 .step-3 span:before {
+          opacity: 0;
+          position: absolute;
+          top: -2px;
+          left: -20px;
+      }
+
+  .arrow-steps-3 .step-3.done span:before {
+      opacity: 1;
+      -webkit-transition: opacity 0.3s ease 0.5s;
+      -moz-transition: opacity 0.3s ease 0.5s;
+      -ms-transition: opacity 0.3s ease 0.5s;
+      transition: opacity 0.3s ease 0.5s;
+  }
+
+  .arrow-steps-3 .step-3.current-3 {
+      color: #FFF;
+      background-color: #47bfa8;
+  }
+
+  .arrow-steps-3 .step-3.current-3:after {
+      border-left: 13px solid #47bfa8;
+  }
+
+
+  /* MEDIA QUERY MATCH */
+
+
+  .step-send-m {
+    font-size: 13px;
+    text-align: center;
+    color: #585858;
+    margin: 0 0.4% 0 0;
+    padding: 5px 10px 5px 30px;
+    float: left;
+    position: relative;
+    background-color: #e4e4e4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+  }
+
+  .arrow-steps-m {
+    width: 100%;
+  }
+
+  .arrow-steps-m .step-m:last-child:after {
+    border: none;
+  }
+
+  .arrow-steps-m .step-m:last-child {
+    font-size: 13px;
+    text-align: center;
+    color: #585858;
+    margin: 0px;
+    padding: 5px 10px 5px 30px;
+    float: left;
+    position: relative;
+    background-color: #e4e4e4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+  }
+
+  /*.arrow-steps .step:hover {
+     background-color: #a685f5;
+     color: #FFF
+  }*/
+
+  .arrow-steps-m .step-m:last-child:hover > span > svg:hover {
+    fill: #FFF
+  }
+
+  .arrow-steps-m .step-m:last-child > span > svg {
+    fill: #585858
+  }
+
+  .arrow-steps-m .step-m {
+    font-size: 13px;
+    text-align: center;
+    color: #585858;
+    cursor: default;
+    margin: 0 0.4% 0 0;
+    padding: 5px 10px 5px 30px;
+    width: 12.1%;
+    float: left;
+    position: relative;
+    background-color: #e4e4e4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+  }
+
+    .arrow-steps-m .step-m:after,
+    .arrow-steps-m .step-m:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: -13px;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 13px solid transparent;
+        border-left: 13px solid #e4e4e4;
+        z-index: 2;
+        transition: border-color 0.2s ease;
+    }
+
+    .arrow-steps-m .step-m:before {
+        right: auto;
+        left: 0;
+        border-left: 13px solid #d8d8d8;
+        z-index: 0;
+    }
+
+    .arrow-steps-m .step-m:first-child:before {
+        border: none;
+    }
+
+    /*.arrow-steps-m .step-m:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }*/
+
+    .arrow-steps-m .step-m span {
+        position: relative;
+    }
+
+.arrow-steps-m .step-m span:before {
+    opacity: 0;
+    position: absolute;
+    top: -2px;
+    left: -20px;
+}
+
+.arrow-steps-m .step-m.done-m span:before {
+    opacity: 1;
+    -webkit-transition: opacity 0.3s ease 0.5s;
+    -moz-transition: opacity 0.3s ease 0.5s;
+    -ms-transition: opacity 0.3s ease 0.5s;
+    transition: opacity 0.3s ease 0.5s;
+}
+
+.arrow-steps-m .step-m.current-m {
+    color: #FFF;
+    background-color: #47bfa8;
+    min-width: 25%;
+}
+
+.arrow-steps-m .step-m.current-m:after {
+    border-left: 13px solid #47bfa8;
+}
+
+
+  /* STEPS THREE WIDE*/
+
+    .arrow-steps-3-m .step-3-m:last-child:after {
+        border: none;
+    }
+
+    .arrow-steps-3-m .step-3-m:last-child {
+        font-size: 13px;
+        height: 28px;
+        text-align: center;
+        color: #585858;
+        margin: 0 3px;
+        padding: 5px 10px 5px 30px;
+        min-width: 32.15%;
+        float: left;
+        position: relative;
+        background-color: #c0c8cc;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        transition: background-color 0.2s ease;
+    }
+
+
+  .arrow-steps-3-m .step-3-m {
+    font-size: 13px;
+    text-align: center;
+    color: #585858;
+    cursor: default;
+    margin: 0 3px;
+    padding: 5px 10px 5px 30px;
+    min-width: 33%;
+    float: left;
+    position: relative;
+    background-color: #e4e4e4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+  }
+
+    .arrow-steps-3-m .step-3-m:after,
+    .arrow-steps-3-m .step-3-m:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: -13px;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 13px solid transparent;
+        border-left: 13px solid #e4e4e4;
+        z-index: 2;
+        transition: border-color 0.2s ease;
+    }
+
+    .arrow-steps-3-m .step-3-m:before {
+        right: auto;
+        left: 0;
+        border-left: 13px solid #e9ebf2;
+        z-index: 0;
+    }
+
+    .arrow-steps-3-m .step-3-m:first-child:before {
+        border: none;
+    }
+
+    /*.arrow-steps .step:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }*/
+
+    .arrow-steps-3-m .step-3-m span {
+        position: relative;
+    }
+
+        .arrow-steps-3-m .step-3-m span:before {
+            opacity: 0;
+            position: absolute;
+            top: -2px;
+            left: -20px;
+        }
+
+    .arrow-steps-3-m .step-3-m.done-m span:before {
+        opacity: 1;
+        -webkit-transition: opacity 0.3s ease 0.5s;
+        -moz-transition: opacity 0.3s ease 0.5s;
+        -ms-transition: opacity 0.3s ease 0.5s;
+        transition: opacity 0.3s ease 0.5s;
+    }
+
+    .arrow-steps-3-m .step-3-m.current-3-m {
+        color: #FFF;
+        background-color: #47bfa8;
+    }
+
+    .arrow-steps-3-m .step-3-m.current-3-m:after {
+        border-left: 13px solid #47bfa8;
+    }

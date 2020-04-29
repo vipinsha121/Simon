@@ -1,0 +1,93 @@
+h5 {
+  color: #808080;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+mat-tab-group.summary-tab-group > div.mat-tab-body-wrapper > mat-tab-body {
+  overflow: visible;
+}
+
+mat-tab-group.summary-tab-group > div.mat-tab-body-wrapper > mat-tab-body > div.mat-tab-body-content {
+  overflow: visible !important;
+}
+
+.mat-tab-body-content {
+  overflow: visible;
+}
+
+.u-portlet-body::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.u-portlet-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.26);
+}
+
+mat-icon.summary-icon {
+  color: #959595
+}
+
+.summary-detail-padding {
+  padding: 2rem 2.5rem 0rem 1rem;
+}
+
+mat-hint {
+  padding-left: 10px;
+}
+
+.summary-row-padding {
+  padding: 20px 0px;
+}
+
+.summary-row-padding > div:first-child {
+  margin-right: 10px;
+}
+
+.summary-button-save {
+  float: right;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  text-transform: uppercase;
+  background: #34bfa3;
+  color: #fff;
+  margin: 1.5rem 1.5rem 1.5rem 0px
+}
+
+.summary-button-cancel {
+  float: right;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  background: rgb(167, 167, 167);
+  color: #fff;
+  margin: 1.5rem
+}
+
+::ng-deep mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+  border-top: 0px;
+}
+
+.u-portlet-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 1px;
+  position: relative;
+}
+
+.u-portlet-body {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2rem 2rem 2rem 1rem
+}
+
+.u-scroll-vert {
+  overflow-y: scroll;
+}
+
+.summary-hint-error {
+  color: red
+}
+

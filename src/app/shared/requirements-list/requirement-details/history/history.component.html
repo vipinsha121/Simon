@@ -1,0 +1,22 @@
+<div style="margin-top: 2.5rem" fxFill>
+  <table class="table req-form-table">
+    <thead>
+      <tr>
+        <th>Stage</th>
+        <th>Initiated By</th>
+        <th>Initiated Date</th>
+        <th>Completed By</th>
+        <th>Completed Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of stageHistory | orderBy:'createdDate'">
+        <td style="vertical-align:middle;">{{h?.stageName}}</td>
+        <td style="vertical-align:middle;">{{h?.createdBy}}</td>
+        <td style="vertical-align:middle;">{{h?.createdDate| date : 'short'}}</td>
+        <td style="vertical-align:middle;">{{h?.lastModBy}}</td>
+        <td style="vertical-align:middle;">{{h?.lastModByDate| date : 'short'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

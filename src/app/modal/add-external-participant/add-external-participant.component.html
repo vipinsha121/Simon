@@ -1,0 +1,79 @@
+
+<div>
+<div class="modal-header">
+    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <h4>Add External Participant</h4>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="row">
+          <mat-icon id="closeModal" (click)="activeModal.dismiss()">close</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div fxLayout="column" fxLayoutAlign="space-between">
+        <form [formGroup]="participantForm">
+            <mat-form-field class="example-full-width">
+                <mat-label>Select Company</mat-label>
+
+            <input matInput 
+                   [matAutocomplete]="companies" 
+                   formControlName="companyName" 
+                   [(ngModel)]="party.company" 
+                   (keyup)="getSearchData($event)">
+            </mat-form-field>
+            <mat-autocomplete #companies="matAutocomplete">
+                <mat-option *ngIf="party.company && party.company.length > 1">
+                  <button type="submit" mat-button (click)="openAddPartyModal('C')"><mat-icon>add</mat-icon>Add New</button><br/>
+                </mat-option>
+                <mat-option *ngFor="let company of filteredCompanies" [value]="company.name" (onSelectionChange)="getPersonByCompany(company.companyId)">
+                  {{ company.name }}
+                </mat-option>
+            </mat-autocomplete>
+
+            <div *ngIf="isSelected">
+
+              <mat-form-field class="example-full-width">
+                  <mat-label>Select Person</mat-label>
+
+                <input matInput 
+                       [matAutocomplete]="persons"
+                       formControlName="person"
+                       [(ngModel)]="party.name"
+                       (keyup)="getSearchPerson()">
+            </mat-form-field>
+
+            <mat-autocomplete #persons="matAutocomplete">
+               <mat-option>
+                  <button type="submit" mat-button (click)="openAddPartyModal('I')"><mat-icon>add</mat-icon>Add New</button><br/>
+              </mat-option>
+              <mat-option *ngFor="let person of filteredPerson" [value]="person.name" (onSelectionChange)="updateParty(person)">
+                {{ person.name }}
+              </mat-option>
+            </mat-autocomplete>
+            
+            <mat-form-field class="example-full-width">
+                <mat-label>Select Participation</mat-label>
+                <mat-select formControlName="role" [(ngModel)]="party.participation">
+                  <mat-option *ngFor="let role of participants" [value]="role.id">
+                    {{ role.name }}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <div class="edit-row footer-container-form" fxLayoutAlign="end center">
+    
+              <button aria-label="cancel" class="button-cancel" mat-raised-button (click)="activeModal.close()">Cancel</button>
+              <button type="submit" class="button-save" mat-raised-button [disabled]="participantForm.invalid" (click)="saveExternalParticipation(party)">Save</button>
+            </div>
+            <div>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>

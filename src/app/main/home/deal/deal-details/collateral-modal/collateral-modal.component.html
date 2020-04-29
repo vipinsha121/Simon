@@ -1,0 +1,121 @@
+<!--<app-loader></app-loader>-->
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+        <div class="header">
+            <span ngbTooltip="{{collateral?.length}} piece(s) of collateral associated with this deal" tooltipClass="tooltip-font-size-md"
+              class="u-header-title">Collateral</span>
+            <div matBadge="{{collateral?.length}}" matBadgeSize="medium" matBadgeColor="accent"
+                style="vertical-align: middle;">
+            </div>
+
+      <button aria-label="matMenuButton" mat-flat-button style="margin-right: 5px;"
+        (click)="onAddNewCollateral('0')">Add Collateral
+      </button>
+      <mat-icon ngbTooltip="You have {{collRequirementOpenCnt}} collateral requirements remaining"
+        tooltipClass="tooltip-font-size-md" style="margin-top: 5px; margin-right: 16px; float: right;">flag
+      </mat-icon>
+    </div>
+
+    <div class="u-portlet-container collateral-list">
+      <mat-list class="u-portlet-body u-scroll-vert">
+        <mat-list-item *ngFor="let coll of collateral" style="border-radius: 8px; cursor: pointer"
+          class="collateral-list-item" (click)="sendHalf(); routeToCollateralComponent(coll)"
+          [ngClass]="collateralId == coll.collateralId ? 'active' : ''">
+          <mat-icon *ngIf="coll.groupCode === '02'" matListIcon class="mat-icon-background">home</mat-icon>
+          <mat-icon *ngIf="coll.groupCode === '08'" matListIcon class="mat-icon-background">lock</mat-icon>
+          <mat-icon *ngIf="coll.groupCode === '05'" matListIcon class="mat-icon-background">assignment
+          </mat-icon>
+          <mat-icon *ngIf="coll.groupCode === '06'" matListIcon class="mat-icon-background">assignment
+          </mat-icon>
+          <mat-icon *ngIf="coll.groupCode === '10'" matListIcon class="mat-icon-background">font_download
+          </mat-icon>
+          <span matLine *ngIf="coll.primary === true" class="collateral-list-text-label">Primary</span>
+          <div matLine>
+            <span matLine class="collateral-list-text inline-block">
+              {{coll.category}}
+            </span>
+            <button *ngIf="!coll.primary" aria-label="cancel" class="chip chip-text collateral-list-item-remove"
+              mat-flat-button style="float: right; text-transform: uppercase"
+              (click)="deleteCollateral(coll)">Remove</button>
+          </div>
+          <div matLine>
+            <span>{{coll.group}}</span>
+          </div>
+          <mat-progress-bar matLine mode="determinate" ngbTooltip="{{ coll.openRequirements }} requirements remaining"
+            value="{{ coll.requirements }}" class="{{ coll.cssClass }}">
+          </mat-progress-bar>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="u-footer-container"></div>
+  </div>
+  <div class="u-scrn-flex" *ngIf="!fullWidth">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+  <!-- <div class="u-scrn-flex" [hidden]="fullWidth" *ngIf="collateralId > 0">
+        <router-outlet></router-outlet>*ngIf="!fullWidth"
+    </div> -->
+</div>
+
+
+<!-- <div class="m-portlet m-portlet--full-height  m-portlet--rounded" *ngIf="collateralData || collateraldocs">
+    <div class="m-portlet__body">
+        <div class="tab-content">
+            <div class="m-widget11">
+                <div #collateralDiv>
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6">
+                            <h3 style="color:cornflowerblue"><i style="color:cornflowerblue"
+                                    class="fa fa-home"></i>&nbsp; Collateral
+                            </h3>
+                        </div>
+                        <div class="col-xl-6 col-md-6">
+                            <i class="fa fa-plus headerIcon"></i>
+                            &nbsp;&nbsp;
+                            <i class="fa fa-cloud headerIcon"></i>
+                            &nbsp;&nbsp;
+                            <i class="fa fa-flag headerIconFlag"></i>
+                        </div>
+                    </div>
+
+                    <div class="row" style=" border-bottom : 1px solid gray">
+                        <div class="col-xl-2 col-md-2"><b>Open</b></div>
+                        <div class="col-xl-2 col-md-2"><b>Group</b></div>
+                        <div class="col-xl-2 col-md-2"><b>Category</b></div>
+                        <div class="col-xl-2 col-md-2"><b>Description</b></div>
+                    </div>
+                    <div class="row" *ngFor="let coll of collateralData" style=" border-bottom : 1px solid gray">
+                        <ngb-accordion #acc="ngbAccordion" style=" width:100%">
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle style=" width:100%">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-md-6">{{coll.OpenRequirements}}</div>
+                                        <div class="col-xl-6 col-md-6">{{coll.Group}}</div>
+                                        <div class="col-xl-6 col-md-6">{{coll.Category}}</div>
+                                        <div class="col-xl-6 col-md-6">{{coll.Description}}</div>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template ngbPanelContent>
+                                    <collateral-form [collateral]="coll"></collateral-form>
+                                </ng-template>
+
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xl-6 col-md-6" style="margin-top : 10%">
+                            <recent-colldocuments [collateraldocuments]="collateraldocs"></recent-colldocuments>
+                        </div>
+
+                        <div class="col-xl-6 col-md-6" style="margin-top : 10%" *ngIf="collGoogleMap">
+                            <collateral-googlemap [collateralGMap]="collGoogleMap"></collateral-googlemap>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,136 @@
+<div>
+    <div class="modal-header">
+      <div class="modal-title">
+        Edit Document
+      </div>
+      <div class="modal-button-close">
+        <mat-icon class="u-mat-icon-grey" (click)="activeModal.dismiss()">close</mat-icon>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- <div>--- Drag & Drop Goes Here ---</div> -->
+      <div class="uploadfilecontainer"
+      [ngClass]="{'borderRequired': !originalDocument.alternateName && files.length == 0}" (click)="fileInput.click()"
+      appDragDrop (onFileDropped)="uploadFile($event)">
+          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+          {{files}}
+        </div>
+        <!-- <div  class="files-list" *ngFor="let file of files;let i= index">
+            <p> {{ file }} </p>
+            <button class="delete-file">
+              <img src="../../assets/Recycle_Bin_Full.png">
+            </button>
+         </div> -->
+
+      <form [formGroup]="DocumentAddForm">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-label fxFlex="40">Requirement: </mat-label>
+            <p fxFlex="60">{{requirement.description}}</p>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+             <mat-label fxFlex="40">Primary: </mat-label>
+             <mat-checkbox fxFlex="60" [(ngModel)]="originalDocument.primary"
+             [ngModelOptions]="{standalone: true}"></mat-checkbox>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Document: </mat-label>
+              <!--<mat-form-field appearance="outline" floatLabel="always" style="margin-left: 82px;">
+                  <mat-label>Document</mat-label>
+                  <input matInput formControlName="documentDefinitionName" [(ngModel)]="originalDocument.documentDefinitionName"
+                  autocomplete="off" />
+                </mat-form-field>-->
+                    <!-- <mat-form-field ng-show="originalDocument.primary!='1'" style="margin-left: 82px;" appearance="outline" floatLabel="always">
+                      <mat-label>Document</mat-label>
+                      <mat-select placeholder="Select" formControlName="documentDefinitionId"
+                        [(ngModel)]="originalDocument.documentDefinitionId">
+                        <mat-option *ngFor="let docdef of docDefinitionList" [value]="docdef.id">{{docdef.name}}</mat-option>
+                      </mat-select>
+                      <mat-error>Please Select Entity Type</mat-error>
+                </mat-form-field> -->
+
+                <mat-form-field ng-show="originalDocument.primary!='1'" fxFlex="60" appearance="outline"
+                  floatLabel="always">
+                  <mat-label>Document</mat-label>
+                  <input #stateInput matInput [matAutocomplete]="auto" required [formControl]="DocCtrl" [(ngModel)]="originalDocument.documentDefinitionName">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let doc of filteredDocs | async" [value]="doc.name" (click)="updateTypeId(doc.id)">
+                      <span [ngbTooltip]="doc.name" tooltipClass="tooltip-font-size-md">{{ doc.name }}</span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Document Name: </mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
+                  <mat-label>Document Name</mat-label>
+                  <input matInput formControlName="alternateName" [(ngModel)]="originalDocument.alternateName"
+                  autocomplete="off" />
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Synergy Notes: </mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
+                  <mat-label>Synergy Notes</mat-label>
+                  <textarea matInput formControlName="description" [(ngModel)]="originalDocument.description"
+                    name="firstName"  autocomplete="off" ></textarea>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">As Of Date: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="originalDocument.asOfDate"
+                   formControlName="asOfDate" required placeholder="Choose a date" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Received: </mat-label>
+              <mat-form-field fxFlex="60" appearance="outline" floatLabel="always">
+                  <input matInput [matDatepicker]="ReceivedDate" placeholder="Choose a date"
+                  autocomplete="off" [(ngModel)]="originalDocument.recievedDate"
+                  formControlName="recievedDate">
+                  <mat-datepicker-toggle matSuffix [for]="ReceivedDate"></mat-datepicker-toggle>
+                  <mat-datepicker #ReceivedDate></mat-datepicker>
+                </mat-form-field>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Uploaded: </mat-label>
+              <p fxFlex="60">{{originalDocument.uploadDate | date:'MM/dd/yyyy'}} - {{originalDocument.createdByFirstname}}&nbsp;{{originalDocument.createdByLastname}}</p>
+           </div>
+
+           <div fxLayout="row" fxLayoutAlign="space-between center">
+              <mat-label fxFlex="40">Last Modified: </mat-label>
+              <p fxFlex="60">{{originalDocument.lastModByDate | date:'MM/dd/yyyy'}} - {{originalDocument.lastModByFirstname}}&nbsp;{{originalDocument.lastModByLastname}}</p>
+           </div>
+           <br><mat-divider></mat-divider>
+           <div>
+            <br><p>What your document info looks like to Synergy -</p>
+            <mat-card style="background-color: grey;text-align: center;">
+                <span style="color: #fff">{{originalDocument.documentDefinitionName}}</span>&nbsp;&nbsp;&nbsp;
+                <span style="color: #a2dafb">{{ originalDocument.asOfDate | date: 'MM/dd/yyyy' }}</span>&nbsp;&nbsp;&nbsp;
+                <span style="color: #8debb7">{{originalDocument.id}}</span>&nbsp;&nbsp;&nbsp;
+                <span style="color: #ffd390">- {{originalDocument.description}}</span>
+            </mat-card>
+           </div>
+
+
+           <div fxLayoutAlign="end center" style="margin: 18px;">
+
+              <button aria-label="cancel" (click)="cancelEditDocument(originalDocument)" mat-flat-button>Cancel</button>
+              <button type="submit" [disabled]="DocumentAddForm.invalid || DocCtrl.invalid" class="u-button-save"
+                (click)="SaveEditDocument(originalDocument)" mat-raised-button>Save Document</button>
+
+          </div>
+        </form>
+    </div>
+
+
+
+  </div>

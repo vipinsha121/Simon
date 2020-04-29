@@ -1,0 +1,31 @@
+table.deals .hide{
+    display : none;
+}
+
+overlay-wrapper {
+    position: relative;
+}
+
+.overlay-show {
+    position: absolute;
+    background: #fff;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.9;
+    z-index: 1000;
+}
+
+    .overlay-show div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 1;
+    }
+
+.overlay-hide {
+    display: none;
+}

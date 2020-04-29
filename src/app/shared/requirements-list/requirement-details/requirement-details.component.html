@@ -1,0 +1,400 @@
+<mat-tab-group mat-align-tabs="center" mat-stretch-tabs class="tab-secondary-req" animationDuration="0ms">
+  <mat-tab label="Details">
+    <ng-template matTabContent>
+      <app-details [dealId]="dealId" [requirementId]="requirement?.requirementId" [reqType]="requirement?.reqType" [isStageChangeClicked] = "isStageChangeClicked" [groupCode] = "groupCode">
+      </app-details>
+      <!-- TODO: Should remove after testing -->
+     <!-- <form [formGroup]="reqDetailForm" fxFill style="margin-top: 2rem">
+          <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+            <div fxFill>
+              <div fxLayout="column" class="req-detail-body">
+                <div style="height: 50px">
+                  <div fxLayout="column" fxFlex="50">
+                    &lt;!&ndash; []="requirement.type.length < 20" &ndash;&gt;
+                    <h5 [ngbTooltip]="requirement?.type" tooltipClass="tooltip-font-size-md" class="req-form-header">
+                      {{requirement?.type | slice: 0:20}}
+                       <span *ngIf="requirement.type.length > 20">...</span>
+                    </h5>
+                  </div>
+                  <div fxLayout="column" fxFlex="40">
+                    <div style="padding: 15px 0px">
+                      <span title="Due Soon" *ngIf="requirement?.daysDue==2 && requirement?.complete != true">
+                        <mat-icon>access_alarm</mat-icon>
+                      </span>
+                      <span title="Due Immediately" *ngIf="requirement?.daysDue<2 && requirement?.complete != true">
+                        <mat-icon>access_alarm</mat-icon>
+                      </span>
+                      <span title="Exception" *ngIf="requirement?.exception==true">
+                        <mat-icon>error_outline</mat-icon>
+                      </span>
+                      <span *ngIf="requirement" class="chip" style="position: relative; top: 3px" [ngClass]="requirement?.background">
+                        {{requirement.statusDescription?docReq?.statusDescription:'Open'}}
+                        {{requirement.statusDescription | slice: 0:25}}
+                      </span>
+                    </div>
+
+                  </div>
+                  <div fxLayout="column" fxFlex="10">
+                    <div>
+                      <button mat-icon-button style="position: relative; top: 10px; left: 2rem;" type="button"
+                        (click)="closeDropdown();closeRequirementDetails(); activeModal.dismiss();">
+                        <mat-icon aria-hidden="false" aria-label="sidenavClose" style="color: #b1b1b1">close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <table class="table table-condensed req-form-table">
+                    <tbody>
+                      <tr *ngIf="requirement && requirement?.deferStageName && requirement.statusDescription.indexOf('Deferred') > -1">
+                        <td>Deferred Stage </td>
+                        <td>{{requirement?.deferStageName}} </td>
+                      </tr>
+                      <tr>
+                        <td>Assigned to: </td>
+                        <td>
+                          <span>{{requirement?.assignedToFullName}}</span>
+                          <span *ngIf="requirement?.assignedToFullName < 1">-</span>
+                        </td>
+                        <td>
+                          <mat-checkbox *ngIf="requirement" [(ngModel)]="requirement.isAttention" [ngModelOptions]="{standalone: true}">
+                            Attention</mat-checkbox>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Due Date: </td>
+                        <td>
+                          <mat-form-field *ngIf="editDateDue" style="width: 150px">
+                            <mat-label></mat-label>
+                            &lt;!&ndash;<input matInput [matDatepicker]="picker" [value]="requirement.dueDate" placeholder="Choose a date"
+                                      type="date" formControlName="dueDate" name="dueDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>&ndash;&gt;
+                            <input matInput  *ngIf="requirement" [matDatepicker]="duedate" placeholder="Choose a date" autocomplete="off"
+                              [(ngModel)]="requirement.dueDate" formControlName="dueDate" name="dueDate">
+                            <mat-datepicker-toggle matSuffix [for]="duedate"></mat-datepicker-toggle>
+                            <mat-datepicker #duedate></mat-datepicker>
+                          </mat-form-field>
+                          <span *ngIf="requirement && !editDateDue">{{requirement.dueDate | date: 'MM/dd/yyyy'}}</span>
+                        </td>
+                        <td>
+                          <a (click)="toggleDateDue(requirement.dueDate)"
+                            class="req-button-edit">{{editDateDue ? 'Close' : 'Edit'}}</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="border-none">Exp. Date: </td>
+                        <td class="border-none">
+                          <mat-form-field *ngIf="editDateExp" style="width: 150px">
+                            <mat-label></mat-label>
+                            &lt;!&ndash;<input matInput [matDatepicker]="picker" [value]="requirement.expirationDate"
+                                      placeholder="Choose a date" type="date" formControlName="expDate" name="expDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>&ndash;&gt;
+                            <input matInput [matDatepicker]="expirationDate" placeholder="Choose a date"
+                              autocomplete="off" [(ngModel)]="requirement.expirationDate"
+                              formControlName="expirationDate" name="expirationDate">
+                            <mat-datepicker-toggle matSuffix [for]="expirationDate"></mat-datepicker-toggle>
+                            <mat-datepicker #expirationDate></mat-datepicker>
+                          </mat-form-field>
+                          <span *ngIf="requirement && !editDateExp">{{requirement.expirationDate | date: 'MM/dd/yyyy'}}</span>
+                        </td>
+                        &lt;!&ndash; <td class="border-none">
+                          <a (click)="toggleDateExp(requirement.expirationDate)"
+                            class="req-button-edit">{{editDateExp ? 'Close' : 'Edit'}}</a>
+                        </td> &ndash;&gt;
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div *ngIf="baseReqQuestionsCount  > 0 || ticklerReqQuestionsCount  > 0">
+                    <table class="table req-form-table">
+                      <thead>
+                        <tr>
+                          <th>Question</th>
+                          <th>Response</th>
+                          <th>Comparison</th>
+                          <th>Expected Value</th>
+                          <th>Comment</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="requirement && requirement.isTickler != true && requirement.showCompareFlag=='1'">
+                        <tr *ngFor="let q of requirement.baseReqQuestions">
+                          <td style="vertical-align:middle;">{{q.questionText}}</td>
+                          <td style="vertical-align:middle;">
+                            <div *ngIf="q.dataType == 'int'" ng-disabled="!requirement.actualValueEnabled">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="q.actualIntValue"
+                                  (change)="isExceptionForBaseReq();" type="number">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Percent'">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="q.actualDecimalValue"
+                                  (change)="isExceptionForBaseReq();">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Varchar'">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="q.actualText"
+                                  (change)="isExceptionForBaseReq();">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Date'">
+                              <mat-form-field>
+                                <input matInput [matDatepicker]="responsedate" [(ngModel)]="q.actualDate"
+                                  (change)="isExceptionForBaseReq();" [ngModelOptions]="{standalone: true}">
+                                <mat-datepicker-toggle matSuffix [for]="responsedate"></mat-datepicker-toggle>
+                                <mat-datepicker #responsedate></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'bool'" ng-disabled="!requirement.actualValueEnabled">
+                              <mat-radio-group aria-label="Select an option" [(ngModel)]="q.actualBitValue"
+                                [ngModelOptions]="{standalone: true}">
+                                <mat-radio-button value="true">Yes</mat-radio-button>
+                                <br>
+                                <mat-radio-button value="false">No</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+                          </td>
+                          <td>
+                            <div *ngIf="q.showLowExceptionFlag">
+                              {{q.expectedValueLowOperand}}
+                            </div>
+                            <div *ngIf="q.showHighExceptionFlag">
+                              {{q.expectedValueHighOperand}}
+                            </div>
+                          </td>
+                          <td>
+                            <div *ngIf="q.dataType == 'int'">{{q.expectedValueInt}}</div>
+                            <div *ngIf="q.dataType == 'Percent'">{{q.expectedValueDecimal}}</div>
+                            <div *ngIf="q.dataType == 'Varchar'">{{q.expectedValueVarchar}}</div>
+                            <div *ngIf="q.dataType == 'Date'">{{q.expectedValueDate}}</div>
+                            <div *ngIf="q.dataType == 'bool'">{{q.expectedValueBit}}</div>
+                          </td>
+                          <td>{{q.descriptionNotes}}</td>
+                        </tr>
+                      </tbody>
+                      <tbody *ngIf="requirement.isTickler == true && requirement.showCompareFlag=='1'">
+                        <tr *ngFor="let q of requirement.ticklerReqQuestions">
+                          <td>{{q.questionText}}</td>
+                          <td>
+                            <div *ngIf="q.dataType == 'Int'" ng-disabled="!requirement.actualValueEnabled">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="q.actualIntValue"
+                                  (change)="isExceptionForTickler();" type="number">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Percent'">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}"
+                                  [(ngModel)]="q.actualDecimalValue">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Varchar'">
+                              <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                                <input matInput autocomplete="autocomplete_off_hack_xfr4!k"
+                                  (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}"
+                                  [(ngModel)]="q.actualText">
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Date'">
+                              <mat-form-field>
+                                <input matInput [matDatepicker]="responsedate" [(ngModel)]="q.actualDate"
+                                  (change)="isExceptionForTickler();" [ngModelOptions]="{standalone: true}">
+                                <mat-datepicker-toggle matSuffix [for]="responsedate"></mat-datepicker-toggle>
+                                <mat-datepicker #responsedate></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                            <div *ngIf="q.dataType == 'Radio'" ng-disabled="!requirement.actualValueEnabled">
+                              <mat-radio-group aria-label="Select an option" [(ngModel)]="q.actualBitValue"
+                                [ngModelOptions]="{standalone: true}">
+                                <mat-radio-button value="true">Yes</mat-radio-button>
+                                <br>
+                                <mat-radio-button value="false">No</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+                          </td>
+                          <td>
+                            <div *ngIf="q.showLowExceptionFlag">
+                              {{q.expectedValueLowOperand}}
+                            </div>
+                            <div *ngIf="q.showHighExceptionFlag">
+                              {{q.expectedValueHighOperand}}
+                            </div>
+                          </td>
+                          <td>
+                            <div *ngIf="q.dataType == 'Int'">{{q.expectedValueInt}}</div>
+                            <div *ngIf="q.dataType == 'Percent'">{{q.expectedValueDecimal}}</div>
+                            <div *ngIf="q.dataType == 'Varchar'">{{q.expectedValueVarchar}}</div>
+                            <div *ngIf="q.dataType == 'Date'">{{q.expectedValueDate}}</div>
+                            <div *ngIf="q.dataType == 'Radio'">{{q.expectedValueBit}}</div>
+                          </td>
+                          <td>{{q.descriptionNotes}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div>
+                  <requirement-action-select *ngIf="requirement" [requirement]="requirement" [dealId]="dealId"
+                    [reqDetailForm]="reqDetailForm"></requirement-action-select>
+                </div>
+                <div>
+                  <h5>Tasks</h5>
+                </div>
+                <mat-divider style="margin-bottom: 10px"></mat-divider>
+                <div>
+                  <mat-checkbox *ngIf="requirement" [(ngModel)]="requirement.isMitigatingFactors" formControlName="isMitigatingFactors"
+                    name="isMitigatingFactors">Mitigating Factors</mat-checkbox>
+                </div>
+                <div>
+                  <div *ngIf="requirement && requirement.isMitigatingFactors" fxFlex="100">
+                    <mat-form-field hintLabel="Max 700 characters" aria-label="mitigatingFactors" fxFlex="100"
+                      floatLabel="never" floatPlaceholder="never" appearance="fill">
+                      <textarea matInput [(ngModel)]="requirement.mitigatingFactors" formControlName="mitigatingFactors"
+                        name="mitigatingFactors" rows="7"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxFlex="100">
+                  <mat-checkbox *ngIf="requirement" [(ngModel)]="requirement.isSubjectTo" formControlName="isSubjectTo" name="isSubjectTo">
+                    Approval Conditions</mat-checkbox>
+                </div>
+                <div>
+                  <div *ngIf="requirement && requirement.isSubjectTo" fxFlex="100">
+                    <mat-form-field fxFlex="100" hintLabel="Max 700 characters" aria-label="mitigatingFactors"
+                      floatLabel="never" floatPlaceholder="never" appearance="fill">
+                      <textarea matInput [(ngModel)]="requirement.subjectTo" formControlName="subjectTo"
+                        name="subjectTo" rows="7"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div>
+                  <span style="font-size:10px;">Last Saved By</span>
+                  <span *ngIf="requirement"  style="font-weight: 700; font-size: 11px;">{{requirement.lastModbyFirstname}}
+                    {{requirement.lastModbyLastname}}</span>
+                </div>
+                <div *ngIf="requirement" style="    height: inherit;">
+                  <span  style="font-size:10px;">{{requirement.lastModByDate | date:'MMM d, y,  h:mm a'}}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start end" class="req-detail-u-footer-container">
+            <div>
+              <button type="submit" [disabled]="reqDetailForm.invalid || !checkAssigned()" class="req-detail-button-save" mat-flat-button
+                (click)="saveRequirement(requirement)">Save</button>
+              <button type="button" class="req-detail-button-cancel" mat-flat-button
+                (click)="closeDropdown();closeRequirementDetails();activeModal.dismiss();">Cancel</button>
+            </div>
+          </div>
+        </form>-->
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Requirement Docs">
+    <ng-template matTabContent>
+      <div style="padding: 1rem; margin-top: 2rem">
+        <app-requirement-docs [dealId]="dealId" [requirementId]="requirement?.requirementId"
+          [reqType]="requirement?.reqType"></app-requirement-docs>
+        <!-- TODO: Should remove after testing -->
+        <!--<div fxLayout="row">
+          <div class="req-doc-input">
+            <input class="form-control" [(ngModel)]="searchText" placeholder="Search..." />
+          </div>
+          <div style="width: 50%">
+            <button mat-flat-button (click)="showDocumentAdd(requirement)" class="req-doc-button-icon-upload"
+              style="float: right">
+              <span style="color: #5cb0f1; margin-right: 20px;">Upload New Document</span>
+              <mat-icon>cloud_upload</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="doc-req-container">
+          <mat-list class="req-doc-body">
+            <mat-list-item *ngFor="let d of requirement.documents |searchDocs:{alternateName: searchText, asOfDate:searchText,
+              documentDefinitionName: searchText}; let i = index" class="req-doc-list-item">
+              <mat-icon matListIcon style="margin-bottom: 7px; color: #ffffff; background: #7ec7ff;">insert_drive_file
+              </mat-icon>
+              <div matLine>
+                <span ngbTooltip="{{d.documentDefinitionName}}" tooltipClass="tooltip-font-size-md" *ngIf="d.documentDefinitionName.length > 30"
+                  class="inline-block req-doc-title">
+                  {{ d.documentDefinitionName | slice: 0:30 }}...
+                </span>
+                <span *ngIf="d.documentDefinitionName.length <= 30" class="inline-block req-doc-title">
+                  {{ d.documentDefinitionName }}
+                </span>
+                <button mat-icon-button ngbTooltip="Remove Document" tooltipClass="tooltip-font-size-md" class="req-doc-button-icon"
+                  (click)="removeDocument(d.id,requirement.requirementId,requirement.partyId);">
+                  <mat-icon matIcon class="u-mat-icon-grey">close</mat-icon>
+                </button>
+                <button mat-icon-button ngbTooltip="Edit Document Details" tooltipClass="tooltip-font-size-md" class="req-doc-button-icon"
+                  (click)="editDocument(d,requirement);">
+                  <mat-icon matIcon class="u-mat-icon-grey">list</mat-icon>
+                </button>
+                <button mat-icon-button ngbTooltip="Edit in Adobe" tooltipClass="tooltip-font-size-md" class="req-doc-button-icon">
+                  <mat-icon matIcon class="u-mat-icon-grey">edit</mat-icon>
+                </button>
+              </div>
+              <div matLine *ngIf="d.primary">
+                <span class="chip">primary</span>
+              </div>
+              <div matLine>
+                <span>{{d.asOfDate | date:'MM/dd/yyyy'}} ({{d.alternateName}})</span>
+              </div>
+              <div matLine>
+                <span class="req-doc-subtitle">Added on {{d.requirementAttachDate | date:'MM/dd/yyyy hh:mm a'}}</span>
+              </div>
+            </mat-list-item>
+          </mat-list>
+        </div>-->
+      </div>
+    </ng-template>
+
+  </mat-tab>
+  <mat-tab label="Messages">
+    <ng-template matTabContent>
+      <div style="min-height: 95%; height: 95%; min-width: 100%; margin-top: 5%;">
+        <messages [requirementId]="requirement.requirementId" [dealId]="dealId" [threadId]="requirement.threadId"
+          [threadName]="requirement.description || requirement?.type">
+        </messages>
+      </div>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="History">
+    <ng-template matTabContent>
+      <div style="margin-top: 2.5rem" fxFill>
+        <app-history [dealId]="dealId" [requirementId]="requirement?.requirementId" [reqType]="requirement?.reqType">
+        </app-history>
+        <!-- TODO: Should remove after testing -->
+        <!-- <table class="table req-form-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Initiated By</th>
+            <th>Initiated Date</th>
+            <th>Completed By</th>
+            <th>Completed Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of stageHistory | orderBy:'createdDate'">
+            <td style="vertical-align:middle;">{{h?.stageName}}</td>
+            <td style="vertical-align:middle;">{{h?.createdBy}}</td>
+            <td style="vertical-align:middle;">{{h?.createdDate| date : 'short'}}</td>
+            <td style="vertical-align:middle;">{{h?.lastModBy}}</td>
+            <td style="vertical-align:middle;">{{h?.lastModByDate| date : 'short'}}</td>
+          </tr>
+        </tbody>
+      </table>-->
+      </div>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

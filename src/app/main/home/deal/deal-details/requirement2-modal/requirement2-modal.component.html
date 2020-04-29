@@ -1,0 +1,419 @@
+<div class="m-body" fxLayout="row" fxFill>
+  <div class="m-portlet m-portlet--rounded col-md-12" style="margin-bottom: 0px; padding: 0px">
+    <div class="req-header">
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" style="padding: .75rem 0px">
+        <div>
+          <span class="u-header-title">Requirements</span>
+          <span matBadge="{{requirementsCount}}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="accent"
+            style="vertical-align: middle">
+          </span>
+        </div>
+        <div class="req-header-input-container">
+          <input placeholder="Search..." name="srhreqs" [(ngModel)]="searchText" class="form-control" autocomplete="off">
+        </div>
+        <div>
+            <button mat-icon-button [disabled]="filterIcon" (click)="clearFilter()">
+                <mat-icon *ngIf="filterIcon" class="u-mat-icon-grey">filter_list</mat-icon>
+                <mat-icon *ngIf="!filterIcon" class="u-mat-icon-grey">close</mat-icon>
+              </button>
+
+              <span style="padding: 0px 0.5rem">|</span>
+
+              <button mat-icon-button [matMenuTriggerFor]="partyList">
+                <mat-icon class="u-mat-icon-grey">person</mat-icon>
+              </button>
+              <mat-menu #partyList="matMenu">
+                <button mat-menu-item *ngFor="let party of parties" (click)="filter(party.name)">{{ party.name }}</button>
+              </mat-menu>
+
+              <button mat-icon-button [matMenuTriggerFor]="loanList">
+                <mat-icon class="u-mat-icon-grey">money</mat-icon>
+              </button>
+              <mat-menu #loanList="matMenu">
+                <button mat-menu-item *ngFor="let loan of loans" (click)="filter(loan.productName)">{{ loan.productName }}</button>
+              </mat-menu>
+
+              <button mat-icon-button [matMenuTriggerFor]="collateralist">
+                <mat-icon class="u-mat-icon-grey">home</mat-icon>
+              </button>
+              <mat-menu #collateralist="matMenu">
+                <button mat-menu-item *ngFor="let c of collateral" (click)="filter(c.category)">{{ c.category }}</button>
+              </mat-menu>
+        </div>
+        <div>
+          <mat-checkbox name="openchk" [(ngModel)]="openreq" value="ReqOpen">Open</mat-checkbox>
+          <mat-checkbox name="attentionchk" value="ReqAtten" [(ngModel)]="attentionreq">Attention</mat-checkbox>
+          <mat-checkbox name="ReqColse" value="ReqColse" [(ngModel)]="closereq">Closing</mat-checkbox>
+          <mat-checkbox name="ReqHardstop" value="ReqHardstop" [(ngModel)]="hardstopreq">Hardstop</mat-checkbox>
+        </div>
+
+        <div class="req-button-group">
+          <div>
+            <button mat-icon-button ngbTooltip="Cancel All" tooltipClass="tooltip-font-size-md" (click)="cancelAllRequirements()">
+              <mat-icon class="u-mat-icon-grey req-header-button-icon">close</mat-icon>
+            </button>
+          </div>
+          <div>
+            <button mat-icon-button (click)="saveAllRequirements()" ngbTooltip="Save All" tooltipClass="tooltip-font-size-md">
+              <mat-icon class="u-mat-icon-grey req-header-button-icon">check</mat-icon>
+            </button>
+          </div>
+          <div>
+            <button mat-icon-button (click)="showAddRequirementForm()" ngbTooltip="Add New Requirement" tooltipClass="tooltip-font-size-md">
+              <mat-icon class="u-mat-icon-grey req-header-button-icon">add</mat-icon>
+            </button>
+          </div>
+          <div>
+            <button mat-icon-button (click)="activateRequirements()" ngbTooltip="Refresh" tooltipClass="tooltip-font-size-md">
+              <mat-icon class="u-mat-icon-grey req-header-button-icon">cached</mat-icon>
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <!-- <div class="m-portlet__head-caption">
+        <div ngbTooltip="{{ requirementsCount }} Requirements(s) associated with this deal"
+          class="m-portlet__head-title">
+          <h3 class="m-portlet__head-text">
+            Requirements
+          </h3>
+          <span matBadge="{{requirementsCount}}" matBadgeSize="medium" matBadgeColor="accent"
+            style="vertical-align: middle;margin-left: 12px;">
+          </span>
+          &nbsp;&nbsp;&nbsp;
+        </div>
+        <div style="padding: 10px; margin-top: 3%">
+          <mat-form-field appearance="outline" floatLabel="always">
+            <input matInput placeholder="search" name="srhreqs" [(ngModel)]="searchText">
+          </mat-form-field>
+        </div>&nbsp;&nbsp;&nbsp;
+        <div>
+          <mat-checkbox name="openchk" [(ngModel)]="openreq" value="ReqOpen">Open
+          </mat-checkbox>&nbsp;&nbsp;&nbsp;
+          <mat-checkbox name="attentionchk" value="ReqAtten" [(ngModel)]="attentionreq">Attention
+          </mat-checkbox>&nbsp;&nbsp;&nbsp;
+          <mat-checkbox name="ReqColse" value="ReqColse" [(ngModel)]="closereq">Closing
+          </mat-checkbox>&nbsp;&nbsp;&nbsp;
+          <mat-checkbox name="ReqHardstop" value="ReqHardstop" [(ngModel)]="hardstopreq">Hardstop
+          </mat-checkbox>
+        </div>
+        <div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a (click)="showAddRequirementForm()" ngbTooltip="Add New Requirement">
+            <mat-icon style=" cursor: pointer;">add_circle_outline</mat-icon>
+          </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a (click)="saveAllRequirements()" ngbTooltip="Save All">
+            <mat-icon style=" cursor: pointer;">check_circle_outline</mat-icon>
+          </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a ngbTooltip="Cancel All" (click)="cancelAllRequirements()">
+            <mat-icon style=" cursor: pointer;">highlight_off</mat-icon>
+          </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a (click)="activateRequirements()" ngbTooltip="Refresh">
+            <mat-icon style=" cursor: pointer;">cached</mat-icon>
+          </a>
+        </div>
+      </div>
+      <div class="m-portlet__head-tools">
+
+      </div> -->
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start stretch" class="u-height-95">
+
+        <div
+        [ngClass]="isSideFormOpen ? 'req-portlet-table-form-right-active requirements-container col-md-6' : 'requirements-container col-md-12'"
+        class="inline-block" style="vertical-align: top">
+        <table class="table table-condensed req-table">
+          <thead>
+            <tr style="color: #4295db;">
+              <th scope="col" fxFlex="5">!</th>
+              <th scope="col" [fxFlex]="(isSideFormOpen) ? '30' : '15'">
+                Related Entity
+                <!-- <a href="" (click)="columnOrderReq='name';reverse=!reverse">Related Entity</a> -->
+              </th>
+              <th scope="col" [fxFlex]="(isSideFormOpen) ? '60' : '25'">
+                <!-- <a href="" (click)="columnOrderReq='type';reverse=!reverse"> Requirement</a> -->
+                Requirement
+              </th>
+              <!--<th></th>-->
+              <!-- <th scope="col"><a href="" (click)="columnOrderReq='dueDate';reverse=!reverse">Due Date</a></th>-->
+              <th scope="col" fxFlex="25" *ngIf="!isSideFormOpen">
+                <!-- <a href="" (click)="columnOrderReq='status';reverse=!reverse">Status</a> -->
+                Status
+              </th>
+              <th scope="col" fxFlex="5" *ngIf="!isSideFormOpen"></th>
+              <th scope="col" fxFlex="5" *ngIf="!isSideFormOpen"></th>
+              <!--<th scope="col" *ngIf="!isSideFormOpen"></th>-->
+              <th scope="col" fxFlex="5" *ngIf="!isSideFormOpen">Action</th>
+              <th scope="col" fxFlex="10">Assign</th>
+            </tr>
+          </thead>
+
+          <tbody data-name="RequirementsPortlet" class="req-portlet-table-nowrap req-table-body">
+            <!-- | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize -->
+            <tr
+              *ngFor="let r of requirements | reqSearch:{assignedTo: searchText, assignedToFullName:searchText,  name: searchText, type:searchText, statusDescription: searchText,totalItems: reqspipe} | showActiveReq:{openreq:openreq, attentionreq:attentionreq, closereq:closereq, hardstopreq:hardstopreq}"
+              name="r.requirementId" [ngClass]="{'selected-requirement': r.isSelected && isSideFormOpen}">
+              <td scope="row" class="req-table-checkbox" fxFlex="5">
+                <mat-checkbox class="" [(ngModel)]="r.isAttention" (change)="r.isDirty=true;">
+                </mat-checkbox>
+              </td>
+              <!--ENTITY-->
+              <td [fxFlex]="((r.showUserDrop || r.showDeferDrop) && (r.ddlActions.selectedItem != 'action')) || (isSideFormOpen) ? '30' : '15'">
+                <div ngbTooltip="{{r.name}}" tooltipClass="tooltip-font-size-md" [disableTooltip]="r.name?.length < 10">
+                  <!-- <md-tooltip *ngIf="r.name.length > 40" md-direction="top">{{r.name}}</md-tooltip> -->
+                  {{r.name| slice: 0:40}} <span *ngIf="r.name?.length > 40">...</span>
+                </div>
+              </td>
+              <!--REQUIREMENT NAME-->
+              <td [fxFlex]="((r.showUserDrop || r.showDeferDrop) && (r.ddlActions.selectedItem != 'action')) || (isSideFormOpen)  ? '60' : '25'">
+                <div>
+                  <a (click)="setSideForm(r); " aria-hidden="false" style="cursor: pointer; text-decoration: none;"
+                    href="javascript:void(0)">
+                    <!-- showAccordionOnReqPortlet(r,'showComments'); createEditCopyCommentQuestion(r); inboxRowSelectF($index); -->
+                    <!-- <md-tooltip *ngIf="r.type.length > 42" md-direction="top">{{r.type}}</md-tooltip> -->
+                    {{r.type | slice: 0:42}} <span *ngIf="r.type?.length > 42">...</span>
+                  </a>
+                </div>
+              </td>
+              <!--REQ STATUS-->
+              <td *ngIf="!isSideFormOpen" fxFlex="25"
+              style="white-space: nowrap">
+                <div>
+                  <span title="Due Soon" *ngIf="r.daysDue==2 && r.complete != true">
+                    <!--{{r.daysDue}}-->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F7CA18"
+                      style="position: relative; top: 4px;">
+                      <path d="M0 0h24v24H0z" fill="none" />
+                      <path
+                        d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                    </svg>
+                  </span>
+                  <span title="Due Immediately" *ngIf="r.daysDue<2 && r.complete != true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#E26A6A"
+                      style="position: relative; top: 4px;">
+                      <path d="M0 0h24v24H0z" fill="none" />
+                      <path
+                        d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                    </svg>
+                  </span>
+                  <span title="Exception" *ngIf="r.exception==true">
+                    <i class="fa fa-exclamation-circle" style="font-size:16px;color:#ffa07a"></i>
+                  </span>
+
+                  <span class="chip chip-text"
+                    [ngClass]="r.statusDescription?.indexOf('Open') >-1 ? 'u-background-red' :
+                                  r.statusDescription?.indexOf('Complete') > -1 ? 'u-background-green' :
+                                  r.statusDescription?.indexOf('Waive') > -1 ? 'u-background-green' :
+                                  r.statusDescription?.indexOf('Approved') > -1 ? 'u-background-green' :
+                                  r.statusDescription?.indexOf('In Process') > -1 ? 'u-background-grey-dark' :
+                                  r.statusDescription?.indexOf('Pending') > -1 ? 'u-background-orange' : 'u-background-orange'">
+                    {{r.statusDescription?docReq?.statusDescription:'Open'}}
+
+                    {{r.statusDescription}}
+                  </span>
+
+
+                </div>
+              </td>
+              <!--DOCUMENT-->
+              <td *ngIf="!isSideFormOpen" fxFlex="5">
+                <mat-icon matBadge="{{r.documentCount}}" matBadgePosition="before" class="req-table-button-paperclip"
+                  [matBadgeHidden]="r.documentCount < 1" [matMenuTriggerFor]="documentMenu" [ngClass]="{'u-mat-icon-green' : r.documentCount > 0 && r.requireDocument == true,
+                                          'u-mat-icon-red' : r.documentCount == 0 && r.requireDocument == true,
+                                          'u-mat-icon-grey' : r.requireDocument == false}" style="cursor: pointer"
+                  (click)="getRequirementDocuments(r.requirementId,r.documentCount)">
+                  attach_file
+                </mat-icon>
+
+                <mat-menu #documentMenu="matMenu" class="doc-menu">
+                  <div class="required-doc u-background-red"
+                    *ngIf="r.documentCount == 0  && r.requireDocument == true">
+                    - {{r.documentDefinitionName}} Document Required
+                  </div>
+                  <mat-list class="req-doc-body">
+                    <mat-list-item *ngFor="let d of r.documents" class="req-doc-list-item">
+                      <mat-icon matListIcon style="margin-bottom: 7px; color: #ffffff; background: #7ec7ff;">
+                        insert_drive_file
+                      </mat-icon>
+                      <div matLine>
+                      <a (click)="downloadDocument(d.id)" style="color: #2195f7; font-size: 12px; cursor: pointer;" [ngStyle]="$first && d.primary == true ? {'font-weight':'bold'} : {}">
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                          <span class="inline-block req-doc-title">
+                            {{ d.documentDefinitionName }}
+                          </span>
+                          <!-- <div > -->
+                            <span style="margin-right: 4px;" *ngIf="d.primary" class="chip">primary</span>
+                          <!-- </div> -->
+                        </div>
+                        <div matLine>
+                          <span>{{d.asOfDate | date:'MM/dd/yyyy'}} ({{d.alternateName}})</span>
+                        </div>
+                      </a>
+                    </div>
+                      <div matLine>
+                        <span class="req-doc-subtitle">Added on
+                          {{d.requirementAttachDate | date:'MM/dd/yyyy hh:mm a'}}</span>
+                      </div>
+                    <button mat-icon-button ngbTooltip="Edit document detail" tooltipClass="tooltip-font-size-md" class="req-doc-button-icon"
+                      (click)="editDocument(d,r);">
+                      <mat-icon matIcon class="u-mat-icon-grey">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button ngbTooltip="Remove" tooltipClass="tooltip-font-size-md" class="req-doc-button-icon"
+                      (click)="removeDocument(d.id, r.requirementId,r)">
+                      <mat-icon matIcon class="u-mat-icon-grey">close</mat-icon>
+                    </button>
+
+                    </mat-list-item>
+
+                  </mat-list>
+
+                  <mat-divider></mat-divider>
+                  <div>
+                    <button mat-flat-button class="req-doc-button-icon-upload" style="float: right"
+                      (click)="showDocumentAdd(r);">
+                      <span style="color: #5cb0f1; margin-right: 20px;">Upload New Document</span>
+                      <mat-icon>cloud_upload</mat-icon>
+                    </button>
+                  </div>
+
+                </mat-menu>
+              </td>
+              <!--QUESTION-->
+              <td *ngIf="!isSideFormOpen" fxFlex="5">
+                <div *ngIf="r.showCompareFlag=='1'">
+                  <div class="inline-block">
+                    <button mat-icon-button (click)="showReqQuestionModal(r)" class="req-table-button-question"
+                      ngbTooltip="Please respond to question/input request" tooltipClass="tooltip-font-size-md">
+                      <mat-icon
+                        [ngClass]="{'u-mat-icon-grey': r.showCompareFlag=='1' && (!r.actualValue) && r.exception != true,
+                                    'u-mat-icon-green': r.actualValue,
+                                    'u-mat-icon-orange': r.exception == true}"
+                        class="u-mat-icon-grey">format_list_bulleted
+                      </mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </td>          
+              <!-- ACTIONS -->
+              <!-- (ngModelChange)="setAssignedTo(r.ddlActions.selectedItem, r, $index);r.isDirty=true; r.editRequirementRow=true;" -->
+              <td *ngIf="!isSideFormOpen" fxFlex="5" style="padding-top: .25rem">
+                  
+                <!-- <requirement-action-menu [requirement]="r" [dealId]="dealId" [assignForm]="assignForm" [deferForm]="deferForm"></requirement-action-menu> -->
+                
+                <div class="inline-block req-table-form-field">
+                  <mat-form-field appearance="outline" floatLabel="always" class="req-mat-form-field">
+                    <mat-select (click)="getStatusDropDown(r);" [(ngModel)]="r.ddlActions.selectedItem"
+                      placeholder="Action"
+                      id="action" name="action">
+                      <mat-option value="action">Action</mat-option>
+                      <!-- [ngbTooltipDisabled]="action.name?.length < 20" -->
+                      <mat-option ngbTooltip="{{action.name}}"
+                        *ngFor="let action of r.stageDrop" [value]="action"
+                         (click)="setAssignedTo(r.ddlActions.selectedItem, r);r.isDirty=true; r.editRequirementRow=true;">
+                        {{action.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+
+               <!-- DROP-DOWN -->
+              <td *ngIf="(r.showDeferDrop && r.ddlActions.selectedItem != 'action') || (r.showUserDrop && r.ddlActions.selectedItem != 'action')" fxFlex="20">
+                <form #deferToForm="ngForm" *ngIf="r.showDeferDrop && r.ddlActions.selectedItem != 'action'" class="inline-block" [ngClass]="{'has-error': !r.deferToStage}">
+                  <mat-form-field appearance="outline" floatLabel="always" class="req-table-form-field-assign req-mat-form-field">
+                    <mat-select placeholder="Defer To" name="deferSelect" #deferSelect="ngModel" required
+                      [(ngModel)]="r.deferToStage" id=""
+                      (ngModelChange)="setDirty(r)">
+                      <mat-option *ngFor="let p of r.deferDrop" [(value)]="p.id">
+                        {{p.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </form>
+                <mat-form-field *ngIf="r.showUserDrop && r.ddlActions.selectedItem != 'action'" appearance="outline" floatLabel="always"
+                class="req-table-form-field-assign req-mat-form-field" (click)="$event.stopPropagation(); false;"
+                name="selectedUserName" ngDefaultControl [(ngModel)]="r.selectedUserName">
+                      <input matInput type="text" [matAutocomplete]="autocomplete"
+                      [placeholder]="r.assignedToFullName == null || r.assignedToFullName == ' ' ? 'Search...' :
+                      r.assignedToFullName "
+                        (ngModelChange)="setDirty(r)"
+                        [(ngModel)]="serachR"
+                        (keydown)="$event.stopPropagation()" (keypress)="validateAssignedUser(r);setDirty(r)">
+                  <mat-autocomplete #autocomplete="matAutocomplete"
+                    [displayWith]="displayFnPerson.bind(this, r)">
+                    <mat-option *ngFor="let dealReq of r.items | searchDocs:{text: serachR}"
+                      (click)="selectAssignedToUser(dealReq, r);" [(value)]="dealReq.id"
+                      style="cursor: pointer; margin: 6px; height: 38px;font-size: 14px;" [disabled]="false">
+                      <span ngbTooltip="{{dealReq.text}}" ngbTooltipPosition="before">
+                       {{dealReq.text}}
+                      </span>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </td>
+
+
+
+              <!-- ASSIGNEE -->
+              <td fxFlex="10" style="padding: 0.4rem 0.75rem">
+                    <div>
+                      <div *ngIf="r.assignedToFullName?.length > 1 && r.currentUserProfile?.userProfileURL">
+                        <img ngbTooltip="{{r.assignedToFullName}}" tooltipClass="tooltip-font-size-md" class="avatar"
+                          [src]="r.currentUserProfile?.userProfileURL" />
+                        <span *ngIf="mediaQuery.matches" style="padding: 10px">{{r.assignedTo}}</span>
+                      </div>
+                      <div *ngIf="r.assignedToFullName?.length > 1 && !r.currentUserProfile?.userProfileURL">
+                        <mat-icon ngbTooltip="{{r.assignedToFullName}}" tooltipClass="tooltip-font-size-md" class="u-mat-icon-grey-light"
+                          style="position: relative; top: 5px">account_circle
+                        </mat-icon>
+                        <span *ngIf="mediaQuery.matches" style="padding: 10px">{{r.assignedTo}}</span>
+                      </div>
+                    </div>
+
+                    <!-- SAVE / CANCEL BUTTONS -->
+                    <div *ngIf="(!isSideFormOpen || r.editRequirementRow) && r.ddlActions.selectedItem != 'action'"
+                      class="req-table-button-save-cancel">
+                      <button *ngIf="r.isDirty" mat-icon-button class="u-background-red req-table-button-cancel"
+                        (click)="cancelReqPortletRow(r);">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                      <button *ngIf="r.isDirty && r.ddlActions.selectedItem != 'action'"
+                        [disabled]="(r.assignedToFullName == ' ' && r.showUserDrop) || (!r.deferToStage && r.showDeferDrop)"
+                        mat-icon-button class="req-table-button-save"
+                        (click)="(r.showDeferDrop && !r.deferToStage)||(r.showUserDrop && (!r.assignedTo || r.assigneToReq)) || saveRequirement(r)"
+                        ng-disabled="(r.showDeferDrop && !r.deferToStage) || (r.showUserDrop && (!r.assignedTo || r.assigneToReq))">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                    </div>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div *ngIf="isSideFormOpen" class="sideform col-md-6 inline-block border-left">
+        <!-- [stageHis]="stageHistory" -->
+
+        <requirement-details [requirement]="selectedRequirement" [dealId]="currentDeal.dealId" [stageHistory]="stageHistory" (onCloseRequirementForm)="onCloseRequirementForm(event)" (onRequirementUpdate)="onRequirementUpdate($event)"></requirement-details>
+        <!-- <requirement-sideform [requirement]="selectedRequirement" [deal]="currentDeal" style="width:100%"
+          (closeRequirementSideForm)="closeRequirementSideForm($event)" [stageHis]="stageHistory"
+          (onRequirementUpdate)="onRequirementUpdate($event)">
+        </requirement-sideform> -->
+      </div>
+
+
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start end" class="u-height-5">
+      <mat-paginator [length]="maxpagesize" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="getRequirementListByPage($event)">
+    </mat-paginator>
+    </div>
+    <!-- <div class="row col-md-12">
+      <simon-pagination [pagination]="currentPageFilter" (onChange)="onPageChange($event)"></simon-pagination>
+    </div> -->
+  </div>
+</div>

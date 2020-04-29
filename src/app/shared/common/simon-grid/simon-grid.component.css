@@ -1,0 +1,228 @@
+.grid-container {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto';
+}
+
+.jqx-grid {
+  height: 94vh !important;
+}
+
+.jqx-widget-content {
+  font-family: 'Roboto';
+}
+
+.jqx-widget-header {
+  font-weight: 500;
+  border: none;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.jqx-grid-column-header,
+.jqx-grid-columngroup-header {
+  border: none;
+  /* margin: 0px 12px; */
+  /* min-width: fit-content !important ; */
+}
+
+.jqx-grid-column-menubutton {
+  border: none;
+}
+
+.jqx-grid-cell-sort-alt {
+  background-color: #fafafa;
+}
+
+.jqx-grid-cell-sort {
+  background-color: #fafafa;
+}
+
+.jqx-grid-cell-alt:nth-child(n+2) {
+  background: #fff;
+}
+
+.jqx-grid-cell {
+  border-left: none;
+  border-right: none;
+  display: flex;
+  align-items: center;
+}
+
+.jqx-menu-vertical {
+  background-color: #fafafa;
+  height: auto !important;
+}
+
+.jqx-grid-cell-pinned {
+  background-color: #fff;
+}
+
+.jqx-grid-pager {
+  top: 89vh !important;
+}
+
+  .jqx-grid-pager .jqx-button {
+    box-sizing: content-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-appearance: unset;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+.jqx-fill-state-normal {
+  font-family: 'Roboto';
+  background: #fff;
+}
+
+#messages {
+  margin-top: -0.7vh;
+}
+
+  #messages button {
+    margin: 8px 4px;
+    z-index: 9999;
+  }
+
+@media (max-width: 480px) {
+  #messages {
+    margin-top: 0vh;
+  }
+
+  .jqx-grid-pager {
+    top: 88vh !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 960px) and (orientation: landscape) {
+  #messages {
+    margin-top: 0vh;
+  }
+
+  .jqx-grid-pager {
+    top: 84vh !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 960px) {
+  #messages {
+    margin-top: 0vh;
+  }
+
+  .jqx-grid-pager {
+    top: 90vh !important;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 1268px) and (orientation: landscape) {
+  #messages {
+    margin-top: 0vh;
+  }
+}
+
+.data-table {
+  padding: 15px;
+  font-weight: 400;
+}
+
+.dealids:hover {
+  text-decoration: underline;
+}
+
+.table-head {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+  .deallink:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #639ed1 !important;
+  }
+  .deallink {
+    color: #639ed1 !important;
+  }
+
+  .search-bar{
+    background-color: #fff;
+      margin: 10px 8px 8px 8px;
+      padding: 10px 5px;
+      box-shadow: 0px 0.5px 3px 2px rgba(0, 0, 0 , 0.26);
+      border-radius: 4px;
+  }
+
+  
+.workspaceInboxSearch {
+  font-size: 14px;
+  font-weight: normal;
+  color: #333;
+  background-color: transparent;
+  border-bottom: 1px solid #e7e7e7;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  width: 100%;
+  min-width: 1140px;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+}
+.workspaceInboxSearch:focus{
+  outline: none;
+}
+
+.ui-paginator {
+  text-align: left !important;
+  margin: 10px;
+  width: 300px;
+  border: none !important;
+
+}
+.mat-paginator-outer-container {
+  display: inline-block !important;
+}
+
+.inbox-header-search {
+  background: #e0e0e0;
+  padding: 1rem;
+  height: 30px;
+  border-radius: 25px;
+  width: 200px
+}
+
+.inbox-header-search:focus {
+  background: #e0e0e0;
+  border-color: transparent;
+}
+
+.inbox-header > * {
+  display: inline-block;
+}
+
+.inbox-header-title {
+  font-size: 24px;
+  font-weight: 400;
+  font-family: 'Roboto';
+  color: #5e5e5e
+}
+
+.inbox-header-row {
+  position: fixed;
+  top: 45px;
+  padding: 1rem;
+  background: #fff;
+  width: 100%
+}
+
+.inbox-table-container {
+  max-height: calc(100vh - 15rem);
+  font-family: 'Roboto';
+  padding: 0.5rem;
+}
+
+table > tbody > tr:first-child > th > a {
+  text-transform: none;
+}
+
+table > tbody > tr:first-child > th {
+  border-top: none;
+}

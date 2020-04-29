@@ -1,0 +1,20 @@
+tbody.doc-tbody {
+  font-family: 'Roboto'
+}
+
+table td {
+  vertical-align: middle;
+}
+
+.doc-header-button-export {
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #34bfa3;
+  color: #fff;
+  padding: 0 5rem
+}
+

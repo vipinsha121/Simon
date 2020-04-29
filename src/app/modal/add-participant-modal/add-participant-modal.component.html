@@ -1,0 +1,67 @@
+<div>
+
+  <div class="modal-header">
+    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <h4>{{title}}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="addParticipantForm" class="u-padding-large u-padding-standard">
+      <div class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="50">Search participant: </mat-label>
+            <mat-form-field fxFlex="50" appearance="outline" floatLabel="always">
+              <input matInput #searchParticipant [matAutocomplete]="participantsList"
+                formControlName="selectedParticipant" [(ngModel)]="selectedParticipant" name="selectedParticipant"
+                placeholder="Search participant" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnPerson.bind(this)"
+              (optionSelected)="isValidParticipant($event.option.value)" #participantsList="matAutocomplete">
+              <mat-option *ngFor="let participant of filteredParticipants | async" [value]="participant.id">
+                {{ participant.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="50">Select participation: </mat-label>
+            <mat-form-field fxFlex="50" appearance="outline" floatLabel="always">
+              <mat-select formControlName="participationId" placeholder="Select Participation"
+                [(ngModel)]="participation" name="participationId">
+                <mat-option *ngFor="let participation of internalParticipation" [value]="participation.id">
+                  {{participation.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-4" fxLayout="row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Interim user: </mat-label>
+            <mat-checkbox name="interimUser" formControlName="interimUser" [(ngModel)]="interimUser"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer" style="position: initial;">
+    <div class="spinner-border text-success" role="status" *ngIf="isLoading">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+    <button type="button" [disabled]="isLoading || addParticipantForm.invalid || !isValid"
+      class="btn btn-primary"
+      (click)="addParticipant()">Save</button>
+  </div>
+</div>

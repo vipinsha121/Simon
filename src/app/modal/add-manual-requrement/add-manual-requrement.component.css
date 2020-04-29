@@ -1,0 +1,81 @@
+.mat-select-panel:not([class*='mat-elevation-z']) {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    /* margin-top: 41px; */
+}
+
+.fixed {
+    z-index: 100;
+    width: 100%;
+    padding: 5px
+}
+
+.fixed > * {
+  display: inline-block;
+}
+
+.fixed > input {
+  width: 80%
+}
+
+.fixed > button {
+  float: right;
+  height: 39px;
+  background: #E0E0E0
+}
+
+mat-form-field > div.mat-form-field-wrapper > div.mat-form-field-flex > div.mat-form-field-infix > span.mat-form-field-label-wrapper > label > mat-label {
+  font-weight: 300;
+  font-size: 14px;
+}
+
+input {
+  width: 50%;
+}
+
+.mat-select-panel mat-option.mat-option {
+  height: unset;
+}
+
+.mat-select-value-text {
+  white-space: normal;
+}
+
+.add-req-button-save {
+  float: right;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  text-transform: uppercase;
+  background: #34bfa3;
+  color: #fff;
+  margin: 1.5rem 0rem 0.5rem 0px
+}
+
+.add-req-button-cancel {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  background: rgb(167, 167, 167);
+  color: #fff;
+  margin: 1.5rem 0rem 0.5rem 0px
+}
+
+.actions-container {
+  padding: 10px 0px;
+  position: absolute;
+  display: block;
+  top: 99.5%;
+  min-width: 640px !important;
+  width: 645px !important;
+  max-width: 720px !important;
+  border-radius: 4px;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  background: #fff;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.actions-container button {
+  float: right;
+}

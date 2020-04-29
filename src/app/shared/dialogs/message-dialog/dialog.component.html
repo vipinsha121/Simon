@@ -1,0 +1,102 @@
+<ng-container *ngIf="dialogVisible">
+  <div
+    id="LeaveMsg"
+    class="modal-content modal-content-width dailogBox">
+    <div class="upper-layer" >
+      <div class="middle-layer">
+   
+        <div class="modal-body modal-padd">
+          <button type="button" class="close" data-dismiss="modal" (click)="dialogVisible = false">
+            &times;
+          </button>
+        <div>
+          <div class="bellTag">
+            <div *ngIf="messagepopup.type=='notification'">
+                <p class="text-left"><i class="fa fa-bell pr-1" aria-hidden="true"></i> <strong class="pr-1">Alerts</strong> Alerts Details</p>
+
+            </div>
+          </div>
+      
+        </div>
+        <div class="msgnotify" style="text-align: left;padding-left: 7px; ">
+            <p *ngIf="messagepopup.type=='notification'"></p>
+            <p *ngIf="messagepopup.type!='notification'"></p>
+            <div class="d-flex1" *ngIf="messagepopup.type=='notification'">
+          <span class="alertTimestamp" style="border-radius: 6px; padding-right: 304px; color: black;font-weight: 100;font-size: 12px;">{{messagepopup.createdDate | date: 'dd/MM/yyyy h:mm:ss a'}} </span>
+          <p *ngIf="messagepopup.type =='notification'">{{messagepopup.subject}}</p>
+          <span *ngIf="messagepopup.type =='message'" style="color: #a08cda;font-size:20px">{{messagepopup.subject}}</span>
+          <hr *ngIf="messagepopup.type == 'message'"/>
+          <div *ngIf="messagepopup.type == 'notification'">
+              <span>{{messagepopup.plainContent}}</span>
+            </div>
+        </div >
+        
+        <div class="d-flex2" *ngIf="messagepopup.type!='notification'">
+            
+            <span class="about" style="font-size: 20px;
+            position: relative;
+            color: #a89cca;
+            font-family: roboto;
+            padding-right: 223px;
+            text-transform: uppercase;
+            margin-bottom: 5px;"><strong>{{messagepopup.subject}}</strong></span>
+        </div>
+        <div *ngIf="messagepopup.type!='notification'" style="margin-right: 242px;">  
+          <span *ngIf="messagepopup.type=='message'"><span>Borrower : </span>{{messagepopup.dealPrimaryPartyName}}</span>
+        </div>
+            <hr *ngIf="messagepopup.type == 'message'"/>
+            <div class="d-flex3">
+          <div>
+                  <!-- <p *ngIf="messagepopup.type=='notification'"></p> -->
+                  <p *ngIf="messagepopup.type!='notification'"></p>
+                  <span style="margin-right:326px;"><strong>{{messagepopup.author}}</strong></span>
+                  <span class="alertTimestamp" *ngIf="messagepopup.type=='message'" style="font-size: 11px;position: absolute;right: 25px;">{{messagepopup.createdDate | date: 'dd/MM/yyyy h:mm:ss a'}}</span>
+          </div>             
+          <br />
+            <div *ngIf="messagepopup.type == 'message'">
+                <span style="margin-right: 275px;">{{messagepopup.plainContent}}</span>
+              </div>
+          </div>
+          <p *ngIf="messagepopup.type=='notification'"></p>
+            <div *ngIf="messagepopup.type!='message'" style="padding-right: 293px;">
+              <!-- clear and close button for notifiication -->
+            <div class="d-flex">
+              <div class="action-btn ">
+                <a class=" btn-s bg-primary mr-2" style="border:none;border-bottom:none;padding: 4px 18px;background:#4295db!important;font-size: 14px!important;border-radius: 4px; bottom: -4px; " (click)="dialogVisible = false">Close</a>
+              </div>
+​
+              <div class="action-btn"(click)="dialogVisible = false">
+                <a class=" btn-s bg-secondary" style="border:none;border-bottom:none;padding: 4px 8px;background:#a0a0a0!important;font-size: 14px!important;border-radius: 4px;bottom: -4px; " (click)="postMarkAlertAsRead(messagepopup.notifyresultid_05)">Clear</a>
+              </div>
+            </div>
+         
+          </div>
+        </div>
+          <br/>
+          <div *ngIf="messagepopup.type=='notification'"></div>
+          <div *ngIf="messagepopup.type!='notification'">
+          <form *ngIf="messagepopup.type=='message'" style="background: #e9eff3;padding: 20px 16px;">            
+            <div class="group">               
+              <textarea placeholder="Write a message..." (input)="str = $event.target.value" id="data" style="width: 400px;border:1px solid #e7e7e7;border-radius: 6px !important;"></textarea>               
+          
+                <div class="d-flex">
+                  <div class="action-btn ">
+                    <a class=" btn-s bg-primary mr-2" style="border:none;border-bottom:none;padding: 4px 18px;background:#4295db!important;font-size: 14px!important;border-radius: 4px; bottom: -4px; " (click)="saveMessage() ">send reply</a>
+                  </div>
+
+                  <div class="action-btn"(click)="dialogVisible = false">
+                    <a class=" btn-s bg-secondary" style="border:none;border-bottom:none;padding: 4px 8px;background:#a0a0a0!important;font-size: 14px!important;border-radius: 4px;bottom: -4px; ">close</a>
+                  </div>
+                </div>
+              </div>          
+          </form>
+  
+        </div>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="dialogVisible" class="overlay" (click)="dialogVisible = false"></div>
+</ng-container>
+

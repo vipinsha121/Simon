@@ -1,0 +1,203 @@
+.Doc-name:hover {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+  tr.req-list-row {
+    height: 50px;
+  }
+
+  tr.req-list-row > td > div > p {
+    margin: 0px;
+  }
+
+  .table.req-list-table th, .table.req-list-table td {
+    vertical-align: middle;
+  }
+
+  table.req-list-table {
+    font-size: 13px;
+    width: 100%;
+  }
+
+  td.border-none {
+    border-top: 0px;
+  }
+
+  .req-list-container {
+    padding: 0rem 2rem 2rem 2rem;
+  }
+
+  .portlet-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 1px;
+    position: relative;
+  }
+
+  .portlet-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0 30px;
+    z-index: 0;
+  }
+
+  .req-list-body {
+    height: 100%;
+    overflow-y: auto;
+    padding: 2rem 2rem 2rem 1rem
+  }
+
+  .req-list-body::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  .req-list-body::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.26);
+  }
+
+  ::ng-deep mat-form-field.req-form-field {
+    width: 100%;
+  }
+
+  .mat-menu-panel.doc-menu {
+    width: 400px;
+  }
+
+  .doc-menu {
+    min-width: 400px !important;
+    overflow-x: hidden;
+  }
+
+  .doc-menu-add {
+    padding: 10px 10px 10px 20px;
+    background: #f5f5f5;
+    cursor: pointer
+  }
+
+  .doc-menu-add:hover {
+    background:#bdbdbd;
+    color: #fff
+  }
+
+  .doc-menu-date-attach {
+    font-size: 10px;
+    padding-left: 10px;
+    padding-top: 1px;
+  }
+
+
+  .req-list-button-save {
+    float: right;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    text-transform: uppercase;
+    background: #34bfa3;
+    color: #fff;
+    margin: 1.5rem 1.5rem 1.5rem 0px
+  }
+
+  .req-list-button-cancel {
+    float: right;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-transform: uppercase;
+    background: rgb(167, 167, 167);
+    color: #fff;
+    margin: 1.5rem
+  }
+
+  .badge {
+    position: relative !important;
+  }
+
+  .papeclip-button {
+    margin-top: -10px;
+  }
+
+  .required-doc {
+    padding: 12px;
+    border-radius: 5px;
+    margin: 4px;
+  }
+
+  .req-list-status {
+    .req-list-status-sub-ad {
+      float: right;
+      position: relative;
+    }
+  }
+
+  .req-list-status-sub-ad {
+    span:first-child {
+      display: block;
+      color: #34bfa3;
+      font-weight: 500;
+      font-family: 'Roboto';
+    }
+    span:last-child {
+      font-size: 11px
+    }
+  }
+
+  .req-list-status-sub {
+      color: #34bfa3;
+      font-weight: 500;
+      font-family: 'Roboto';
+      float: right;
+      position: relative;
+    }
+
+.req-list-status-button-container {
+  min-width: 70px;
+  position: relative;
+  bottom: 5px;
+}
+
+.req-list-status-button-save {
+  mat-icon {
+    color: #fff
+  }
+}
+
+.req-list-status-button-save {
+  float: right;
+  background: #34bfa3;
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  position: relative;
+  top: 5px;
+}
+
+.req-list-status-button-cancel {
+  float: right;
+  background: #f1f1f1;
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  position: relative;
+  top: 5px;
+}
+.req-doc-input {
+  width: 100%;
+  margin-top: 11px;
+}
+
+.req-doc-input>input {
+  height: 35px;
+  border-radius: 20px;
+}
+
+.req-list-button-ok {
+  float: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+  background: rgb(167, 167, 167);
+  color: #fff;
+  margin: 1.5rem
+}

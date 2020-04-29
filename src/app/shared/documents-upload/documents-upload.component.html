@@ -1,0 +1,40 @@
+<mat-card style="width: 416px;">
+     <div class="modal-button-close">
+        <mat-icon class="u-mat-icon-grey" (click)="activeModal.dismiss()">close</mat-icon>
+      </div>
+    <div  class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+        <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" multiple >
+
+    </div>
+    <div *ngFor="let file of files; let i = index;">
+      <div style="margin: 10px;" class="row">
+          <p style="width: 211px;">{{file.name}} - {{file.size}} kb</p>
+          <a  style="color: #f44336; margin-left: 114px; cursor: pointer;" (click)="removeDocument(i)">
+            <mat-icon>cancel</mat-icon>
+          </a>
+      </div>
+      <!-- <app-loader></app-loader> -->
+    </div>
+    <div  style="color: green">{{successMessage}}</div>
+    <div class="basic-container">
+        <!--<app-loader></app-loader>-->
+    </div>
+
+    <div style=" margin: 10px;" class="row" *ngFor="let file of files; let i = index;">
+      <p style="    width: 211px;">{{file.name}} - {{file.size}} kb</p>
+      <a  style="color: #f44336; margin-left: 114px; cursor: pointer;" (click)="removeDocument(i)">
+        <mat-icon>cancel</mat-icon>
+      </a>
+    </div>
+    <div style="color: green">{{uploadedPercentage}}</div>
+    <mat-progress-bar
+    [value]="30"
+    [bufferValue]="uploadedPercentage">{{uploadedPercentage}}</mat-progress-bar>
+
+
+    <button mat-raised-button style="margin-top: 10px;" (click)="fileInput.click()">Browse Files</button>
+    <button mat-raised-button style="margin-left: 9px;" (click)="postUploadedFiles()" [disabled]="files == '' || disableButton == true">
+      <mat-icon  style="vertical-align: middle;">cloud_upload</mat-icon>
+      Start Upload</button>
+
+</mat-card>

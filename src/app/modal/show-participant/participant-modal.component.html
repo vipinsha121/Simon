@@ -1,0 +1,85 @@
+<div>
+  ​
+    <div class="modal-header">
+      <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <h4>{{title}}</h4>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <div fxLayout="row">
+            <mat-icon matTooltip="Add new" matTooltipPosition="above" (click)="addParticipantPerson()">person_add
+            </mat-icon>
+            <mat-icon matTooltip="Edit primary role" (click)="editParticipantRole()" *ngIf="title == 'Internal Participants'" matTooltipPosition="above" >edit
+            </mat-icon>
+            <!-- <mat-icon matTooltip="Add new" (click)="openAddExternalParticipantModal()" matTooltipPosition="above"
+              *ngIf="title == 'External Participants'">
+              add_circle_outline</mat-icon> -->
+            <mat-icon id="closeModal" (click)="activeModal.dismiss()">close</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  ​
+    <div class="modal-body">
+      <div fxLayout="column" fxLayoutAlign="space-between">
+        <div class="participant" *ngFor="let participant of participants" fxLayout="row">
+          <!-- Participant image -->
+          <div class="avatarContainer" fxLayout="row" fxFlex="30">
+              <div class="avatar">
+  ​
+              </div>
+          </div>
+          <!-- Participant details -->
+          <div fxFlex="60" fxLayout="column">
+            <div fxLayout="row">
+              {{participant.personName}}
+              <span *ngIf="participant.outOfOffice"> (out)</span>
+              <span *ngIf="participant.interimUser"> (backup)</span>
+            </div>
+            <div fxLayout="row">
+              <span>{{participant.participation}}</span>
+              <span *ngIf="participant.participation =='Officer' "> | NMLS {{participant.nmls}}</span>
+            </div>
+            <div fxLayout="row">
+              {{participant.branchName}}
+            </div>
+          </div>
+          <!-- Delete Participant -->
+          <div fxFlex="10" fxLayout="column"  *ngIf="participant.participation !=='Officer'">
+            <mat-icon (click)="openParticipantDeleteModal(participant,'internal')">cancel</mat-icon>
+          </div>
+        </div>
+  ​
+        
+        <div class="participant" *ngFor="let participant of externalParticipants" fxLayout="row">
+          <!-- Participant image -->
+          <div class="avatarContainer" fxLayout="row" fxFlex="30">
+              <div class="avatar">
+  ​
+              </div>
+          </div>
+  ​
+             <!-- Participant details -->
+        <div fxFlex="60" fxLayout="column">
+            <div fxLayout="row">
+              {{participant.company}}
+              <!-- <span *ngIf="participant.outOfOffice"> (out)</span>
+              <span *ngIf="participant.interimUser"> (backup)</span> -->
+            </div>
+            <div fxLayout="row">
+              <span>{{participant.name}} - {{participant.role}}</span>
+              <!-- <span *ngIf="participant.participation =='officer' "> | NMLS {{p.nmls}}</span> -->
+            </div>
+            <div fxLayout="row">
+              {{participant.phone}}
+            </div>
+          </div>
+          <!-- Delete Participant -->
+          <div fxFlex="10" fxLayout="column">
+            <mat-icon (click)="openParticipantDeleteModal(participant,'external')">cancel</mat-icon>
+          </div>
+      </div>
+  ​
+      </div>
+    </div>
+  </div>

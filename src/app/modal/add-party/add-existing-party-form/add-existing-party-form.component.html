@@ -1,0 +1,76 @@
+<div>
+    <div class="modal-header">
+      <div class="modal-title">
+        {{ party?.type === 'I' ? 'Select Role' : 'Select Type/Role'}}
+      </div>
+      <div class="modal-button-close">
+        <mat-icon class="u-mat-icon-grey" (click)="activeModal.dismiss()">close</mat-icon>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!--<app-loader></app-loader>-->
+        <form *ngIf="party?.type === 'I'" [formGroup]="partyDetailForm">
+            <div fxLayout="row" fxLayoutAlign="start stretch">
+                <div class="party-detail-body">
+                    <div style="margin-bottom: 16px" fxLayout="row">
+                      <span style="text-transform: uppercase;font-weight: 500;">Party - {{party.firstName}}
+                        {{party.middleName}} {{party.lastName}}</span>
+                    </div>
+                    <div fxLayout="row" class="edit-row">
+                        <mat-form-field appearance="outline" style="padding-right: 10px" floatLabel="always" fxFlex="100"
+                        [hidden]="IsOpenFromAddParty == false">
+                          <mat-label>Role</mat-label>
+                          <mat-select placeholder="Select" formControlName="role" name="role" [disabled]="party.primary == true"
+                                      [(ngModel)]="party.participation">
+                              <mat-option>None</mat-option>
+                              <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                          </mat-select>
+                          <mat-error>Please Select Role</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" class="cancel" (click)="activeModal.dismiss()" mat-flat-button>Cancel</button>
+                <button [disabled]="partyDetailForm.invalid" type="submit" class="save" (click)="saveParty(party)" mat-flat-button>Save</button>
+            </div>
+        </form>
+        <form *ngIf="party?.type === 'C'" [formGroup]="partyDetailFormCompany">
+            <div fxLayout="row" fxLayoutAlign="start stretch">
+                <div class="party-detail-body">
+                    <div style="margin-bottom: 16px" fxLayout="row">
+                      <span style="text-transform: uppercase;font-weight: 500;">Party - {{party.name}}</span>
+                    </div>
+                    <div fxLayout="row" class="edit-row">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>Entity Type</mat-label>
+                            <mat-select placeholder="Select" formControlName="type"
+                              [(ngModel)]="party.entityTypeCode">
+                              <mat-option>None</mat-option>
+                              <mat-option *ngFor="let entity of entityType" [value]="entity.id">{{entity.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>Please Select Entity Type</mat-error>
+                          </mat-form-field>
+                    </div>
+                    <div fxLayout="row" class="edit-row">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>Role</mat-label>
+                            <mat-select placeholder="Select" formControlName="role" name="role" [disabled]="party.primary == true"
+                                [(ngModel)]="party.participation">
+                              <mat-option>None</mat-option>
+                              <mat-option *ngFor="let role of roleType" [value]="role.id">{{role.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>Please Select Role</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+            <div  fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" class="cancel" (click)="activeModal.dismiss()" mat-flat-button>Cancel</button>
+                <button [disabled]="partyDetailFormCompany.invalid" type="submit" class="save" (click)="saveParty(party)" mat-flat-button>Save</button>
+
+            </div>
+        </form>
+    </div>
+</div>

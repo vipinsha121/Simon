@@ -1,0 +1,121 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <!-- {{title}} -->
+    </h4>
+    
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+    <div #divParty *ngIf="partyData">
+      <h4 style="color:cornflowerblue"><i style="color:cornflowerblue" class="fa fa-briefcase"></i>&nbsp; Party
+        {{partycount}}</h4>
+      <div class="row" style=" border-bottom : 1px solid gray">
+        <div class="col-xl-2 col-md-2"><b>Open</b></div>
+        <div class="col-xl-2 col-md-2"> <b>Role</b></div>
+        <div class="col-xl-2 col-md-2"><b>Name</b></div>
+        <div class="col-xl-2 col-md-2"><b>Type</b></div>
+        <div class="col-xl-2 col-md-2"><b>TIN</b></div>
+      </div>
+      <div class="row" *ngFor="let deal of partyData" style=" border-bottom : 1px solid gray">
+        <div class="col-xl-2 col-md-2">{{deal.OpenRequirements}}</div>
+        <div class="col-xl-2 col-md-2">{{deal.Role}}</div>
+        <div class="col-xl-2 col-md-2">{{deal.Name}}</div>
+        <div class="col-xl-2 col-md-2">{{deal.Type}}</div>
+        <div class="col-xl-2 col-md-2">{{deal.Tin}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div #divLoan *ngIf="loanData">
+    <h4 style="color:cornflowerblue"><i style="color:cornflowerblue" class="fa fa-briefcase"></i>&nbsp; Loan
+      {{loancount}}</h4>
+    <div class="row" style=" border-bottom : 1px solid gray">
+      <div class="col-xl-2 col-md-2"><b>Open</b></div>
+      <div class="col-xl-2 col-md-2"><b>ID</b></div>
+      <div class="col-xl-2 col-md-2"><b>Type</b></div>
+      <div class="col-xl-2 col-md-2"><b>Product</b></div>
+      <div class="col-xl-2 col-md-2"><b>Description</b></div>
+      <div class="col-xl-2 col-md-2"><b>Amount</b></div>
+    </div>
+    <div class="row" *ngFor="let loan of loanData" style=" border-bottom : 1px solid gray">
+      <div class="col-xl-2 col-md-2">{{loan.OpenRequirements}}</div>
+      <div class="col-xl-2 col-md-2">{{loan.Id}}</div>
+      <div class="col-xl-2 col-md-2">{{loan.RequestTypeDescription}}</div>
+      <div class="col-xl-2 col-md-2">{{loan.ProductName}}</div>
+      <div class="col-xl-2 col-md-2">{{loan.Description}}</div>
+      <div class="col-xl-2 col-md-2">{{loan.Amount}}</div>
+    </div>
+  </div>
+  <div class="row"> &nbsp;</div>
+  <div #divCollateral *ngIf="collateralData">
+    <h4 style="color:cornflowerblue"><i style="color:cornflowerblue" class="fa fa-briefcase"></i>&nbsp; Collateral
+      {{collateralcount}}</h4>
+    <div class="row" style=" border-bottom : 1px solid gray">
+      <div class="col-xl-2 col-md-2"><b>Open</b></div>
+      <div class="col-xl-2 col-md-2"><b>Group</b></div>
+      <div class="col-xl-2 col-md-2"><b>Category</b></div>
+      <div class="col-xl-2 col-md-2"><b>Description</b></div>
+    </div>
+    <div class="row" *ngFor="let coll of collateralData" style=" border-bottom : 1px solid gray">
+      <div class="col-xl-2 col-md-2">{{coll.OpenRequirements}}</div>
+      <div class="col-xl-2 col-md-2">{{coll.Group}}</div>
+      <div class="col-xl-2 col-md-2">{{coll.Category}}</div>
+      <div class="col-xl-4 col-md-4">{{coll.Description}}</div>
+    </div>
+
+  </div>
+
+  <div class="row">&nbsp;</div>
+  <div #divProcess *ngIf="processes">
+    <div class="row" style=" border-bottom : 1px solid gray">
+      <div class="col-lg-3 col-xl-3 col-md-3"><b>Related Entity</b></div>
+      <div class="col-lg-6 col-xl-6 col-md-6"><b>Type</b></div>
+      <div class="col-lg-3 col-xl-3 col-md-3"><b>Status</b></div>
+    </div>
+    <div class="row" style=" border-bottom : 1px solid gray"
+      *ngFor="let r of processes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+      <div class="col-lg-3 col-xl-3 col-md-3">
+        <h5>{{r.Name}}</h5>
+      </div>
+      <div class="col-lg-6 col-xl-6 col-md-6">
+        <h5>{{r.Type}}</h5>
+      </div>
+      <div class="col-lg-3 col-xl-3 col-md-3">
+        <h5>
+
+          <span title="Due Soon" *ngIf="r.DaysDue==2">
+            <i class="fa fa-hourglass-half" style="font-size:16px;color:#F7CA18"></i>
+          </span>
+          <span title="Due Immediately" *ngIf="r.DaysDue<2">
+            <i class="fa fa-hourglass-end" style="font-size:16px;color:#E26A6A"></i>
+          </span>
+          <span title="Exception" *ngIf="r.Exception==true">
+            <i class="fa fa-exclamation-circle" style="font-size:16px;color:#ffa07a"></i>
+          </span>
+
+          <span [ngClass]="r.StatusDescription.indexOf('Open') >
+-1 ? 'reqStatusOpen' :
+r.StatusDescription.indexOf('Complete') > -1 ? 'reqStatusComplete' :
+r.StatusDescription.indexOf('Waive') > -1 ? 'reqStatusComplete' :
+r.StatusDescription.indexOf('Approved') > -1 ? 'reqStatusComplete' :
+r.StatusDescription.indexOf('In Process') > -1 ? 'reqStatusInProcess' :
+r.StatusDescription.indexOf('Pending') > -1 ? 'reqStatusPending' : 'reqStatusOther'">
+
+            {{r.StatusDescription?'':'Open'}}
+
+            {{r.StatusDescription}}
+          </span>
+        </h5>
+      </div>
+    </div>
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="processes.length">
+    </ngb-pagination>
+  </div>
+  <div class="modal-footer">
+
+  </div>
+</div>

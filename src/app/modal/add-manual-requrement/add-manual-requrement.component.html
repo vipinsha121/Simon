@@ -1,0 +1,61 @@
+<div>
+  <mat-card>
+    <div style="margin-bottom: 15px">
+      <mat-label style="color: #47bfa8;">
+        ADD NEW REQUIREMENT
+      </mat-label>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-form-field appearance="fill" fxFlex="95">
+        <mat-label>Entity</mat-label>
+        <mat-select>
+          <mat-option (click)="dealRequirement = []; ShowDealRequirement = false">Select Entity</mat-option>
+          <mat-option (click)="getRequirements(entity, entity.reqEntityType)" *ngFor="let entity of Entities"
+            [value]="entity.id">{{entity.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="ShowDealRequirement == true">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-form-field appearance="fill" fxFlex="95">
+          <mat-label *ngIf="SelectedEntity.reqEntityType=='dl'">Select Deal Requirement:</mat-label>
+          <mat-label *ngIf="SelectedEntity.reqEntityType=='pa'">Select Party Requirement:</mat-label>
+          <mat-label *ngIf="SelectedEntity.reqEntityType=='co'">Select Collateral Requirement:</mat-label>
+          <mat-label *ngIf="SelectedEntity.reqEntityType=='lo'">Select Loan Requirement:</mat-label>
+          <mat-select [disabled]="!ShowDealRequirement == true" [(ngModel)]="SelectedDealRequirement" [multiple]="true"
+            (ngModelChange)="onSelectedOptionsChange($event)" #mySelect>
+
+            <ngx-mat-select-search [(ngModel)]="searchReqs" [placeholderLabel]="'Search...'" [noEntriesFoundLabel]="''">
+            </ngx-mat-select-search>
+            <mat-option *ngFor="let dealReq of dealRequirement | searchDocs:{description: searchReqs, name: searchReqs}"
+              [value]="dealReq">
+              {{dealReq.name}}
+            </mat-option>
+            <div class="actions-container">
+              <button mat-flat-button (click)="this.mySelect.close();">Ok</button>
+              <button mat-flat-button (click)="SelectedDealRequirement = ''; searchReqs = '';">Clear</button>
+            </div>
+          </mat-select>
+        </mat-form-field>
+
+        </div>
+         <mat-divider></mat-divider>
+         <div style="display: flex; justify-content: space-between;">
+           <button mat-flat-button (click)="activeModal.dismiss();" class="add-req-button-cancel">Cancel</button>
+           <button mat-flat-button [hidden]="SelectedDealRequirement == ''" class="add-req-button-save"
+             (click)="SaveRequirement();">Save Requirement</button>
+         </div>
+      
+      <div *ngIf="SelectedDealRequirement?.length > 1" fxLayout="row" fxLayoutAlign="center center"
+        style="padding: 10px 0px">
+        <p>You're adding <span style="font-weight: 500;">{{SelectedDealRequirement?.length}}</span> requirements</p>
+      </div>
+    </div>
+
+
+
+  </mat-card>
+</div>

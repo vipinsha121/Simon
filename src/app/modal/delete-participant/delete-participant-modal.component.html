@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">PARTICIPANT - Remove Participant From Deal</h4>
+    <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <span> Are you sure you want to remove this party?</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 20px">
+        <div class="col-2">
+            <button type="button" class="btn btn-light" (click)="activeModal.dismiss()">Cancel</button>
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-info" (click)="delete()"><i class="fa fa-check"></i>Remove</button>
+        </div>
+    </div>
+</div>

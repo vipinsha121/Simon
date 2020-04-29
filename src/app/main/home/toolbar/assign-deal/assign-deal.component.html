@@ -1,0 +1,19 @@
+<!--If Assigned User FullName is not available, then show alert -->
+       <!--ng-if="summary.assignedUserFullName == '' || summary.assignedUserFullName == 'UNASSIGN USER'"-->
+<div *ngIf="isExistAssignedUserFullNameForDeal == null || isExistAssignedUserFullNameForDeal == 'UNASSIGN USER'">
+    <span (click)="openAssignDeal()" class="assigned-user-label">Assign</span>
+</div>
+
+<!--If Assigned User FullName is present, then show User Name as clickable -->
+        <!--ng-if="summary.assignedUserProfile.firstName.length > 1 && summary.assignedUserFullName != 'UNASSIGN USER'"-->
+<div fxLayout="row" *ngIf="isExistAssignedUserFullNameForDeal?.length > 1 && isExistAssignedUserFullNameForDeal != 'UNASSIGN USER'">
+    <span class="assigned-user-label" (click)="openAssignDeal('Assign')">{{isExistAssignedUserFullNameForDeal}}</span>
+    <mat-icon
+      ngbTooltip="Assigned To:
+      {{isExistAssignedUserFullNameForDeal}}"
+      tooltipClass="tooltip-font-size-md" aria-label="avatar" aria-hidden="false" style="position: relative; top: 4px">
+      account_circle</mat-icon>
+</div>
+
+
+

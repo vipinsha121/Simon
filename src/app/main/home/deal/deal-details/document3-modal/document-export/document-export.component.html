@@ -1,0 +1,115 @@
+<div class="doc-header">
+    <div class="doc-header-input-container">
+        <input class="form-control inline-block" [(ngModel)]="searchText" placeholder="Search..." name="srhdocs">
+    </div>
+    <div class="inline-block">
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">filter_list</mat-icon>
+        </button>
+        <span style="margin: 0px 10px">|</span>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">person</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">money</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon class="u-mat-icon-grey doc-header-button-icon">home</mat-icon>
+        </button>
+      </div>
+    <div class="doc-button-group" style="margin: 0px 10px">
+        <button mat-flat-button class="doc-header-button-export" ngbTooltip="Save All" tooltipClass="tooltip-font-size-md" (click)="exportSelectedDocuments(synergyDocs,0)">Export
+          <!-- <mat-icon class="u-mat-icon-grey doc-header-button-icon">publish</mat-icon> -->
+        </button>
+    </div>
+</div>
+<div class="table-responsive" [ngClass]="{'doc-table-margin' : showToolbarExport}">
+  <table class="table">
+    <thead>
+      <tr style="color: #5a5a5a">
+        <th scope="col">No.</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">As of Date</th>
+        <th scope="col">Entity</th>
+        <th scope="col">Tax ID</th>
+        <th scope="col">CIF ID</th>
+        <th scope="col">Comment</th>
+        <th scope="col">Export Status</th>
+        <th scope="col">Cabinet</th>
+        <th scope="col">
+          <mat-checkbox ngbTooltip="Select All" tooltipClass="tooltip-font-size-md" (change)="onChange($event)"></mat-checkbox>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of synergyDocs|searchDocs:{documentName: searchText,asOfDate:searchText,  documentDefinitionName: searchText,comment: searchText,ecmStatus:searchText}; let i = index">
+        <td>{{i +1}}</td>
+        <td>
+          <div matTooltip="{{d.alternateName}}"
+          [matTooltipDisabled]="d.alternateName?.length < 24">
+          {{(d.alternateName?.length>24)? (d.alternateName | slice:0:24)+'...':(d.alternateName)}}
+        </div>
+        </td>
+        <td>{{d.documentDefinitionName}}</td>
+        <td>{{d.asOfDate | date: 'MM/dd/yyyy'}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>                      
+          <div matTooltip="{{d.comment}}"
+          [matTooltipDisabled]="d.comment?.length < 25"> 
+          {{(d.comment?.length>25)? (d.comment | slice:0:25)+'...':(d.comment)}}
+        </div></td>
+        <td>
+          <span *ngIf="d.isExportReady == true" class="chip u-background-green">Ready</span>
+        </td>
+        <td>
+            <!-- <select *ngIf="!d.isExportReady && d.isValidEcmFileName" class="form-control">
+                <option>Loan</option>
+                <option>CIF</option>
+                <option>Employee</option>
+                <option>Denial</option>
+            </select> -->
+            <mat-form-field *ngIf="!d.isExportReady && d.isValidEcmFileName" floatLabel="never" fxFlex="100">
+              <!-- <mat-label>Type</mat-label> -->
+              <mat-select [(ngModel)]="d.cabinetCode">
+                          <!-- <mat-select-trigger>{{(d.documentDefinitionName.length>23)? (d.documentDefinitionName | slice:0:23)+'...':(d.documentDefinitionName)}}</mat-select-trigger> -->
+                <mat-option *ngFor="let cabinet of cabinets" [value]="cabinet.id">{{cabinet.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </td>
+        <td>
+          <mat-checkbox [(ngModel)]="d.isPendingExportReady" *ngIf="!d.isExportReady && d.isValidEcmFileName"></mat-checkbox>
+          <h5 *ngIf="d.isExportReady == true && d.isValidEcmFileName" style="color: darkgreen;">Export Pending</h5>
+           <h5 *ngIf="!d.isValidEcmFileName" style="color: red;">Not Ready</h5>
+        </td>
+      </tr>
+      <!-- <tr>
+        <td>2</td>
+        <td>Personal Tax Return</td>
+        <td>12/31/2019</td>
+        <td>Monica Bloomquist</td>
+        <td>123-45-6789</td>
+        <td>
+          <span class="chip u-background-red">Missing</span>
+        </td>
+        <td>Joint</td>
+        <td>
+            <span class="chip u-background-red">Not Ready</span>
+        </td>
+        <td>
+            <select class="form-control">
+              <option>Loan</option>
+              <option>CIF</option>
+              <option>Employee</option>
+              <option>Denial</option>
+            </select>
+        </td>
+        <td>
+            <mat-checkbox></mat-checkbox>
+        </td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,22 @@
+
+  <button aria-label="matMenuButton" mat-icon-button [matMenuTriggerFor]="participantsmenu">
+        <mat-icon aria-label="menu" aria-hidden="false">assignment</mat-icon>
+  </button>
+  <mat-menu #participantsmenu="matMenu">
+          <button mat-menu-item (click)="onclickreport('Approvals')">
+            Approvals<mat-icon  aria-hidden="false"></mat-icon>
+          </button>
+           <button mat-menu-item (click)="onclickreport('Fair Lending')">
+            Fair Lending<mat-icon  aria-hidden="false"></mat-icon>
+          </button>
+           <button mat-menu-item (click)="getDealMessage(this.dealId)">
+           Messages<mat-icon  aria-hidden="false"></mat-icon>
+          </button>
+           <button mat-menu-item (click)="onclickreport('Missing Items')">
+           Missing Items<mat-icon  aria-hidden="false"></mat-icon>
+          </button>
+            <button mat-menu-item (click)="onclickreport('Requirement Comments')">
+           Requirement Comments<mat-icon  aria-hidden="false"></mat-icon>
+          </button>
+  </mat-menu>
+  <toolbar-deal-message></toolbar-deal-message>

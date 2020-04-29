@@ -1,0 +1,52 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{ title }}
+    </h4>
+
+    <button type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+      <div fxLayout="column" fxLayoutAlign="space-between">
+          <form [formGroup]="participantForm">
+     <mat-form-field class="example-full-width">
+                <mat-label>Search participants</mat-label>
+
+            <input matInput   [matAutocomplete]="companies" 
+            formControlName="participantName" 
+            [(ngModel)]="partydata.personName" (keyup)="participantList()">
+            </mat-form-field>
+     <mat-autocomplete #companies="matAutocomplete">
+              <mat-option *ngFor="let user of filteredUsers " [value]="user.text" (onSelectionChange)="getPrimaryRoles(user.id)">
+                {{ user.text }}
+              </mat-option>
+            </mat-autocomplete>
+    <mat-form-field >
+      <mat-label>Select Participations</mat-label>
+      <mat-select [(ngModel)]="partydata.participationId" formControlName="participantRole">
+        <mat-option *ngFor="let role of participants" [value]="role.id">
+          <span>{{ role.name }}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <br/>
+
+        <mat-label>Interim User :</mat-label>
+        <mat-checkbox style="margin-left: 8px;" class="example-margin" formControlName="interim" [(ngModel)]="partydata.interimUser">
+        </mat-checkbox>
+      </form>
+    </div>
+    <div class="edit-row footer-container-form" fxLayoutAlign="end center">
+      <button style="margin-right: 8px;" aria-label="cancel" class="button-cancel" mat-raised-button
+        (click)="activeModal.close()">Cancel</button>
+      <button style="margin-left: 8px;" type="submit"
+        [disabled]="participantForm.invalid || !checkValidParticipant()" (click)="postparticipant() "
+        class="button-save"
+        mat-raised-button>Save</button>
+    </div>
+  </div>
+</div>

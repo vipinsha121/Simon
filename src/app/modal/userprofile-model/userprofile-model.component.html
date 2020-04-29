@@ -1,0 +1,252 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userProfileForm" class="u-padding-large u-padding-standard">
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Select User: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput #searchUser [matAutocomplete]="userList" formControlName="userId"
+                [(ngModel)]="user.userId" name="userId" placeholder="Search Name" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnPerson.bind(this)" (optionSelected)="getSelectedUser($event.option.value)"
+              #userList="matAutocomplete">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.id">
+                {{ user.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">First Name: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="firstName" [(ngModel)]="user.firstName"
+                name="firstName"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Middle Name: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="middleName" [(ngModel)]="user.middleName"
+                name="middleName"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Last Name: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="lastName" [(ngModel)]="user.lastName"
+                name="lastName"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Title: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="title" [(ngModel)]="user.title" name="title"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Phone Number: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="phoneNumber" [(ngModel)]="user.phoneNumber"
+                name="phoneNumber"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Fax Number: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="faxNumber" [(ngModel)]="user.faxNumber"
+                name="faxNumber"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Email: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="email" [(ngModel)]="user.email" name="email"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">NMLS Num: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="nmlsNumber" [(ngModel)]="user.nmlsNumber"
+                name="nmlsNumber"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Office Number: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput formControlName="officeNumber" [(ngModel)]="user.officeNumber"
+                name="officeNumber"
+                autocomplete="off" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row my-2">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">PDF in Adobe: </mat-label>
+            <mat-checkbox name="fileDownloadModeEnabled"
+              formControlName="fileDownloadModeEnabled"
+              [(ngModel)]="user.fileDownloadModeEnabled"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Search Manager: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput #searchManager [matAutocomplete]=" managerList"
+                formControlName="manager"
+                [(ngModel)]="user.manager" name="manager" placeholder="Search Manager" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnManager.bind(this)"
+              #managerList="matAutocomplete">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager.id">
+                {{ manager.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedLoanAssistantRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Loan Assistant: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="loanAssistant" placeholder="Select"
+                [(ngModel)]="user.loanAssistant"
+                name="loanAssistant">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let loanAssistant of loanAssistants" [value]="loanAssistant.id">
+                  {{loanAssistant.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Region: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="region" placeholder="Select"
+                [(ngModel)]="user.region" name="region">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let region of regions" [value]="region.id">{{region.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Branch: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="branch" placeholder="Select"
+                [(ngModel)]="user.branch" name="branch">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let branch of branches" [value]="branch.id">{{branch.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Department: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="department" placeholder="Select"
+                [(ngModel)]="user.department"
+                name="department">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let department of departments" [value]="department.id">{{department.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-label fxFlex="30">Cost Center: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <mat-select formControlName="costCenter" placeholder="Select"
+                [(ngModel)]="user.costCenter"
+                name="costCenter">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let costCenter of costCenters" [value]="costCenter.id">{{costCenter.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer" style="position: initial;">
+     <div class="spinner-border text-success" role="status" *ngIf="isLoading">
+       <span class="sr-only">Loading...</span>
+     </div>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    <button *ngIf="!confirmFlag" type="button" [disabled]="isLoading || userProfileForm.invalid" class="btn btn-primary"
+      (click)="onYesClick()">Save</button>
+    <button *ngIf="confirmFlag" type="button" [disabled]="isLoading" class="btn btn-primary"
+      (click)="onConfirm()">Confirm Save?</button>
+  </div>
+</div>

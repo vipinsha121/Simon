@@ -1,0 +1,82 @@
+@import '../../../../../../mat-theme.scss';
+
+::ng-deep .mat-list-base .mat-list-item.mat-list-item-with-avatar .mat-list-item-content .mat-list-text {
+  padding-left: 25px !important;
+}
+
+.m-portlet {
+  height: 100%;
+}
+
+.m-portlet__body {
+  width: 100%;
+}
+
+::ng-deep .mat-tab-label .mat-tab-label-content {
+  text-transform: uppercase;
+}
+
+::ng-deep .mat-tab-label {
+  max-width: 33%;
+  min-width: 50px !important;
+}
+
+mat-icon {
+  color: #959595;
+  font-size: 30px;
+}
+
+.top-align {
+  vertical-align: top !important;
+}
+
+::ng-deep .mat-tab-link {
+  min-width: 33.3% !important;
+  text-transform: uppercase !important;
+}
+
+::ng-deep mat-chip {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.mat-standard-chip {
+  padding: 2px 10px;
+  min-height: 20px;
+  border-radius: 4px;
+}
+
+::ng-deep mat-progress-bar {
+  margin-top: 15px !important;
+}
+
+::ng-deep .mat-list-primary > h5, mat-chip {
+  display: inline-block
+}
+
+::ng-deep .mat-icon-background {
+  background: #f5f5f5;
+  padding: 6px;
+}
+
+mat-list > mat-list-item {
+  margin: 2rem 0px;
+}
+
+.m-portlet {
+  margin-right: 10px;
+}
+
+.mat-list-base .mat-list-item.mat-2-line, .mat-list-base .mat-list-option.mat-2-line{
+  height: auto;
+}
+
+.deal-list-text {
+  font-size: 16px;
+}
+
+.deal-list-text-label {
+  font-size: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}

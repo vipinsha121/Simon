@@ -1,0 +1,26 @@
+
+  <!-- <button mat-fab class="fab">
+      <toolbar-quickview></toolbar-quickview>
+  </button> -->
+<div fxLayout="column" class="height-100">
+    <div class="header-fixed">
+        <div fxFlex>
+          <div *ngIf="dealData">
+            <deal-header (partyEventClicked)="dealHeaderPartyClickEvent()"
+              (collateralEventClicked)="dealHeaderCollateralclickEvent()" (loanEventClicked)="dealHeaderLoanClickEvent()"
+              (summaryEventClicked)="dealHeadersummaryclickEvent()" (requirementEventClicked)="requirementEventClicked()"
+              (documentEventClicked)="documentEventClicked()" (datesEventClicked)="datesEventClicked()"
+              (eventsClicked)="eventsClicked()" (processeseventClicked)="processeseventClicked()" [currentMenu]="currentMenu">
+            </deal-header>
+          </div>
+        </div>
+      </div>
+      <div class="row-workspace">
+        <div class="height-95">
+          <div style="height: 98%">
+            <router-outlet></router-outlet>
+          </div>
+
+        </div>
+      </div>
+</div>

@@ -1,0 +1,62 @@
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%">
+    <div class="m-portlet m-portlet--rounded mat-elevation-z8" fxLayout="column" fxFlex="50">
+       <div class="header">
+          <span class="u-header-title">Edit Party Roles</span>
+          <button aria-label="matMenuButton" mat-flat-button routerLink='/main/deal/{{dealId}}/party/'>
+            Back to Party List
+          </button>
+       </div>
+
+      <!-- <app-loader></app-loader>-->
+       <div class="u-portlet-container party-list">
+          <div class="u-portlet-body u-scroll-vert">
+             <div fxLayout="column">
+               <div fxLayout="row" *ngFor="let party of parties" fxFlex="100" class="edit-party-table">
+                <div fxLayout="column" fxFlex="10" class="party-icon">
+                    <div>
+                        <mat-icon ngbTooltip="Company" tooltipClass="tooltip-font-size-md" *ngIf="party.type === 'C'" matListIcon>business</mat-icon>
+                    </div>
+                    <div>
+                        <mat-icon ngbTooltip="Individual" tooltipClass="tooltip-font-size-md" *ngIf="party.type === 'I'" matListIcon>person</mat-icon>
+                    </div>
+
+                </div>
+                <div fxLayout="column" fxFlex="50">
+                    <span matLine [ngbTooltip]="party.name" tooltipClass="tooltip-font-size-md"
+                      [disableTooltip]="party.name.length < 25"
+                      class="party-list-text inline-block" routerLink='/main/deal/{{dealId}}/party/{{party.partyId}}/'
+                      (click)="routeToPartyComponent(party)">
+                      {{party.name | slice: 0:25}}
+                      <span *ngIf="party.name.length > 25">...</span>
+                    </span>
+                </div>
+                <div fxLayout="column" fxFlex="40">
+                  <form [formGroup]="partyEditForm">
+                      <mat-form-field appearance="outline" floatLabel="always" style="bottom: 7px">
+                          <mat-label>Role</mat-label>
+                          <mat-select placeholder="{{party.role}}" [disabled]="party.primary == true"
+                           (selectionChange)="getChangeRoles($event.value, party)" formControlName="roleType">
+                          <!-- <mat-select-trigger>{{party.state}}</mat-select-trigger> -->
+                          <!-- <mat-option value="None">None</mat-option> -->
+                          <mat-option *ngFor="let role of roleType" [value]="role.id" >{{role.name}}</mat-option>
+                        </mat-select>
+                          <mat-error>Please Select Entity Type</mat-error>
+                      </mat-form-field>
+                  </form>
+
+                </div>
+               </div>
+            </div>
+            <div class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+                <button aria-label="cancel" class="u-button-cancel" mat-flat-button routerLink='/main/deal/{{dealId}}/party/'>Cancel</button>
+                <button (click)="SavePartyRole(party); clearDirty()" type="submit" class="u-button-save" [disabled]="!partyEditForm.dirty" mat-flat-button>Save</button>
+
+            </div>
+          </div>
+
+       </div>
+
+       <div class="u-footer-container"></div>
+    </div>
+
+ </div>

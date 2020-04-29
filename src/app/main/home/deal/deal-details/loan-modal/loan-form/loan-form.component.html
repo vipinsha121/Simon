@@ -1,0 +1,740 @@
+<!--Portlet body content, scrollable-->
+<!-- <div class="progress-loader" *ngIf="isLoading">
+
+  <mat-progress-spinner [mode]="'indeterminate'">
+  </mat-progress-spinner>
+
+</div> -->
+<!--<app-loader></app-loader>-->
+<div class="m-portlet m-portlet--rounded" style="height: 100%">
+  <mat-tab-group mat-align-tabs="center" mat-stretch-tabs class="primary-tab" animationDuration="0ms" color="accent"
+    [selectedIndex]="primarytabclass" (selectedTabChange)="onPrimaryTabChange($event)">
+    <mat-tab label="Requirements">
+      <ng-template matTabLabel>
+        <div ngbTooltip="{{openRequirements}} Open Requirements / {{completeRequirement}} Completed Requirements" tooltipClass="tooltip-font-size-md"
+          fxLayout="row">
+          <!-- <span> -->
+          Requirements
+          <!-- </span> -->
+          <div ngbTooltip="Open requirements" matBadge="{{openRequirements}}" matBadgeOverlap="true" tooltipClass="tooltip-font-size-md"
+            matBadgeSize="medium" matBadgePosition="after" matBadgeColor="warn" style="margin-left: -8px">
+          </div>
+          <div matBadge="{{completeRequirement}}" matBadgeSize="medium" matBadgePosition="after" matBadgeOverlap="true"
+            matBadgeColor="primary" style="margin-left: 18px"></div>
+        </div>
+      </ng-template>
+      <ng-template matTabContent>
+        <requirements-list [requirements]="requirements" [dealId]="dealId"></requirements-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Documents" (click)="IsFromLoan = true">
+      <ng-template matTabLabel>
+        Document List
+      </ng-template>
+      <ng-template matTabContent>
+         <app-documents-list [reqDocuments]="reqDocuments" [dealId]="dealId" [partyId]="partyId" [IsFromParty]="IsFromParty" [IsFromLoan]="IsFromLoan" [loanId]="loanId"></app-documents-list>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Detail">
+      <ng-template matTabContent>
+        <div fxFill>
+          <mat-tab-group mat-align-tabs="center" class="tab-secondary loan-tab-group-secondary" mat-stretch-tabs
+            animationDuration="0ms" [selectedIndex]="producttabactive"
+            (selectedTabChange)="onSecondaryTabChange($event)">
+            <mat-tab label="Product" style="height: 100%">
+              <div fxFill>
+                <form [formGroup]="loanDetailsForm" style="margin-top: 3rem" fxFill>
+                  <div fxLayout="row" fxLayoutAlign="start stretch" [ngClass]="loanDetailsForm.dirty ? 'u-height-95' : 'u-height-100'">
+                    <fieldset [disabled]="formDisabled" fxFill>
+                      <div class="loan-detail-body">
+                        <div fxLayout="row" class="edit-row-top">
+                          <div>
+                            <mat-label class="mat-label-loan-edit">Request Type*</mat-label>
+                            <mat-button-toggle-group formControlName="requestType" name="requestType"
+                              [(ngModel)]="loandetails.requestType" aria-label="Font Style" >
+                              <mat-button-toggle [value]="req.id" *ngFor="let req of reqType">{{req.name}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                            <mat-error *ngIf="loandetails.requestType == null || loandetails.requestType == ''">Please
+                              Select Request Type</mat-error>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-label class="mat-label-loan-edit">Department*</mat-label>
+                            <mat-button-toggle-group formControlName="department" name="department"
+                              [(ngModel)]="loandetails.departmentId" aria-label="Font Style" >
+                              <mat-button-toggle [value]="dept.id" *ngFor="let dept of departmentType"
+                                (change)="onValChange(dept)">
+                                {{ dept.name === 'Consumer Non-Real Estate' ? 'Cons. Non-RE' : dept.name }}</mat-button-toggle>
+                              </mat-button-toggle-group>
+                              <mat-error *ngIf="loandetails.departmentId == null || loandetails.departmentId == ''">
+                              Please Select Department</mat-error>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-label class="mat-label-loan-edit">Category</mat-label>
+                            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="category"
+                              name="category" [(ngModel)]="loandetails.category">
+                              <mat-button-toggle *ngFor="let lcategory of categoryType" [value]="lcategory.id">
+                                {{lcategory.name}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="padding-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Product*</mat-label>
+                              <mat-select placeholder="Select" formControlName="product" name="product"
+                                [(ngModel)]="loandetails.productId" (selectionChange)="onProductChange($event)">
+                                <mat-option>Select</mat-option>
+                                <mat-option *ngFor="let prd of productsType" [value]="prd.id">{{prd.name}}
+                                </mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="product.invalid">Please Select Product</mat-error>
+                            </mat-form-field>
+                          </div>
+
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Amount*</mat-label>
+                              <input matInput placeholder="Amount" formControlName="amount" name="amount"
+                                [(ngModel)]="loandetails.amount" autocomplete="off">
+                              <span matPrefix>$&nbsp;</span>
+                              <mat-error *ngIf="amount?.hasError('required')">Please Enter Amount.</mat-error>
+                              <mat-error *ngIf="amount?.hasError('max')">Really?</mat-error>
+                              <mat-error *ngIf="amount?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Purpose*</mat-label>
+                              <mat-select placeholder="Select" formControlName="purposePrimary" name="purposePrimary"
+                                 [(ngModel)]="loandetails.purposePrimary"
+                                (selectionChange)="onPurposeChange($event)">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let purpose of purposeType"
+                                  [value]="purpose.purposeCode">
+                                  {{purpose.purposeDesc}}</mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="purposePrimary?.hasError('required')">Please select primary purpose.</mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Secondary Purpose</mat-label>
+                              <mat-select placeholder="Select" formControlName="purposeSecondary"
+                                name="purposesecondary" [(ngModel)]="loandetails.purposeSecondary">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let purposesecd of purposeSecondary"
+                                  [value]="purposesecd.purposeCode">
+                                  {{purposesecd.purposeDesc}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Loan Number #</mat-label>
+                              <input matInput placeholder="Loan Number" formControlName="loanNum" name="loanNum"
+                                [(ngModel)]="loandetails.loanNumber" autocomplete="off">
+                            </mat-form-field>
+                            <mat-error *ngIf="loanNum?.hasError('max')">Max 10 characters.</mat-error>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>DP/CQ #</mat-label>
+                              <input matInput placeholder="DP/CQ" formControlName="dpcq" name="dpcq"
+                                [(ngModel)]="loandetails.decisionpronumber" autocomplete="off">
+                              <mat-error *ngIf="dpcq?.hasError('pattern')">Numbers, please.</mat-error>
+                              <mat-error *ngIf="dpcq?.hasError('max')">That's a few too many numbers</mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                            <mat-form-field appearance="outline" floatLabel="always" style="width: 45%">
+                              <mat-label>Financing Type*</mat-label>
+                              <mat-select placeholder="Select" formControlName="financing" name="financing"
+                                [(ngModel)]="loandetails.financingCode">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let fin of financingType" [value]="fin.id">
+                                  {{fin.name}}
+                                </mat-option>
+                              </mat-select>
+                              <mat-error>Please Select Financing Type</mat-error>
+                            </mat-form-field>
+                          </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="padding-right: 10px">
+                            <mat-checkbox formControlName="rushchk" name="rushchk" [(ngModel)]="loandetails.rush">Rush
+                            </mat-checkbox>
+                          </div>
+                          <div>
+                            <mat-checkbox formControlName="loanestchk" name="loanestchk"
+                              [(ngModel)]="loandetails.loanEstimate">Loan Estimate
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="padding-right: 10px">
+                            <mat-checkbox formControlName="primaryloanchk" name="primaryloanchk"
+                              [checked]="loandetails.primary" [(ngModel)]="loandetails.primary" [disabled]="primaryloan"
+                              (change)="onChange($event)">
+                              Primary Loan
+                            </mat-checkbox>
+                          </div>
+                          <div>
+                            <mat-checkbox formControlName="owneroccupiedchk" name="owneroccupiedchk"
+                              [(ngModel)]="loandetails.owneroccupiedflag">Owner Occupied
+                            </mat-checkbox>
+                          </div>
+                        </div>
+
+
+                        <div fxLayout="row" style="margin-bottom: 8%;" class="edit-row">
+                          <div>
+                            <mat-label class="mat-label-loan-edit">Probability*</mat-label>
+                            <mat-button-toggle-group aria-label="Font Style" formControlName="probability"
+                              name="probability" [(ngModel)]="loandetails.probabilityCode" >
+                              <mat-button-toggle *ngFor="let probType of probabilityType" [value]="probType.id">
+                                {{probType.name}}
+                              </mat-button-toggle>
+                            </mat-button-toggle-group>
+                            <mat-error *ngIf="loandetails.probabilityCode == null || loandetails.probabilityCode == ''">
+                              Please Select Probability</mat-error>
+                          </div>
+                        </div>
+                        <!-- <div fxLayout="row" class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+                                  <button aria-label="cancel" *ngIf="loandetails.id" class="button-cancel button-remove"
+                                    mat-raised-button (click)="onRemoveClick()">Remove
+                                    Loan</button>
+                                  <button aria-label="cancel" class="u-button-cancel" mat-raised-button
+                                    (click)="onCancelClick()">Cancel</button>
+                                  <button type="submit" class="u-button-save" mat-raised-button
+                                    [disabled]="loanDetailsForm.invalid||loanprisingForm.invalid||loanDatesForm.invalid||loanMoreForm.invalid"
+                                    (click)=" saveLoanDetails(loandetails)">Save</button>
+                                </div> -->
+                      </div>
+                    </fieldset>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="start end" [ngClass]="loanDetailsForm.dirty ? 'u-height-5' : 'u-height-0'">
+                    <div style="width: 100%; z-index: 999; background: #ebedf2;">
+                      <button type="submit" class="loan-detail-button-save"
+                        (click)="saveLoanDetails(loandetails); openSnackBarSave('', 'Dismiss')"
+                        *ngIf="(loanDetailsForm.valid) && (loanPricingForm.valid) && (loanDatesForm.valid) && (loanMoreForm.valid) && loanDetailsForm.dirty"
+                        mat-flat-button>Save</button>
+                      <button type="button" class="loan-detail-button-cancel"
+                        (click)="onCancelClick(); openSnackBarCancel('', 'Dismiss')"
+                        *ngIf="loanDetailsForm.dirty" mat-flat-button>Cancel</button>
+                      <!-- <button type="button" class="loan-detail-button-remove" (click)="onRemoveClick()"
+                        *ngIf="loandetails.id && loandetails.active" mat-flat-button>Remove</button> -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="Pricing" [disabled]="disablePricing">
+              <div fxFill>
+                <form [formGroup]="loanPricingForm" style="margin-top: 4rem" fxFill>
+                  <div *ngIf="!consumerNonRealEstate" fxLayout="row" fxLayoutAlign="start stretch" [ngClass]="loanDetailsForm.dirty ? 'u-height-95' : 'u-height-100'">
+                    <div fxFill>
+                      <div class="loan-detail-body">
+                        <div fxLayout="row" class="edit-row-top" *ngIf="!consumerPricing">
+                          <div style="padding-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Pricing Index</mat-label>
+                              <mat-select placeholder="Select" formControlName="pricingindexdrop"
+                                name="pricingindexdrop" [(ngModel)]="loandetails.pricingIndex">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let pit of pricingIndexType" [value]="pit.id">
+                                  {{pit.name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Est. Deposit</mat-label>
+                              <input matInput placeholder="Est. Deposit" formControlName="estDeposit" name="estDeposit"
+                                [(ngModel)]="loandetails.depositExpected" autocomplete="off" numbersOnly>
+                              <mat-error *ngIf="estDeposit?.hasError('max')">That's a few too many digits.</mat-error>
+                              <mat-error *ngIf="estDeposit?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" [ngStyle]="{'margin-top': consumerPricing ? '2rem' : '0rem'}"
+                          class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Rate %</mat-label>
+                              <input matInput placeholder="Rate" formControlName="rate" name="rate"
+                                [(ngModel)]="loandetails.noteRate" autocomplete="off">
+                                <mat-error *ngIf="rate?.hasError('max')">That's a few too many digits.</mat-error>
+                                <mat-error *ngIf="rate?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div *ngIf="!consumerPricing">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Margin %</mat-label>
+                              <input matInput placeholder="Margin" formControlName="margin" name="margin"
+                                [(ngModel)]="loandetails.spreadRate" autocomplete="off">
+                                <mat-error *ngIf="margin?.hasError('max')">That's a few too many digits.</mat-error>
+                                <mat-error *ngIf="margin?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Initial Fixed Period</mat-label>
+                              <mat-select placeholder="Select" formControlName="initalfixperiod" name="initalfixperiod"
+                                [(ngModel)]="loandetails.initialFixedPeriod">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let initialfix of initialfixed"
+                                  [value]="initialfix.id">{{initialfix.name}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div *ngIf="!consumerPricing">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Rate Floor %</mat-label>
+                              <input matInput placeholder="Rate Floor" formControlName="ratefloor" name="ratefloor"
+                                numbersOnly [(ngModel)]="loandetails.floorRate" autocomplete="off">
+                                <mat-error *ngIf="ratefloor?.hasError('max')">That's a few too many digits.</mat-error>
+                                <mat-error *ngIf="ratefloor?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Term (months)</mat-label>
+                              <input matInput placeholder="Term" formControlName="termmonths" name="termmonths"
+                                numbersOnly [(ngModel)]="loandetails.term" autocomplete="off">
+                                <mat-error *ngIf="termmonths?.hasError('max')">That's a few too many digits.</mat-error>
+                                <mat-error *ngIf="termmonths?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Amortization (months)</mat-label>
+                              <input matInput placeholder="Amortization" formControlName="amortization"
+                                name="amortization" [(ngModel)]="loandetails.amortTerm" autocomplete="off">
+                                <mat-error *ngIf="amortization?.hasError('max')">That's a few too many digits.</mat-error>
+                                <mat-error *ngIf="amortization?.hasError('pattern')">Numbers, please.</mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Fees</mat-label>
+                              <mat-select placeholder="Select" formControlName="fees" name="fees"
+                                [(ngModel)]="loandetails.feeRange" (selectionChange)="changeAmount()">
+                                <mat-option value="option" *ngFor="let ft of feesType" [value]="ft.id">
+                                  {{ft.name}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Fee Amount</mat-label>
+                              <input matInput placeholder="Fee Amount" formControlName="feeamount" name="feeamount"
+                                numbersOnly [(ngModel)]="loandetails.fee" [attr.disabled]="feeEdit ? '' : null"
+                                (change)="onFeeChange(loandetails.fee)" autocomplete="off">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Fee Payment</mat-label>
+                              <mat-select placeholder="Select" formControlName="feepaymenttype" name="feepaymenttype"
+                                [(ngModel)]="loandetails.paymentMethod">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let pt of paymenttype" [value]="pt.id">{{pt.name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Loan to Value</mat-label>
+                              <mat-select placeholder="Select" formControlName="loantovaluetype" name="loantovaluetype"
+                                [(ngModel)]="loandetails.anticipatedLTV">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let ltv of loantovaluetype" [value]="ltv.id">
+                                  {{ltv.name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-checkbox formControlName="interestonlychk" name="interestonlychk"
+                              [(ngModel)]="loandetails.interestOnly">Interest Only
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-form-field appearance="fill" floatLabel="always">
+                              <mat-label>Pricing Comments</mat-label>
+                              <textarea matInput rows="5" maxlength="400" formControlName="pricingCmt" name="pricingCmt"
+                                [(ngModel)]="loandetails.pricingComment"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="edit-row">
+                                        <h6>Est. LTV</h6>
+                                        <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style">
+                                            <mat-button-toggle value="bold">~25%</mat-button-toggle>
+                                            <mat-button-toggle value="italic">50%</mat-button-toggle>
+                                            <mat-button-toggle value="underline">75%</mat-button-toggle>
+                                            <mat-button-toggle value="underline">100%</mat-button-toggle>
+                                        </mat-button-toggle-group>
+                                    </div> -->
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start end"
+                    class="loan-detail-u-footer-container" [ngClass]="loanDetailsForm.dirty ? 'u-height-5' : 'u-height-0'">
+                    <div style="width: 100%; background: #ebedf2;">
+                      <button type="submit" class="loan-detail-button-save"
+                        (click)="saveLoanDetails(loandetails); openSnackBarSave('', 'Dismiss')"
+                        *ngIf="(loanDetailsForm.valid) && (loanPricingForm.valid) && (loanDatesForm.valid) &&
+                        (loanMoreForm.valid) && loanPricingForm.dirty"
+                        mat-flat-button>Save</button>
+                      <button type="button" class="loan-detail-button-cancel"
+                        (click)="onCancelClick(); openSnackBarCancel('', 'Dismiss')"
+                        *ngIf="loanPricingForm.dirty"
+                        mat-flat-button>Cancel</button>
+                      <!-- <button type="button" class="loan-detail-button-remove" (click)="onRemoveClick()"
+                        *ngIf="loandetails.id && loandetails.active && !disablePricing" mat-flat-button>Remove</button> -->
+                    </div>
+                  </div>
+                  <!-- <div fxLayout="row" class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+                    <button aria-label="cancel" *ngIf="loandetails.id" class="button-cancel button-remove"
+                      mat-raised-button (click)="onRemoveClick()">Remove
+                      Loan</button>
+                    <button aria-label="cancel" class="u-button-cancel" mat-raised-button
+                      (click)="onCancelClick()">Cancel</button>
+                    <button type="submit" class="u-button-save" mat-raised-button
+                      [disabled]="loanDetailsForm.invalid||loanPricingForm.invalid||loanDatesForm.invalid||loanMoreForm.invalid"
+                      (click)=" saveLoanDetails(loandetails)">Save</button>
+                  </div> -->
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="Dates" style="height: 100%">
+              <div fxFill>
+                <form [formGroup]="loanDatesForm" style="margin-top: 4rem" fxFill>
+                  <div fxLayout="row" fxLayoutAlign="start stretch" [ngClass]="loanDetailsForm.dirty ? 'u-height-95' : 'u-height-100'">
+                    <div fxFill>
+                      <div class="loan-detail-body" style="margin-top: 1rem">
+                        <div fxLayout="row" class="edit-row-top">
+                          <div style="margin-right: 10px">
+                            <h6>Application*</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="appDate" placeholder="MM/DD/YYYY"
+                                formControlName="appdate" name="appdate" [(ngModel)]="loandetails.applicationDate" autocomplete="off"
+                               required >
+                              <mat-datepicker-toggle matSuffix [for]="appDate"></mat-datepicker-toggle>
+                              <mat-datepicker #appDate></mat-datepicker>
+                              <mat-error>Please enter a valid date</mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <h6>Application Complete</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="appComplete" placeholder="MM/DD/YYYY"
+                                formControlName="appcompletedate" name="appcompletedate"
+                                [(ngModel)]="loandetails.applicationCompleteDate" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="appComplete"></mat-datepicker-toggle>
+                              <mat-datepicker #appComplete></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <h6>Action Taken</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="action" placeholder="MM/DD/YYYY"
+                                formControlName="actiondate" name="actiondate"
+                                [(ngModel)]="loandetails.actionTakenDate" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="action"></mat-datepicker-toggle>
+                              <mat-datepicker #action></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <h6>RESPA</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="RESPA" placeholder="MM/DD/YYYY"
+                                formControlName="respadate" name="respadate" [(ngModel)]="loandetails.respa" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="RESPA"></mat-datepicker-toggle>
+                              <mat-datepicker #RESPA></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <h6>CIC</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="CIC" placeholder="MM/DD/YYYY" formControlName="cicdate"
+                                name="cicdate" [(ngModel)]="loandetails.cic" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="CIC"></mat-datepicker-toggle>
+                              <mat-datepicker #CIC></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <h6>Contract Date</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="contract" placeholder="MM/DD/YYYY"
+                                formControlName="contractdate" name="contractdate"
+                                [(ngModel)]="loandetails.contractApprovalDeadline" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="contract"></mat-datepicker-toggle>
+                              <mat-datepicker #contract></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <h6>Closing*</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="closing" placeholder="MM/DD/YYYY"
+                                formControlName="closingdate" name="closingdate"
+                                [(ngModel)]="loandetails.estimatedClosingDate" autocomplete="off" required>
+                              <mat-datepicker-toggle matSuffix [for]="closing"></mat-datepicker-toggle>
+                              <mat-datepicker #closing></mat-datepicker>
+                              <mat-error>Please enter a valid date</mat-error>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <h6>Ln Committee</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="lncommitee" placeholder="MM/DD/YYYY"
+                                formControlName="lncommiteedate" name="lncommiteedate"
+                                [(ngModel)]="loandetails.anticipatedCommittee" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="lncommitee"></mat-datepicker-toggle>
+                              <mat-datepicker #lncommitee></mat-datepicker>
+
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <h6>Docs Needed</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="docsneeded" placeholder="MM/DD/YYYY"
+                                formControlName="docsneededdate" name="docsneededdate"
+                                [(ngModel)]="loandetails.docsNeededAtHand" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="docsneeded"></mat-datepicker-toggle>
+                              <mat-datepicker #docsneeded></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <h6>LaserPro Doc Date</h6>
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="laserprodoc" placeholder="MM/DD/YYYY"
+                                formControlName="laserprodocdate" name="laserprodocdate"
+                                [(ngModel)]="loandetails.laserprodocdate" autocomplete="off">
+                              <mat-datepicker-toggle matSuffix [for]="laserprodoc"></mat-datepicker-toggle>
+                              <mat-datepicker #laserprodoc></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start end"
+                    class="loan-detail-u-footer-container" [ngClass]="loanDetailsForm.dirty ? 'u-height-5' : 'u-height-0'">
+                    <div style="width: 100%; background: #ebedf2;">
+                      <button type="submit" class="loan-detail-button-save"
+                        (click)="saveLoanDetails(loandetails);  openSnackBarSave('', 'Dismiss')"
+                         *ngIf="(loanDetailsForm.valid) && (loanPricingForm.valid) && (loanDatesForm.valid) &&
+                         (loanMoreForm.valid) && loanDatesForm.dirty" mat-flat-button>Save</button>
+                      <button type="button" class="loan-detail-button-cancel"
+                        (click)="onCancelClick();  openSnackBarCancel('', 'Dismiss')"
+                        *ngIf="loanDatesForm.dirty" mat-flat-button>Cancel</button>
+                      <!-- <button type="button" class="loan-detail-button-remove" (click)="onRemoveClick()"
+                        *ngIf="loandetails.id && loandetails.active" mat-flat-button>Remove</button> -->
+                    </div>
+                  </div>
+                  <!-- <div fxLayout="row" class="edit-row u-footer-container-form" fxLayoutAlign="end center">
+                    <button aria-label="cancel" *ngIf="loandetails.id" class="button-cancel button-remove"
+                      mat-raised-button (click)="onRemoveClick()">Remove
+                      Loan</button>
+                    <button type="button" aria-label="cancel" class="u-button-cancel" mat-raised-button
+                      (click)="onCancelClick()">Cancel</button>
+                    <button type="submit" class="u-button-save" mat-raised-button
+                      [disabled]="loanDetailsForm.invalid||loanPricingForm.invalid||loanDatesForm.invalid||loanMoreForm.invalid"
+                      (click)=" saveLoanDetails(loandetails)">Save</button>
+                  </div> -->
+                </form>
+              </div>
+            </mat-tab>
+            <mat-tab label="More">
+              <div fxFill>
+                <form [formGroup]="loanMoreForm" style="margin-top: 4rem" fxFill>
+                  <div fxLayout="row" fxLayoutAlign="start stretch" [ngClass]="loanDetailsForm.dirty ? 'u-height-95' : 'u-height-100'">
+                    <div fxFill>
+                      <div class="loan-detail-body">
+                        <div fxLayout="row" class="edit-row-top">
+                          <div style="margin-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>LaserPro #</mat-label>
+                              <input matInput placeholder="LaserPro #" formControlName="laserpro" name="laserpro"
+                                [(ngModel)]="loandetails.lpTransNo" autocomplete="off">
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Escrow</mat-label>
+                              <mat-select placeholder="Select" formControlName="EscrowTax" name="EscrowTax"
+                                [(ngModel)]="loandetails.escrowTaxInsurance">
+                                <mat-option>Select</mat-option>
+                                <mat-option value="option" *ngFor="let esc of escrowType" [value]="esc.id">
+                                  {{esc.name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="margin-right: 10px">
+                            <mat-checkbox formControlName="closeAtTitleCochk" name="closeAtTitleCochk"
+                              [(ngModel)]="loandetails.closeAtTitleCo">Title Co. Closing
+                            </mat-checkbox>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>AFT Prot AC</mat-label>
+                              <input matInput placeholder="AFT Prot AC" formControlName="aftprotac" name="aftprotac"
+                                [(ngModel)]="loandetails.aftProtAcct" autocomplete="off">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row">
+                          <mat-label class="mat-label-loan-edit">Address of Intended Use of Funds</mat-label>
+                        </div>
+                        <mat-divider style="margin-bottom: 15px"></mat-divider>
+                        <div fxLayout="row" class="edit-row">
+                          <div style="padding-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Address 1</mat-label>
+                              <input matInput placeholder="Address 1" formControlName="address1" name="address1" [(ngModel)]="loandetails.address1"
+                              autocomplete="off">
+                              <!-- <mat-error>Not a valid address.</mat-error> -->
+                            </mat-form-field>
+                          </div>
+                          <div>
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>Address 2</mat-label>
+                              <input matInput placeholder="Address 2" formControlName="address2" name="address2" [(ngModel)]="loandetails.address2"
+                              autocomplete="off">
+                              <!-- <mat-error>Not a valid address.</mat-error> -->
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-three-line">
+                          <div style="padding-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always" floatLabel="always">
+                              <mat-label>City</mat-label>
+                              <input matInput placeholder="City" autocomplete="off" [(ngModel)]="loandetails.city"
+                              formControlName="city" name="city">
+                               <!-- <mat-error>Not a valid city.</mat-error> -->
+                            </mat-form-field>
+                          </div>
+                          <div style="padding-right: 10px">
+                            <mat-form-field appearance="outline" floatLabel="always">
+                              <mat-label>State</mat-label>
+                              <mat-select placeholder="Select" formControlName="state" [(ngModel)]="loandetails.state" name="state">
+                                <mat-select-trigger>{{loandetails.state}}</mat-select-trigger>
+                                <mat-option>None</mat-option>
+                                <mat-option *ngFor="let s of stateList" [value]="s.abbrv">
+                                  {{s.abbrv}} - {{s.name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          <div>
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Zip</mat-label>
+                            <input matInput placeholder="Zip Code" autocomplete="off"  [(ngModel)]="loandetails.zip"
+                            formControlName="zip" name="zip">
+                            <!-- <mat-error>
+                              Where is that?
+                            </mat-error> -->
+                          </mat-form-field>
+                          </div>
+                        </div>
+                        <mat-divider style="margin-bottom: 15px"></mat-divider>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-form-field appearance="fill" floatLabel="always">
+                              <mat-label>Comments</mat-label>
+                              <textarea matInput rows="5" maxlength="400" formControlName="comments" name="comments"
+                                [(ngModel)]="loandetails.comment"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-form-field appearance="fill" floatLabel="always">
+                              <mat-label>Description</mat-label>
+                              <textarea matInput rows="5" maxlength="400" formControlName="description"
+                                name="description" [(ngModel)]="loandetails.description"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="edit-row-full">
+                          <div>
+                            <mat-form-field appearance="fill" floatLabel="always">
+                              <mat-label>Closing Comments</mat-label>
+                              <textarea matInput rows="5" maxlength="400" formControlName="closingcmt" name="closingcmt"
+                                [(ngModel)]="loandetails.closingComments"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start end"
+                    class="loan-detail-u-footer-container" [ngClass]="loanDetailsForm.dirty ? 'u-height-5' : 'u-height-0'">
+                    <div style="width: 100%; background: #ebedf2;">
+                      <button type="submit" class="loan-detail-button-save" *ngIf="(loanDetailsForm.valid) && (loanPricingForm.valid) && (loanDatesForm.valid) &&
+                      (loanMoreForm.valid) && loanMoreForm.dirty"
+                        (click)="saveLoanDetails(loandetails); openSnackBarSave('', 'Dismiss')"
+                          mat-flat-button>Save</button>
+
+                      <button type="button" class="loan-detail-button-cancel"
+                        (click)="onCancelClick(); openSnackBarCancel('', 'Dismiss')"
+                        *ngIf="loanMoreForm.dirty" mat-flat-button>Cancel</button>
+                      <!-- <button type="button" class="loan-detail-button-remove" (click)="onRemoveClick()"
+                        *ngIf="loandetails.id && loandetails.active" mat-flat-button>Remove</button> -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </mat-tab>
+          </mat-tab-group>
+
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

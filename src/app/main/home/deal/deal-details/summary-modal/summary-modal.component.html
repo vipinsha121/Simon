@@ -1,0 +1,44 @@
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%" fxLayout.xs="column">
+  <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+
+    <div class="u-header">
+      <span class="u-header-title">Application Summary</span>
+      <button *ngIf="!mobileQuery.matches" aria-label="matMenuButton" mat-flat-button
+        [matMenuTriggerFor]="inboxMenu">New Component</button>
+      <button *ngIf="mobileQuery.matches" aria-label="matMenuButton" mat-icon-button
+        [matMenuTriggerFor]="inboxMenu"></button>
+      <mat-menu #inboxMenu="matMenu">
+        <button mat-menu-item>Party</button>
+        <button mat-menu-item>Loan</button>
+        <button mat-menu-item>Collateral</button>
+      </mat-menu>
+    </div>
+    <div class="u-portlet-container">
+      <mat-list class="u-portlet-body u-scroll-vert" style="padding-right: 3rem">
+        <mat-list-item style="margin: 0px">
+          <span matLine class="deal-list-text-label">Deal Type</span>
+          <mat-icon matListIcon class="mat-icon-background">attach_money</mat-icon>
+          <div matLine>
+            <span class="deal-list-text inline-block">{{primaryDepartmentName}}</span>
+            <span class="inline-block" style="margin: 0 15px">|</span>
+            <span class="deal-list-text inline-block">{{sumLoanAmount | currency}}</span>
+          </div>
+          <mat-progress-bar matLine mode="determinate" value="0" color="primary"></mat-progress-bar>
+        </mat-list-item>
+
+        <party-summary [dealId]="dealId"></party-summary>
+        <app-loan-summary [dealId]="dealId"></app-loan-summary>
+        <app-collateral-summary [dealId]="dealId"></app-collateral-summary>
+
+      </mat-list>
+    </div>
+
+    <div class="u-footer-container"></div>
+
+  </div>
+
+  <div class="u-scrn-flex">
+    <app-summary-detail style="height: 100%"></app-summary-detail>
+  </div>
+
+</div>

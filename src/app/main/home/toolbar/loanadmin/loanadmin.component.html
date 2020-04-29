@@ -1,0 +1,47 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <!-- <b>{{title}}</b> -->
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+
+
+            <div>
+                <table>
+                    <tr *ngIf="participant.BranchName">
+                        <td><b>Branch Name</b>
+                        <td><b>{{participant.BranchName}}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>Person Name</b>
+                        <td><b>{{participant.PersonName}}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>Person Name</b>
+                        <td><b>{{participant.PersonName}}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>Participation</b>
+                        <td><b>{{participant.Participation}}</b></td>
+                    </tr>
+                    <tr *ngIf="participant.PersonPhone">
+                        <td><b>PersonPhone</b>
+                        <td><b>{{participant.PersonPhone}}</b></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+
+    </div>
+</div>

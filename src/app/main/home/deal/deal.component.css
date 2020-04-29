@@ -1,0 +1,52 @@
+
+@media (min-width: 1900px) {
+  .fab {
+    position: absolute;
+    top: 64rem;
+    left: 125rem;
+  }
+
+}
+
+@media (min-width: 1200px) and (max-width: 1899px) {
+  .fab {
+    position: absolute;
+    top: 87%;
+    left: 94%;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 1200px) {
+  .fab {
+    position: absolute;
+    top: 87%;
+    left: 87%
+  }
+}
+
+.row-padding {
+  padding: 0px 0.5%
+}
+
+.height-100 {
+  height: 100%
+}
+
+.height-90 {
+  height: 90%
+}
+
+.height-95 {
+  height: 95%
+}
+
+.header-fixed {
+  position: absolute;
+  width: 100%;
+}
+
+
+.row-workspace {
+  padding-top: 100px;
+  height: 100%
+}

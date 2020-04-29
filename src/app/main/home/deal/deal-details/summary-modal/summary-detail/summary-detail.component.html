@@ -1,0 +1,107 @@
+<div class="m-portlet m-portlet--rounded" style="height: 100%">
+  <mat-tab-group mat-align-tabs="center" class="header summary-tab-group" mat-stretch-tabs color="accent">
+    <mat-tab label="Tasks" (click)="clearDirty()">
+      <ng-template matTabContent>
+        <div fxFill>
+          Tasks
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Detail">
+      <ng-template matTabContent>
+        <div fxFill>
+            <form [formGroup]="summaryDetailForm" fxFill autocomplete="off" novalidate>
+                <!--TOP-->
+                <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+                  <div fxFill>
+                    <div class="u-portlet-body">
+                        <div>
+                            <div fxLayout="column" fxFlex="5"></div>
+                            <div fxLayout="column" fxFlex="90">
+                              <h5>Notes</h5>
+                            </div>
+                        </div>
+                        <div class="summary-row-padding">
+                            <div fxLayout="column" fxFlex="5">
+                                <mat-icon class="summary-icon" aria-label="icon">notes</mat-icon>
+                            </div>
+                            <div fxLayout="column" fxFlex="90">
+                                <mat-form-field hintLabel="Max 700 characters" aria-label="notes"
+                                  floatLabel="never"
+                                  floatPlaceholder="never"
+                                  appearance="fill">
+                                    <textarea matInput #inputNotes rows="10" maxlength="700"
+                                      formControlName="notes">
+                                    </textarea>
+
+                                    <mat-hint ngClass="{'summary-hint-error': inputNotes.value.length >= 700}">{{inputNotes.value?.length || 0}}/700</mat-hint>
+                                    <mat-hint *ngIf="inputNotes.value.length >= 700" class="hint-error">Max character length reached</mat-hint>
+
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div style="padding-top: 20px"></div>
+                        <div>
+                            <div fxLayout="column" fxFlex="5"></div>
+                            <div fxLayout="column" fxFlex="90">
+                                <h5>Purpose</h5>
+                            </div>
+                        </div>
+                        <div class="summary-row-padding">
+                            <div fxLayout="column" fxFlex="5">
+                                <mat-icon class="summary-icon" aria-label="icon">notes</mat-icon>
+                            </div>
+                            <div fxLayout="column" fxFlex="90">
+                                <mat-form-field hintLabel="Max 700 characters" aria-label="notes"
+                                        floatLabel="never"
+                                        floatPlaceholder="never"
+                                        appearance="fill">
+                                      <textarea matInput #inputPurpose rows="10" maxlength="700"
+                                            formControlName="purpose">
+                                      </textarea>
+                                      <mat-hint ngClass="{'hint-error': inputPurpose.value.length >= 700}">{{inputPurpose.value?.length || 0}}/700</mat-hint>
+                                      <mat-hint *ngIf="inputPurpose.value.length >= 700" class="hint-error">Max character length reached</mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="summary-row-padding">
+                            <div fxLayout="column" fxFlex="5"></div>
+                            <div fxLayout="column" fxFlex="90">
+                                <mat-selection-list formControlName="employee">
+                                          <mat-list-option>
+                                            Employee Application
+                                          </mat-list-option>
+                                </mat-selection-list>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!--BOTTOM / FOOTER-->
+                <div fxLayout="row" fxLayoutAlign="start end" style="height: 5%">
+                  <div style="width: 100%; background: #ebedf2;">
+                      <button *ngIf="summaryDetailForm.dirty" type="submit" class="summary-button-save" mat-flat-button (click)="clearDirty()">Save</button>
+                      <button *ngIf="summaryDetailForm.dirty" type="submit" class="summary-button-cancel" mat-flat-button (click)="clearDirty()">Cancel</button>
+                  </div>
+                </div>
+
+            </form>
+        </div>
+
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="History">
+    <ng-template matTabContent>
+      <div fxFill>
+          <button mat-menu-item (click)="getHistory()">
+              <mat-icon aria-label="menu" aria-hidden="false">refresh</mat-icon>
+            </button>
+        <history-common-component [sumresult]="summaryHistoryList"></history-common-component>
+      </div>
+    </ng-template>
+  </mat-tab>
+  </mat-tab-group>
+
+</div>

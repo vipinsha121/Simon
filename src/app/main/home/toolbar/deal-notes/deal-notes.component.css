@@ -1,0 +1,33 @@
+p-dialog.hidden div[role="dialog"] {
+    overflow: hidden !important;
+    height: 50px;
+}
+.ng-trigger.ng-trigger-animation.ng-tns-c1-0.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow.ui-dialog-draggable.ui-dialog-resizable.ng-star-inserted {
+    width: 50%;
+    left: 24%!important;
+    margin: 0 auto!important;
+} 
+
+mat-icon {
+    color: #9a9a9a
+  }
+
+  .ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top.ng-tns-c34-14.ng-star-inserted {
+    background: linear-gradient(to right, rgba(235,80,91,1) 31%,rgba(188,96,182,1) 100%) !important;
+    
+}
+.widthEditor.boxDiloge
+{
+    background: linear-gradient(to right, rgba(235,80,91,1) 31%,rgba(188,96,182,1) 100%);
+    cursor: move;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    z-index: 1;
+    color: white;
+}
+body .ui-dialog .ui-dialog-titlebar{
+    color: white;
+}
+.Date{
+    align:right;
+}

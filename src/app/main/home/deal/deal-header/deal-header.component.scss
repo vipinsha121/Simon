@@ -1,0 +1,133 @@
+@import '../../../../../mat-theme.scss';
+
+@media (max-width: 700px) {
+  .toolbar-left {
+    height: 100%;
+    width: 45px;
+    background: #FFF;
+    position: absolute;
+    z-index: 500;
+  }
+}
+
+.header-row-left {
+  height: 32px;
+}
+
+.header-row-left > button {
+  height: 28px;
+  font-size: 13px;
+  color: #8b9294;
+  border-radius: 0px;
+  line-height: 28px;
+}
+
+.block > div > span {
+  display: block;
+  text-align: center;
+}
+
+.date-number > div > span:last-child {
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.date-container {
+  height: 64px;
+  line-height: 50px;
+}
+
+.date-container > div {
+  margin: 0px 8px;
+  display: inline-block;
+}
+
+.date-container > div > span:first-child {
+  display: block;
+  font-size: 10px;
+  height: 16px;
+  text-align: center;
+}
+
+.date-container > div > span:last-child {
+  display: block;
+  font-size: 14px;
+  text-align: center;
+}
+
+.mat-menu-item > span:first-child {
+  padding-right: 15px;
+}
+
+.cursor-all-scroll {
+    cursor: all-scroll;
+}
+
+mat-icon {
+  color: #9a9a9a
+}
+
+mat-toolbar {
+  background: #fff !important;
+  margin-bottom: 10px;
+}
+
+mat-toolbar-row {
+  padding-left: 0px;
+}
+
+h6 {
+  color: #4a4a4a;
+  padding-left: 18px;
+  padding-top: 7px;
+  font-size: 16px !important;
+  text-transform: uppercase;
+}
+
+.h6-mobile {
+  padding: 0px 0px 0px 10px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+.dates-spacer {
+  padding: 0px 3rem;
+  width: 100%;
+}
+
+.dates-container {
+  padding: 0px 10px;
+  text-align: center;
+  display: inline-block;
+}
+
+.date-label {
+  display: block;
+  font-size: 0.8rem;
+  height: 15px;
+  text-align: center
+}
+
+.header-fixed {
+  position: absolute;
+  top: 30px;
+}
+
+.header-tab-text > button {
+  min-width: 50px !important;
+}
+
+.header-tab-text-border.active {
+  border-bottom: 2px solid mat-color($accent)
+}
+
+toolbar-assign-deal {
+  align-self: center !important;
+}
+
+toolbar-deal-officer{
+  align-self: center !important;
+}

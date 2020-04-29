@@ -1,0 +1,50 @@
+<div fxLayout="row">
+  <div class="req-doc-input">
+    <input class="form-control" [(ngModel)]="searchText" placeholder="Search..." />
+  </div>
+  <div style="width: 50%">
+    <button mat-flat-button (click)="showDocumentAdd(requirement)" class="req-doc-button-icon-upload"
+      style="float: right">
+      <span style="color: #5cb0f1; margin-right: 20px;">Upload New Document</span>
+      <mat-icon>cloud_upload</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="doc-req-container">
+  <mat-list class="req-doc-body">
+    <mat-list-item *ngFor="let d of requirement?.documents | searchDocs:{alternateName: searchText, asOfDate:searchText,
+              documentDefinitionName: searchText}; let i = index" class="req-doc-list-item">
+      <mat-icon matListIcon style="margin-bottom: 7px; color: #ffffff; background: #7ec7ff;">insert_drive_file
+      </mat-icon>
+      <div matLine>
+        <span matTooltip="{{d?.documentDefinitionName}}" *ngIf="d.documentDefinitionName?.length > 30"
+          class="inline-block req-doc-title">
+          {{ d?.documentDefinitionName | slice: 0:30 }}...
+        </span>
+        <span *ngIf="d?.documentDefinitionName?.length <= 30" class="inline-block req-doc-title">
+          {{ d?.documentDefinitionName }}
+        </span>
+        <button mat-icon-button matTooltip="Remove Document" class="req-doc-button-icon"
+          (click)="removeDocument(d.id,requirement.requirementId,requirement.partyId);">
+          <mat-icon matIcon class="u-mat-icon-grey">close</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Edit Document Details" class="req-doc-button-icon"
+          (click)="editDocument(d,requirement);">
+          <mat-icon matIcon class="u-mat-icon-grey">list</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Edit in Adobe" class="req-doc-button-icon">
+          <mat-icon matIcon class="u-mat-icon-grey">edit</mat-icon>
+        </button>
+      </div>
+      <div matLine *ngIf="d.primary">
+        <span class="chip">primary</span>
+      </div>
+      <div matLine>
+        <span>{{d.asOfDate | date:'MM/dd/yyyy'}} ({{d.alternateName}})</span>
+      </div>
+      <div matLine>
+        <span class="req-doc-subtitle">Added on {{d.requirementAttachDate | date:'MM/dd/yyyy hh:mm a'}}</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

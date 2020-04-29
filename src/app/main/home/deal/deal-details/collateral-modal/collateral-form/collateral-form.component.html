@@ -1,0 +1,409 @@
+<!--<app-loader></app-loader>-->
+<div class="m-portlet m-portlet--rounded" fxLayout="column" style="height: 100%">
+  <div fxFill>
+    <mat-tab-group mat-align-tabs="center" class="header" mat-stretch-tabs animationDuration="0ms" color="accent"
+      [selectedIndex]="primarytabclass" (selectedTabChange)="onPrimaryTabChange($event)">
+      <mat-tab #reqcount label="Requirements">
+        <ng-template matTabLabel>
+          <div ngbTooltip="{{openRequirements}} Open Requirements / {{completeRequirement}} Completed Requirements"
+            tooltipClass="tooltip-font-size-md" fxLayout="row">
+            <!-- <span> -->
+            Requirements
+            <!-- </span> -->
+            <div ngbTooltip="Open requirements" tooltipClass="tooltip-font-size-md" matBadge="{{openRequirements}}"
+              matBadgeOverlap="true" matBadgeSize="medium" matBadgePosition="after" matBadgeColor="warn"
+              style="margin-left: -8px">
+            </div>
+            <div matBadge="{{completeRequirement}}" matBadgeSize="medium" matBadgePosition="after"
+              matBadgeOverlap="true" matBadgeColor="primary" style="margin-left: 18px"></div>
+            <!-- <span>Requirements</span> -->
+            <!-- <div matBadge="{{openRequirements}}" matBadgeOverlap="false" matBadgeSize="medium" matBadgePosition="after"
+                matBadgeColor="warn" style="margin-left: 05px;">
+              </div>
+              <div matBadge=" {{completeRequirement}}" matBadgeSize="medium" matBadgePosition="after" matBadgeOverlap="false"
+                matBadgeColor="primary" style=" margin-left: 20px;"></div> -->
+          </div>
+        </ng-template>
+        <ng-template matTabContent class="u-portlet-container">
+          <requirements-list [requirements]="collateralRequirements" [dealId]="dealId">
+          </requirements-list>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Documents">
+        <app-documents-list [reqDocuments]="collateralRequirementDocuments" [dealId]="dealId"></app-documents-list>
+        <!-- <ng-template matTabContent>
+        <mat-tab-group mat-align-tabs="center" class="tab-secondary" mat-stretch-tabs animationDuration="0ms">
+          <mat-tab label="Deal">
+            <app-documents-list [reqDocuments]="collateralRequirementDocuments" [dealId]="dealId"></app-documents-list>
+          </mat-tab>
+          <mat-tab label="Related">
+            <recent-colldocuments></recent-colldocuments>
+          </mat-tab>
+        </mat-tab-group>
+
+      </ng-template> -->
+      </mat-tab>
+      <mat-tab label="Detail">
+        <ng-template matTabContent>
+          <mat-tab-group class="tab-secondary" mat-stretch-tabs animationDuration="0ms">
+            <mat-tab label="Main" style="height: 100%">
+              <div fxFill>
+                <form [formGroup]="collateralDetailForm" fxFill>
+                  <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+                    <div class="collateral-detail-body">
+
+                      <div fxLayout="row" class="edit-row-top">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Description</mat-label>
+                            <input matInput placeholder="Description" formControlName="description" name="description"
+                              autocomplete="off" *ngIf="collateral" [(ngModel)]="collateral.description" required>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div fxLayout="row" class="edit-row">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Group</mat-label>
+                            <mat-select placeholder="Select" formControlName="group" name="group" required
+                              [(ngModel)]="collateral.groupCode" (selectionChange)="onGroupChange($event)">
+                              <mat-option *ngFor="let group of colTypeGroup" [value]="group.id">{{group.name}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error>Please select a group</mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Category</mat-label>
+                            <mat-select placeholder="Select" formControlName="category" name="category" required
+                              [(ngModel)]="collateral.categoryId">
+                              <mat-option *ngFor="let cat of colCategory" [value]="cat.id">{{cat.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>Please select a category</mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div fxLayout="row" class="edit-row">
+                        <div style="padding-right: 10px">
+                          <!-- <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>Grantors</mat-label>
+                          <mat-select placeholder="Select" formControlName="collateralOwners" name="collateralOwners"
+                            [formControl]="collOwners" multiple required [(ngModel)]="collateral.owners">
+                            <div class="fixed">
+                              <button mat-flat-button (click)="ownerDropDownMultiSelect.name = ''"
+                                style="float: right;margin: 7px;">Reset</button>
+                              <mat-form-field appearance="legacy" floatLabel="never" style="width: 75%"
+                                (click)="$event.stopPropagation(); false;">
+                                <input matInput formControlName="searchOwner" type="text" placeholder="Search..."
+                                  [(ngModel)]="searchOwner">
+                              </mat-form-field>
+                            </div>
+                            <div>
+                              <mat-option
+                                *ngFor="let owner of ownerDropDownMultiSelect | searchDocs:{name: searchOwner}"
+                                [(value)]="owner.id" style="cursor: pointer; margin: 6px; height: 38px;font-size: 14px;"
+                                (click)="getSelectedGrantors($event, owner)">
+                                {{owner.name}}
+                              </mat-option>
+                            </div>
+                          </mat-select>
+                        </mat-form-field>  -->
+
+                          <!--new control-->
+                          <!-- <mat-form-field appearance="outline" floatLabel="always">
+                          <mat-label>Grantors</mat-label>
+                          <mat-select [(ngModel)]="collateral.owners" [ngModelOptions]="{standalone: true}"
+                            [multiple]="true" (ngModelChange)="onSelectedOptionsChange(element, $event)"
+                            (click)="resetSelectedGrantors()">
+                            <div class="fixed">
+                              <button mat-flat-button style="float: right;margin: 7px;" (click)="selectAll()">Select
+                                All</button>
+                              <button mat-flat-button style="float: right;margin: 7px;"
+                                (click)="resetSelectedGrantors()">Reset</button>
+                            </div>
+                            <mat-option style="position: sticky;  padding: 0;z-index: 9;">
+                              <ngx-mat-select-search [(ngModel)]="searchOwner" [ngModelOptions]="{standalone: true}"
+                                [placeholderLabel]="'Search...'" [noEntriesFoundLabel]="''"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-list (click)="$event.stopPropagation(); false;">
+                              <mat-option
+                                *ngFor="let owner of ownerDropDownMultiSelect | searchDocs:{name: searchOwner}"
+                                [(value)]="owner.id" (click)="getSelectedGrantors(event, owner)">
+                                <div fxLayout="row">
+                                  <div fxFlex="25" class="inline-block">
+                                    <span>{{owner.name}}</span>
+                                  </div>
+                                </div>
+                              </mat-option>
+                            </mat-list>
+                          </mat-select>
+                        </mat-form-field> -->
+
+                          <mat-form-field appearance="outline" floatLabel="always" (click)="resetSelectedGrantors()">
+                            <mat-label>Grantors</mat-label>
+                            <mat-select [(ngModel)]="collateral.owners" formControlName="collateralOwners"
+                              [multiple]="true" (ngModelChange)="onSelectedOptionsChange(element, $event)"
+                              (click)="resetSelectedGrantors()" placeholder="Select">
+                              <div class="fixed">
+                                <button mat-flat-button style="float: right;margin: 7px;" (click)="selectAll()">Select
+                                  All</button>
+                                <button mat-flat-button style="float: right;margin: 7px;"
+                                  (click)="resetSelectedGrantors()">Reset</button>
+                              </div>
+                              <mat-option style="position: sticky;  padding: 0;z-index: 9;">
+                                <ngx-mat-select-search [(ngModel)]="searchOwner" [ngModelOptions]="{standalone: true}"
+                                  [placeholderLabel]="'Search...'"
+                                  [noEntriesFoundLabel]="''"></ngx-mat-select-search>
+                              </mat-option>
+                              <mat-list (click)="$event.stopPropagation(); false;">
+                                <mat-option
+                                  *ngFor="let owner of ownerDropDownMultiSelect | searchDocs:{name: searchOwner}"
+                                  [(value)]="owner.id" (click)="getSelectedGrantors(event, owner)">
+                                  <div fxLayout="row">
+                                    <div fxFlex="25" class="inline-block">
+                                      <span>{{owner.name}}</span>
+                                    </div>
+                                  </div>
+                                </mat-option>
+                              </mat-list>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div style="padding-right: 10px">
+                          <mat-checkbox formControlName="primary" name="primary" [checked]="collateral.primary"
+                            [(ngModel)]="collateral.primary" [disabled]="isPrimaryCollateral"
+                            (change)="onChange($event)">
+                            Primary
+                          </mat-checkbox>
+                        </div>
+                      </div>
+
+                      <!--Rutas test code-->
+                      <div fxLayout="row" class="edit-row-full">
+                        <div class="card">
+                          <div class="card-body">
+                            <div id="table" class="table-editable">
+                              <span class="table-add float-right mb-3 mr-2">
+                                <button mat-flat-button class="collateral-detail-button-save"
+                                  (click)="addAssociatedLoan()" style="float: right; margin: 7px"
+                                  mat-flat-button>Add</button>
+                              </span>
+                              <table class="table table-bordered table-responsive-md table-striped text-center">
+                                <tr>
+                                  <th>Associated Loan</th>
+                                  <th>Lien Position</th>
+                                  <th>Remove</th>
+                                </tr>
+                              </table>
+                              <div formArrayName="associatedLoans"
+                                *ngFor="let comp of collateralDetailForm.get('associatedLoans').controls; let i=index">
+                                <div class="row" [formGroupName]="i">
+                                  <mat-form-field class="col-md-5">
+                                    <mat-select formControlName="associatedLoan" [compareWith]="compareFn"
+                                      #singleSelect>
+                                      <mat-option *ngFor="let lnDDL of loanDropDownMultiSelect" [value]="lnDDL"
+                                        (click)="selectionChanged(lnDDL,i)">
+                                        {{lnDDL?.productName || 'Not found'}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="col-md-5">
+                                    <mat-select formControlName="lienPosition">
+                                      <mat-option [value]="0">No Lien Position Selected</mat-option>
+                                      <mat-option *ngFor="let lp of lienPositionDrop" [value]="lp.id">
+                                        {{lp?.name || 'Not found'}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <div class="col-md-2">
+                                    <span class="table-remove">
+                                      <button (click)="deleteAssociatedLoan(i)" mat-flat-button>
+                                        <mat-icon aria-hidden="false" aria-label="Example home icon">delete</mat-icon>
+                                      </button>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--Rutas test code ends-->
+
+                      <div fxLayout="row" class="edit-row">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Est. Value</mat-label>
+                            <input matInput placeholder="Est. Value" type="number" formControlName="estimatedValue"
+                              name="estimatedValue" autocomplete="off" [(ngModel)]="collateral.estimatedValue">
+                            <span matPrefix>$&nbsp;</span>
+                          </mat-form-field>
+                        </div>
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <mat-label>VIN / Serial</mat-label>
+                            <input matInput placeholder="VIN / Serial" formControlName="vin" name="vin"
+                              autocomplete="off" [(ngModel)]="collateral.vinSerialNum">
+                            <mat-error></mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div fxLayout="row" class="edit-row">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Appraisal Type</mat-label>
+                            <mat-select placeholder="Select" formControlName="appraisalType" name="appraisalType"
+                              [(ngModel)]="collateral.appraisalType">
+                              <mat-option *ngFor="let appType of appraisalType" [value]="appType.id">{{appType.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div fxLayout="column" fxFlex="50" style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Subject Property</mat-label>
+                            <input matInput placeholder="Subject Property" formControlName="subjectProperty"
+                              name="subjectProperty" autocomplete="off" [(ngModel)]="collateral.subjectProperty">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div fxLayout="row" class="edit-row">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Address 1</mat-label>
+                            <input matInput placeholder="Address 1" formControlName="address1" name="address1"
+                              autocomplete="off" [(ngModel)]="collateral.propertyStreetAddress1">
+                          </mat-form-field>
+                        </div>
+                        <div>
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Address 2</mat-label>
+                            <input matInput placeholder="Address 2" formControlName="address2" name="address2"
+                              autocomplete="off" [(ngModel)]="collateral.propertyStreetAddress2">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div fxLayout="row" class="edit-row-three-line">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>City</mat-label>
+                            <input matInput placeholder="City" formControlName="city" autocomplete="off" name="city"
+                              [(ngModel)]="collateral.propertyCity">
+                          </mat-form-field>
+                        </div>
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>State</mat-label>
+                            <mat-select formControlName="state" placeholder="Select"
+                              [(ngModel)]="collateral.propertyState" name="state">
+                              <mat-select-trigger>{{collateral.propertyState}}</mat-select-trigger>
+                              <mat-option>None</mat-option>
+                              <mat-option *ngFor="let s of stateList" [value]="s.abbrv">
+                                {{s.abbrv}} - {{s.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Zip</mat-label>
+                            <input matInput placeholder="Zip" formControlName="zip" autocomplete="off" name="zip"
+                              [(ngModel)]="collateral.propertyZip">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div fxLayout="row" class="edit-row-full">
+                        <div style="padding-right: 10px">
+                          <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Comment</mat-label>
+                            <textarea matInput placeholder="Comment" formControlName="comment" name="comment"
+                              autocomplete="off" [(ngModel)]="collateral.notes"></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start end" class="collateral-detail-u-footer-container"
+                    style="height: 5%">
+                    <div style="width: 100%; background: #ebedf2;">
+                      <button *ngIf="collateralDetailForm.valid && collateralDetailForm.dirty" type="submit"
+                        class="collateral-detail-button-save"
+                        (click)="saveCollateral(collateral); openSnackBarSave('', 'Dismiss')"
+                        mat-flat-button>Save</button>
+                      <button *ngIf="collateralDetailForm.dirty" type="button" class="collateral-detail-button-cancel"
+                        (click)="onCancel(collateral.dealId); openSnackBarCancel('', 'Dismiss')"
+                        mat-flat-button>Cancel</button>
+                      <!-- <button type="button" class="collateral-detail-button-remove" *ngIf="!isNewCollateral"
+                      (click)="deleteCollateral(collateral)" mat-flat-button>Remove</button> -->
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </mat-tab>
+            <mat-tab label="Map" style="height: 100%">
+              <collateral-googlemap></collateral-googlemap>
+            </mat-tab>
+
+          </mat-tab-group>
+
+
+        </ng-template>
+      </mat-tab>
+      <!-- <mat-tab label="Related Deals">
+      <ng-template matTabContent>
+        <div class="example-container">
+          <table mat-table [dataSource]="dataSource" style="width: -webkit-fill-available;">
+
+            <ng-container matColumnDef="dealId" sticky>
+              <th mat-header-cell *matHeaderCellDef> Deal ID </th>
+              <td mat-cell *matCellDef="let element">
+                <a routerLink='/main/deal/{{dealId}}/'>
+                  {{element.dealId}}
+                </a></td>
+            </ng-container>
+
+            <ng-container matColumnDef="accountNumber">
+              <th mat-header-cell *matHeaderCellDef> Account No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.accountNumber}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="requestType">
+              <th mat-header-cell *matHeaderCellDef> Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.requestType}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="productDesc">
+              <th mat-header-cell *matHeaderCellDef> Product </th>
+              <td mat-cell *matCellDef="let element"> {{element.productDesc}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let element">{{element.amount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef> Role </th>
+              <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="stageLabel">
+              <th mat-header-cell *matHeaderCellDef> Stage </th>
+              <td mat-cell *matCellDef="let element"> {{element.stageLabel}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+        </div>
+      </ng-template>
+    </mat-tab> -->
+    </mat-tab-group>
+  </div>
+</div>

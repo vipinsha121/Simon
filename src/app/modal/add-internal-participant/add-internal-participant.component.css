@@ -1,0 +1,45 @@
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  #fafacross{
+    font-size: 5.1rem;
+    /* padding-left: 617px; */
+  }
+  .ng-tns-c43-17.ng-trigger.ng-trigger-transformPanel.mat-select-panel.mat-primary {
+    margin-top: 10px;
+}
+.mat-checkbox-inner-container-no-side-margin {
+  margin-left: 5px;
+  margin-right: 0px;
+  padding-top: 17px;
+}
+  .modal-header { 
+    justify-content: center;  
+}
+button.close {
+  display: none;
+}
+#saveicon{
+  font-size: 5.1rem;
+  /* padding-left: 617px; */
+}
+
+.forIcons {
+  display: inline-block;
+/*float: right;*/
+    margin-right: 47px;
+}
+element.style {
+  transform-origin: 50% 19.875px 0px;
+  font-size: 13px;
+  opacity: 1;
+  min-width: calc(100% + 32px);
+  transform: scaleY(1);
+  margin-top: 17px;
+}

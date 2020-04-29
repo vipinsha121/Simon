@@ -1,0 +1,74 @@
+<div class="example-container">
+  <table mat-table [dataSource]="dataSource" class="relatedDealsTable" style="width: -webkit-fill-available;">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="dealId" sticky>
+      <th mat-header-cell *matHeaderCellDef> Deal ID </th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <a routerLink='/main/deal/{{dealId}}/'> -->
+        {{element.dealId}}
+        <!-- </a> -->
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="accountNumber">
+      <th mat-header-cell *matHeaderCellDef> Account No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.accountNumber}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="requestType">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.requestType}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="productDesc">
+      <th mat-header-cell *matHeaderCellDef> Product </th>
+      <td mat-cell *matCellDef="let element"> {{element.productDesc}} </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element">{{element.amount}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Role </th>
+      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="stageLabel">
+      <th mat-header-cell *matHeaderCellDef> Stage </th>
+      <td mat-cell *matCellDef="let element"> {{element.stageLabel}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <!-- <ng-container matColumnDef="Officer">
+     <th mat-header-cell *matHeaderCellDef> Officer </th>
+     <td mat-cell *matCellDef="let element"> {{element.Officer}} </td>
+   </ng-container> -->
+
+    <!-- Symbol Column -->
+    <!-- <ng-container matColumnDef="Admin">
+      <th mat-header-cell *matHeaderCellDef> Admin </th>
+      <td mat-cell *matCellDef="let element"> {{element.Admin}} </td>
+    </ng-container> -->
+
+    <!-- Star Column -->
+    <!-- <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon>more_vert</mat-icon>
+      </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <!-- </div> -->
+</div>

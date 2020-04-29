@@ -1,0 +1,275 @@
+<div *ngIf="reqList" fxFill>
+  <div fxFill>
+    <div class="req-doc-input">
+      <input class="form-control" [(ngModel)]="searchText" placeholder="Search..." />
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start stretch" style="height: 95%">
+      <div fxFill>
+        <div class="req-list-body">
+
+          <table class="table req-list-table">
+            <tbody>
+              <tr
+                *ngFor="let r of requirements |searchDocs:{type: searchText, statusDescription:searchText}; let i=index"
+                class="req-list-row">
+                <td (click)="showRequirementDetails(r); toggleList();" style="cursor: pointer">
+                  <div class="req-header">
+                    <p>{{r.type| slice: 0:40}}</p>
+                    <!-- <p>{{r.assignedToFullName}}</p> -->
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <span title="Due Soon" *ngIf="r.daysDue==2 && r.complete != true">
+                      <!--{{r.daysDue}}-->
+                      <mat-icon>access_alarm</mat-icon>
+                    </span>
+                    <span title="Due Immediately" *ngIf="r.daysDue<2 && r.complete != true">
+                      <mat-icon>access_alarm</mat-icon>
+                    </span>
+                    <span title="Exception" *ngIf="r.exception==true">
+                      <mat-icon>error_outline</mat-icon>
+                    </span>
+                    <span class="chip" [ngClass]="r.background">
+                      {{r.statusDescription?docReq?.statusDescription:'Open'}}
+                      {{r.statusDescription}}
+                    </span>
+                  </div>
+
+                </td>
+                <!--Help-->
+                <td>
+                  <mat-icon *ngIf="r.showCompareFlag" class="u-mat-icon-small u-mat-icon-grey">format_list_bulleted
+                  </mat-icon>
+                </td>
+                <!--Attach File-->
+                <td>
+                  <div>
+                    <button class="papeclip-button" mat-icon-button [matMenuTriggerFor]="documentMenu"
+                      (click)="getRequirementDocuments(r.requirementId,r.documentCount,r)" style="text-decoration: none"
+                      ngbTooltip="Documents" tooltipClass="tooltip-font-size-md">
+                      <span style="margin-right: -0.5rem;margin-bottom: 0.5rem;" *ngIf="r.documentCount > 0"
+                        class="u-badge-grey badge">
+                        {{ r.documentCount }}
+                      </span>
+                      <mat-icon class="u-mat-icon-small" [ngClass]="{'u-mat-icon-green' : r.documentCount > 0 && r.requireDocument == true,
+                                                      'u-mat-icon-red' : r.documentCount == 0 && r.requireDocument == true,
+                                                      'u-mat-icon-grey' : r.requireDocument == false}">attach_file
+                      </mat-icon>
+                    </button>
+
+                  </div>
+                  <mat-menu #documentMenu="matMenu" [yPosition]="i > 5 ? 'above' : 'below'" xPosition="before"
+                    class="doc-menu">
+                    <div class="required-doc u-background-red"
+                      *ngIf="r.documentCount == 0  && r.requireDocument == true">
+                      - {{r.description}} Document Required
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 10px 10px"
+                      *ngFor="let d of r.documents">
+                      <!--DOC NAME-->
+                      <!-- <div class="col-md-1" style="margin-bottom: 10px;">
+                                                <div *ngIf="$first && d.primary == true"></div>
+                                                <div *ngIf="d.primary != true"></div>
+                                                <div *ngIf="!$first && d.primary == true"></div>
+                                            </div> -->
+
+                      <div fxFlex="60">
+
+                        <div fxLayout="row" routerLink='/main/deal/{{dealId}}/' class="Doc-name">
+                          <!-- <a *ngIf="$first && d.primary == true" (click)="downloadDocument(d.id, d.isIIS)">
+                                                    {{d.documentDefinitionName}}
+                                                </a> -->
+
+
+                          <a (click)="downloadDocument(d.id, d.isIIS)">
+                            {{d.documentDefinitionName}} - {{d.asOfDate | date:'MM/dd/yyyy'}} ({{d.alternateName}})
+                            <!-- <span title="{{d.alternateName}}">
+                                                            {{ (d.alternateName.length>20)? (d.alternateName | slice:0:20)+'...':(d.alternateName)}}
+                                                        </span> -->
+                          </a>
+                          <!-- <span  >
+                                Primary
+                              </span> -->
+                        </div>
+                        <div fxLayout="row">
+                          <span style="font-size: 11px; display:inline">
+                            Attached
+
+                          </span>
+                          <span *ngIf="d.requirementAttachDate != null">
+                            ({{d.requirementAttachDate | date:'MM/dd/yyyy hh:mm a'}})
+                          </span>
+                          <span *ngIf="d.requirementAttachDate < 1" class="doc-menu-date-attach">
+                            -- / -- / ----
+                          </span>
+                        </div>
+                      </div>
+
+                      <div fxFlex="20" fxLayoutAlign="center center">
+                        <mat-chip-list *ngIf="d.primary">
+                          <mat-chip class="u-background-grey">
+                            Primary
+                          </mat-chip>
+                        </mat-chip-list>
+                      </div>
+
+                      <div fxFlex="20" fxLayout="row" fxLayoutAlign="space-evenly">
+                        <a (click)="editDocument(d,r);" ngbTooltip="Edit Document Details"
+                          tooltipClass="tooltip-font-size-md" style="cursor: pointer;">
+                          <mat-icon class="u-mat-icon-small">edit</mat-icon>
+                        </a>
+                        <a (click)="removeDocument(d.id, r.requirementId,r)" ngbTooltip="Remove Document"
+                          tooltipClass="tooltip-font-size-md">
+                          <mat-icon class="u-mat-icon-small">cancel</mat-icon>
+                        </a>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <a (click)="showDocumentAdd(r);">
+                      <div class="inline-block doc-menu-add">
+                        <span class="doc-menu-add-text">Add new document</span>
+                      </div>
+                    </a>
+                  </mat-menu>
+                </td>
+                <td>
+                  <!-- <requirement-action-menu [requirement]="r" [dealId]="dealId" [assignForm]="assignForm" [deferForm]="deferForm"></requirement-action-menu> -->
+                  <button *ngIf="!r.showStatus" aria-label="matMenuButton" (click)="getActionForRequirement(r)"
+                    mat-icon-button style="float: right" [matMenuTriggerFor]="moreMenu">
+                    <mat-icon  aria-label="menu" aria-hidden="false"
+                      class="u-mat-icon-small u-mat-icon-grey">
+                      more_vert</mat-icon>
+                    <!-- <span *ngIf="r.showCompareFlag">Open</span> -->
+                  </button>
+
+                  <div class="req-list-status">
+                    <div *ngIf="r.showIconuser==true" class="req-list-status-sub-ad">
+                      <span *ngIf="r?.assignedUserName">Assign</span>
+                      <span>{{r?.assignedUserName}}</span>
+                    </div>
+                    <div *ngIf="r.showIcondefer" class="req-list-status-sub-ad">
+                      <span *ngIf="r?.deferName">Defer</span>
+                      <span>{{r?.deferName}}</span>
+                    </div>
+
+                    <span *ngIf="r.showStatus" class="req-list-status-sub">{{r?.statusDescriptionName}}</span>
+
+                  </div>
+
+                  <mat-menu #moreMenu="matMenu">
+                    <button aria-label="matMenuButton" *ngFor="let action of getActionStages(r.stageDrop)" mat-menu-item
+                      (menuOpened)="onDeferUserMenuOpen(r, action);" (click)="setAssignedTo(action, r); setDirty(r);">
+                      {{action.name}}
+                    </button>
+                    <button aria-label="matMenuButton" *ngFor="let action of getMenuStages(r.stageDrop)" mat-menu-item
+                      [matMenuTriggerFor]="U" [matMenuTriggerData]="{actionType: action.type}"
+                      (menuOpened)="onDeferUserMenuOpen(r, action);" (click)="setAssignedTo(action, r); setDirty(r);">
+                      {{action.name}}
+                    </button>
+                  </mat-menu>
+                  <!-- <mat-menu #U="matMenu" xPosition="before">
+                    <ng-template matMenuContent let-actionType="actionType">
+                      <form mat-menu-item [formGroup]="assignForm" (click)="stopPropagation($event)"
+                        *ngIf="actionType == 'U'">
+                        <mat-form-field class="req-form-field">
+                          <input type="text" [placeholder]="r.assignedToFullName == null || r.assignedToFullName == ' ' ? 'Search name' :
+                          r.assignedToFullName " aria-label="Number" matInput
+                            name="filterUserDrop" [formControl]="filterUserDrop" [matAutocomplete]="auto">
+                          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='setAssignToUser($event, r)'>
+                            <mat-option *ngFor="let user of filterUser(r)" [value]="user.userId">
+                              {{user.firstName}} {{user.lastName}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+
+                      </form>
+                      <form mat-menu-item [formGroup]="deferForm" (click)="stopPropagation($event)"
+                        *ngIf="actionType == 'D'">
+                        <mat-form-field class="req-form-field">
+                          <mat-select [(value)]="r.selectedDeferDrop" (selectionChange)='setDifferTo($event, r)'>
+                            <mat-option>Defer To</mat-option>
+                            <mat-option *ngFor="let p of r.deferDrop" value="{{p.id}}">
+                              {{p.name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </form>
+
+                    </ng-template>
+                  </mat-menu> -->
+                  <mat-menu #U="matMenu" xPosition="before">
+                    <ng-template matMenuContent let-actionType="actionType">
+
+                      <mat-form-field appearance="outline" floatLabel="always" class="req-form-field"
+                        *ngIf="actionType == 'U'" (click)="$event.stopPropagation(); false;" name="selectedUserName"
+                        ngDefaultControl [(ngModel)]="r.selectedUserName">
+                        <input matInput type="text" [matAutocomplete]="autocomplete" [placeholder]="r.assignedToFullName == null || r.assignedToFullName == ' ' ? 'Search...' :
+                      r.assignedToFullName " (ngModelChange)="setDirty(r)" [(ngModel)]="serachR"
+                          (keydown)="$event.stopPropagation()" (keypress)="setDirty(r)">
+                        <mat-autocomplete #autocomplete="matAutocomplete">
+                          <mat-option *ngFor="let dealReq of r.items | searchDocs:{text: serachR}"
+                            (click)="setAssignToUser(dealReq, r);r.isDirty=true;" [(value)]="dealReq.id"
+                            style="cursor: pointer; margin: 6px; height: 38px;font-size: 14px;" [disabled]="false">
+                            <span ngbTooltip="{{dealReq.text}}" ngbTooltipPosition="before">
+                              {{dealReq.text}}
+                            </span>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+
+                      <form mat-menu-item (click)="stopPropagation($event)" *ngIf="actionType == 'D'">
+                        <mat-form-field class="req-form-field">
+                          <mat-select [(value)]="r.deferToStage"
+                            (selectionChange)='setDifferTo($event, r);r.isDirty=true;'>
+                            <mat-option>Defer To</mat-option>
+                            <mat-option *ngFor="let p of r.deferDrop" value="{{p.id}}">
+                              {{p.name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </form>
+
+                    </ng-template>
+                  </mat-menu>
+
+                </td>
+                <td *ngIf="r.showStatus">
+                  <div class="req-list-status-button-container">
+                    <button (click)="saveRequirement(r)" mat-icon-button class="req-list-status-button-save">
+                      <mat-icon class="u-mat-icon-small">check</mat-icon>
+                    </button>
+                    <button (click)="clearReqStatus(r)" mat-icon-button class="req-list-status-button-cancel">
+                      <mat-icon class="u-mat-icon-small u-mat-icon-grey">close</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start end" style="height: 5%;">
+      <div style="width: 100%; z-index: 999; background: #ebedf2;">
+        <button type="submit" class="req-list-button-ok" mat-flat-button (click)="activeModal.close()">OK
+        </button>
+        <button type="submit" class="req-list-button-save" mat-flat-button (click)="saveAllRequirements()">Save
+          All</button>
+        <button type="submit" class="req-list-button-cancel" mat-flat-button
+          (click)="cancelAllRequirements()">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="!reqList" fxFill>
+  <requirement-details [requirement]="requirement" [dealId]="dealId" [isStageChangeClicked]="isStageChangeClick"
+    [groupCode]="groupCode" (onCloseRequirementForm)="onCloseRequirementForm(event)" [stageHistory]="stageHistory">
+  </requirement-details>
+</div>

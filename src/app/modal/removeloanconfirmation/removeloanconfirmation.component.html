@@ -1,0 +1,25 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <!-- (click)="activeModal.dismiss()" -->
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="modal-body">
+
+        <!-- <div style="overflow: scroll;" *ngFor="let reportLoan of reportLoanData ">
+        <div  *ngFor="let loan of reportLoan | keyvalue">      
+          {{loan.key}}:{{loan.value}}
+        </div>
+      </div> -->
+        <p>{{loanMessage}}</p>
+        <button type="button" class="btn btn-primary" [disabled]="isCollAssociated"
+            (click)="onYesClick()">Yes</button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary" (click)="onNoClick()">No</button>
+    </div>
+    <!-- <div class="modal-footer">
+      
+    </div> -->
+</div>

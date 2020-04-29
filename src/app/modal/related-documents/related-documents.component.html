@@ -1,0 +1,123 @@
+<mat-card>
+    <div style="display: flex; justify-content: space-between;">
+      <mat-label>RELATE DOCUMENTS</mat-label>
+
+      <a style="cursor: pointer;" (click)="clearForm()">Clear All</a>
+      <mat-icon (click)="activeModal.dismiss();">close</mat-icon>
+
+    </div>
+
+
+      <mat-divider></mat-divider>
+
+      <div>
+        <form [formGroup]="RelatedDocForm">
+        <br><div style="display: flex; justify-content: space-around;">
+          <mat-label>Entity (Optional)</mat-label>
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+            <mat-select (selectionChange)='selectEntityType()' placeholder="Select Entity" formControlName="selectEntity" [disabled]="requirements == null">
+                <mat-option value="select">Select Entity</mat-option>
+                <mat-option value="PA">Party</mat-option>
+                <mat-option value="CO">Collateral</mat-option>
+                <mat-option value="LO">Loan</mat-option>
+                <mat-option value="DL">Deal</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div style="display: flex; justify-content: space-around;">
+          <mat-checkbox [(ngModel)]="RequirementChecked"><mat-label>Requirement:</mat-label></mat-checkbox>
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+            <input type="text" [disabled]="RequirementChecked == false" placeholder="Search Requirements"
+            matInput [matAutocomplete]="auto" >
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let new of FilteredReq" [value]="new.description">
+                {{new.description}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div> -->
+
+        <div style="display: flex; justify-content: space-around;">
+            <mat-checkbox (change)="checkRequirement()"  [(ngModel)]="RequirementChecked" [ngModelOptions]="{standalone: true}">
+              <mat-label>Requirement:</mat-label></mat-checkbox>
+
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+                 <input type="text" placeholder="Search Requirements" matInput [matAutocomplete]="autoReq" required
+                  [(ngModel)]="serachRequirement" formControlName="requirement">
+                  <mat-autocomplete [displayWith]="displayFnRequirement.bind(this)" #autoReq="matAutocomplete">
+                <mat-option *ngFor="let req of FilteredReq | searchDocs:{description: serachRequirement, name: serachRequirement}"
+                [value]="req" ngbTooltip="{{req.description}} {{req.name}}" tooltipClass="tooltip-font-size-md">
+                  {{req.description}} {{req.name}}
+                </mat-option>
+
+              </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div style="display: flex; justify-content: space-around;">
+            <mat-checkbox (change)="checkDocType()" [(ngModel)]="DocumentTypeChecked" [ngModelOptions]="{standalone: true}">
+              <mat-label>Document Type:</mat-label>
+            </mat-checkbox>
+
+          <mat-form-field appearance="outline" floatLabel="always" fxFlex="50">
+              <input type="text" [disabled]="DocumentTypeChecked === false" required placeholder="Search Documents Types"
+              matInput [matAutocomplete]="autoType" [(ngModel)]="serachType" formControlName="DocType">
+
+              <mat-autocomplete [displayWith]="displayFnDocumentType.bind(this)" #autoType="matAutocomplete">
+                  <mat-option *ngFor="let doc of docTypes | searchDocs:{name: serachType}" [value]="doc"
+                  ngbTooltip="{{doc.name}}" tooltipClass="tooltip-font-size-md">{{doc.name}}</mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div style="margin-left: 62px;">
+            <mat-checkbox (change)="checkAsOfDate()" [(ngModel)]="AsOfDateChecked" [ngModelOptions]="{standalone: true}">
+              <mat-label>As of date:</mat-label>
+            </mat-checkbox>
+            <mat-form-field appearance="outline" floatLabel="always" fxFlex="50" style="margin-left: 162px;">
+                <input matInput required #asOfDateinput [disabled]="AsOfDateChecked == false"
+                    placeholder="Choose a date" (keyup)="checkDatePattern()" autocomplete="off" 
+                    formControlName="AsOfDate" [(ngModel)]="SelectedAsofdate">
+                <input type="hidden" [matDatepicker]="asOfDate" placeholder="Choose a date"
+                      (dateChange)="RelatedDocForm.get('AsOfDate').setValue(toFormattedDate($event.value))">
+
+                <mat-datepicker-toggle matSuffix [for]="asOfDate"></mat-datepicker-toggle>
+                <mat-datepicker #asOfDate></mat-datepicker>
+            </mat-form-field>
+
+            
+            <!-- <mat-form-field>
+              <input matInput #autocomplete placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <input type="hidden" [matDatepicker]="picker" placeholder="Choose a date"
+              (dateChange)="autocomplete.value = toFormattedDate($event.value)"> -->
+
+        </div>
+
+        <div style="margin-left: 62px;">
+            <mat-checkbox (change)="checkComments()" [(ngModel)]="CommentsChecked" [ngModelOptions]="{standalone: true}">
+              <mat-label>Comments:</mat-label>
+            </mat-checkbox>
+            <mat-form-field appearance="outline" floatLabel="always" style="margin-left: 158px;" fxFlex="50">
+              <input matInput required autocomplete="off" type="text" style="border-radius: 6px !important;"
+                [disabled]="CommentsChecked == false"
+                    maxlength="80" placeholder="Add Comment" formControlName="comments" [(ngModel)]="SelectedComment">
+            </mat-form-field>
+
+        </div>
+
+
+        <br><div style="display: flex; justify-content: space-between;" >
+            <button mat-raised-button style="margin-left: 18px" (click)="activeModal.dismiss();">Cancel</button>
+            <button mat-raised-button  style="color: #47bfa8;margin-right: 18px;width: 106px;" (click)="ApplyAll();" type="submit"
+            [disabled]="RelatedDocForm.invalid || !isRequirementValid() || !isDocTypeValid()">Apply all</button>
+      </div>
+      </form>
+      </div>
+</mat-card>

@@ -1,0 +1,30 @@
+<div>
+  <div class="modal-header">
+    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <h4>REQUIRED</h4>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div fxLayout="column" fxLayoutAlign="space-between">
+      <div style="font-size:14px">
+        The following are the <strong>required fields</strong> that needs to filled in the <strong>
+          Loan
+          form
+        </strong> in order to proceed..
+      </div>
+      <div class="reuiredFields" *ngFor="let req of requiredLoanFields;let i=index" fxLayout="row">
+        <div fxFlex="60" fxLayout="column">
+          <div class="row">
+            <span> {{i>0 && requiredLoanFields[i-1].loanId==req.loanId?'':req.loanId}}</span>
+          </div>
+          <div class="row">
+            {{req.text}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button aria-label="cancel" class="u-button-cancel" mat-raised-button (click)="activeModal.close()">Ok</button>
+</div>

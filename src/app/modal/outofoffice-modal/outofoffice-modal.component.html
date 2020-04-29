@@ -1,0 +1,102 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="outOfOfficeForm" class="u-padding-large u-padding-standard">
+      <div *ngIf="permittedUserRole" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Select User: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput #searchUser [matAutocomplete]="userList" formControlName="userId"
+                [(ngModel)]="outOfOffice.userId" name="userId" placeholder="Search Name" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnPerson.bind(this)"
+              (optionSelected)="getSelectedUser($event.option.value)" #userList="matAutocomplete">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.id">
+                {{ user.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isUserOfficer" class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Interim Officer: </mat-label>
+            <mat-form-field fxFlex="70" appearance="outline" floatLabel="always">
+              <input matInput #searchInterimOfficer [matAutocomplete]="interimOfficers"
+                formControlName="interimOfficerId" [(ngModel)]="outOfOffice.interimOfficerId" name="interimOfficerId"
+                autocomplete="off" placeholder="Search Name" />
+            </mat-form-field>
+            <mat-autocomplete [displayWith]="displayFnOfficer.bind(this)" #interimOfficers="matAutocomplete">
+              <mat-option *ngFor="let interimOfficer of filteredInterimOfficers | async" [value]="interimOfficer.id">
+                {{interimOfficer.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row my-2">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Out of Office: </mat-label>
+            <mat-checkbox name="isOutOfOfficeRangeSet" (change)="checkOutOfOffice($event)"
+              formControlName="isOutOfOfficeRangeSet" [(ngModel)]="outOfOffice.isOutOfOfficeRangeSet"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">Start Time: </mat-label>
+            <mat-form-field fxFlex="40" appearance="outline" floatLabel="always">
+              <input matInput [disabled]="outOfOffice.isOutOfOfficeRangeSet == false" [matDatepicker]="startDate"
+                placeholder="Choose a date" autocomplete="off" formControlName="startDate"
+                [(ngModel)]="outOfOffice.startDate" name="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="30" style="margin-left: 8px;" appearance="outline" floatLabel="always">
+              <input matInput [disabled]="outOfOffice.isOutOfOfficeRangeSet == false" autocomplete="off" type="time"
+                formControlName="startTime" name="startTime">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="edit-row">
+        <div fxLayout="column" fxFlex="100">
+          <div fxLayout="row" fxLayoutAlign="start baseline">
+            <mat-label fxFlex="30">End Time: </mat-label>
+            <mat-form-field fxFlex="40" appearance="outline" floatLabel="always">
+              <input matInput [disabled]="outOfOffice.isOutOfOfficeRangeSet == false" [matDatepicker]="endDate"
+                placeholder="Choose a date" autocomplete="off" formControlName="endDate"
+                [(ngModel)]="outOfOffice.endDate" name="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="30" style="margin-left: 8px;" appearance="outline" floatLabel="always">
+              <input matInput [disabled]="outOfOffice.isOutOfOfficeRangeSet == false" autocomplete="off" type="time"
+                formControlName="endTime" name="endTime">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer" style="position: initial;">
+    <div class="spinner-border text-success" role="status" *ngIf="isLoading">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    <button *ngIf="!confirmFlag" type="button" [disabled]="isLoading || !outOfOfficeForm.valid" class="btn btn-primary"
+      (click)="onYesClick()">Save</button>
+    <button *ngIf="confirmFlag" type="button" [disabled]="isLoading" class="btn btn-primary"
+      (click)="onConfirm()">Confirm Save?</button>
+  </div>
+</div>

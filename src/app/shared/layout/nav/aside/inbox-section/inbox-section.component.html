@@ -1,0 +1,13 @@
+<div *ngFor="let inbox of menu" style="padding: 5px 0px;">
+  <!-- menu item section title -->
+  <div *ngIf="inbox.id">
+     <div href="javascript:;" class="inbox-label-text"
+       [ngClass]="{'active': inbox.active===true, 'inactive': inbox.active===false}" (click)="showInbox(inbox)"
+       [routerLink]="['inbox']" routerLinkActive="active">
+       <span class="link">
+         {{inbox.inbox}}
+       </span>
+     </div>
+  </div>
+</div>
+

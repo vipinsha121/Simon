@@ -1,0 +1,12 @@
+<div class="spinner-border text-success" role="status" *ngIf="isTableLoading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div *ngIf="inboxDef">
+    <simon-grid  (onPaginationChange)="onPageChange()" (veiwDealdata)="viewDeal($event)">
+    </simon-grid>
+</div>
+<!-- [inboxId]="currentMenu.id" -->
+<!-- <div *ngIf="inboxDef">
+    <simon-grid [columns]="inboxDef.Columns" [dataList]="inboxDef.Data" [currentPageFilter]="currentPageFilter"
+        (onPaginationChange)="onPageChange()" (veiwDealdata)="viewDeal($event)"></simon-grid>
+</div> -->

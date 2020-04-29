@@ -1,0 +1,233 @@
+<div class="m-portlet m-portlet--full-height  m-portlet--rounded">
+  <div class="m-portlet__body">
+    <div class="tab-content">
+      <div class="m-widget11">
+        <div #documentPortletDiv>
+          <div class="row">
+            <div class="col-xl-6 col-md-6">
+              <h3 style="color:cornflowerblue"><i style="color:cornflowerblue" class="fa fa-folder-open"></i>&nbsp;
+                Documents {{documentscount}}
+              </h3>
+            </div>
+            <div class="col-xl-6 col-md-6">
+              <i class="fa fa-plus headerIcon"></i>
+              &nbsp;&nbsp;
+              <i class="fa fa-cloud headerIcon"></i>
+              &nbsp;&nbsp;
+              <i class="fa fa-flag headerIconFlag"></i>
+            </div>
+          </div>
+
+          <div class="row">
+            <table class="table">
+              <thead>
+                <tr style="color: #4295db">
+                  <!--Active/inactive Toggle-->
+                  <th scope="col">Info</th>
+                  <!--Export Status-->
+                  <th scope="col"></th>
+                  <!--Document Link-->
+                  <th scope="col"></th>
+                  <th scope="col">
+                    <!-- <a href="#"
+                      (click)="orderByField=='AlternateName' ? reverseSort = !reverseSort: reverseSort = false; orderByField='AlternateName';">
+                      <h4 style="margin-bottom: 2px;font-size: 14px;font-weight: 600;color: #4295db;">
+                        Name&nbsp;
+                        <span *ngIf="orderByField=='AlternateName' && reverseSort==false;">
+                          <i class="fa fa-arrow-down"></i>
+                        </span>
+                        <span *ngIf="orderByField=='AlternateName' && reverseSort==true;">
+                          <i class="fa fa-arrow-up"></i>
+                        </span>
+                      </h4>
+                    </a> -->
+                  </th>
+                  <th scope="col">
+                    <!-- <a href="#"
+                      (click)="orderByField=='asOfDate' ? reverseSort = !reverseSort: reverseSort = false; orderByField='asOfDate';">
+                      <h4 style="margin-bottom: 2px;font-size: 14px;font-weight: 600;color: #4295db;">
+                        As of Date&nbsp;
+                        <span *ngIf="orderByField=='asOfDate' && reverseSort==false;">
+                          <i class="fa fa-arrow-down"></i>
+                        </span>
+                        <span *ngIf="orderByField=='asOfDate' && reverseSort==true;">
+                          <i class="fa fa-arrow-up"></i>
+                        </span>
+                      </h4>
+                    </a> -->
+                  </th>
+                  <!--Multi-select Drop-down-->
+                  <th scope="col"></th>
+                  <th scope="col">
+
+                    <a href="#">
+                      <h4 style="margin-bottom: 2px;font-size: 14px;font-weight: 600;color: #4295db;">
+                        Requirement&nbsp;
+
+                      </h4>
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="#">
+                      <h4 style="margin-bottom: 2px;font-size: 14px;font-weight: 600;color: #4295db;">
+                        Type&nbsp;
+                      </h4>
+                    </a>
+                  </th>
+                  <th scope="col">Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of documents | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" data-name="Documents Portlet">
+                  <td>
+                    <a *ngIf="d.active" (click)="updateDocumentStatus(d)">
+                      <!-- <md-tooltip md-direction="top">Active</md-tooltip> -->
+                      <i class="fa fa-toggle-on "
+                        style="color: #47bfa8 !important; vertical-align: top; font-size: 20px;"
+                        aria-hidden="false"></i>
+                    </a>
+                    <a *ngIf="!d.active" (click)="updateDocumentStatus(d);" style="line-height: 20px">
+                      <!-- <md-tooltip md-direction="top">Not Needed</md-tooltip> -->
+                      <i class="fa fa-toggle-off "
+                        style="color: #eb505b !important; vertical-align: top; font-size: 22px; padding: 2px; margin-right: 5px"
+                        aria-hidden="false"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a class="inline-block" style="margin-left:-15px">
+                      <!-- <md-tooltip *ngIf="d.ecmUploadEnabled && d.ecmExported" md-direction="top">Exported</md-tooltip>
+                      <md-tooltip *ngIf="d.ecmUploadEnabled && !d.ecmExported" md-direction="top">This doc-type will
+                        upload to Synergy {{match.model.ecmName}}</md-tooltip>
+                      <md-tooltip *ngIf="!d.ecmUploadEnabled" md-direction="top">This doc-type will NOT upload to
+                        Synergy</md-tooltip> -->
+                      <!--<i ng-class="d.ecmExported ? ecmExported : (d.ecmUploadEnabled ? ecmUp : ecmNoUp)" style="margin: 13px 0px 0px 0px"></i>-->
+                      <!--<i ng-class="d.ecmExported ? ecmExported : (d.ecmUploadEnabled ? ecmUp : ecmNoUp)" class="documentTableIconNoUpload"></i>-->
+                      <svg *ngIf="d.ecmUploadEnabled && d.ecmExported" class="svg-fill-green-lime"
+                        xmlns="http://www.w3.org/2000/svg" style="height: 20px" viewBox="0 0 116.83193 112.83542">
+                        <g inkscape:label="trace" inkscape:groupmode="layer" id="layer1"
+                          transform="translate(-52.664529,-11.450507)">
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="M 107.19058,20.781266 79.0754,48.896446 c -2.027726,2.027726 -0.389337,6.292961 3.633243,6.292961 h 16.253103 v 29.136734 c 0,1.929495 1.044334,2.925807 2.925804,2.925807 h 18.10343 c 1.88218,0 2.67671,-0.810941 2.74295,-2.742946 V 55.159501 h 17.00625 c 3.01279,0 5.2862,-3.856954 2.83438,-6.308773 L 114.45938,20.735551 c -2.90669,-2.848146 -4.21316,-2.845406 -7.2688,0.04572 z"
+                            id="path4556" inkscape:connector-curvature="0" sodipodi:nodetypes="cccccccccccccc" />
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="M 90.824345,87.983399 H 62.663453 c -2.205329,0 -4.571574,2.949871 -4.571574,5.211593 v 22.126418 c 0,2.63508 2.558296,5.12016 4.663003,5.12016 h 96.185908 c 2.64375,0 4.98302,-2.73975 4.98302,-4.98301 V 93.194992 c 0,-2.265453 -2.20233,-5.097303 -5.09731,-5.097303 h -28.13803 c -1.91102,3.444289 -5.78882,8.023111 -9.32601,8.023111 h -20.38922 c -3.739753,0 -7.997564,-4.382783 -10.148895,-8.137401 z"
+                            id="path4604" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccccc" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606" cx="135.35147" cy="108.2812" r="3.9896388" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606-7" cx="151.53485" cy="108.28118" r="3.9896388" />
+                        </g>
+                      </svg>
+                      <svg *ngIf="d.ecmUploadEnabled && !d.ecmExported" class="svg-fill-grey-light"
+                        xmlns="http://www.w3.org/2000/svg" style="height: 20px" viewBox="0 0 116.83193 112.83542">
+                        <g inkscape:label="trace" inkscape:groupmode="layer" id="layer1"
+                          transform="translate(-52.664529,-11.450507)">
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="M 107.19058,20.781266 79.0754,48.896446 c -2.027726,2.027726 -0.389337,6.292961 3.633243,6.292961 h 16.253103 v 29.136734 c 0,1.929495 1.044334,2.925807 2.925804,2.925807 h 18.10343 c 1.88218,0 2.67671,-0.810941 2.74295,-2.742946 V 55.159501 h 17.00625 c 3.01279,0 5.2862,-3.856954 2.83438,-6.308773 L 114.45938,20.735551 c -2.90669,-2.848146 -4.21316,-2.845406 -7.2688,0.04572 z"
+                            id="path4556" inkscape:connector-curvature="0" sodipodi:nodetypes="cccccccccccccc" />
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="M 90.824345,87.983399 H 62.663453 c -2.205329,0 -4.571574,2.949871 -4.571574,5.211593 v 22.126418 c 0,2.63508 2.558296,5.12016 4.663003,5.12016 h 96.185908 c 2.64375,0 4.98302,-2.73975 4.98302,-4.98301 V 93.194992 c 0,-2.265453 -2.20233,-5.097303 -5.09731,-5.097303 h -28.13803 c -1.91102,3.444289 -5.78882,8.023111 -9.32601,8.023111 h -20.38922 c -3.739753,0 -7.997564,-4.382783 -10.148895,-8.137401 z"
+                            id="path4604" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccccc" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606" cx="135.35147" cy="108.2812" r="3.9896388" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606-7" cx="151.53485" cy="108.28118" r="3.9896388" />
+                        </g>
+                      </svg>
+                      <svg *ngIf="!d.ecmUploadEnabled" style="height: 20px" class="svg-fill-grey-light"
+                        xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 116.83193 112.83541">
+                        <g inkscape:label="trace" inkscape:groupmode="layer" id="layer1"
+                          transform="translate(-51.240582,-11.450554)">
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="m 105.83374,22.364243 -28.115177,28.11518 c -2.027726,2.027726 -0.389337,6.292961 3.633243,6.292961 h 16.253103 v 29.136734 c 0,1.929495 1.044336,2.925807 2.925811,2.925807 h 18.10342 c 1.88218,0 2.67671,-0.810941 2.74295,-2.742946 V 56.742478 h 17.00625 c 3.01279,0 5.2862,-3.856954 2.83438,-6.308773 L 113.10254,22.318528 c -2.90669,-2.848146 -4.21316,-2.845406 -7.2688,0.04572 z"
+                            id="path4556" inkscape:connector-curvature="0" sodipodi:nodetypes="cccccccccccccc" />
+                          <path
+                            style="fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                            d="M 89.467508,89.566376 H 61.306616 c -2.205329,0 -4.571574,2.949871 -4.571574,5.211593 v 22.126411 c 0,2.63508 2.558296,5.12016 4.663003,5.12016 h 96.185905 c 2.64375,0 4.98302,-2.73975 4.98302,-4.98301 V 94.777969 c 0,-2.265453 -2.20233,-5.097303 -5.09731,-5.097303 h -28.13803 c -1.91102,3.444289 -5.78882,8.023111 -9.32601,8.023111 H 99.616401 c -3.739751,0 -7.997562,-4.382783 -10.148893,-8.137401 z"
+                            id="path4604" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccccccccc" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606" cx="133.99464" cy="109.86417" r="3.9896388" />
+                          <circle
+                            style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36700001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            id="path4606-7" cx="150.17802" cy="109.86416" r="3.9896388" />
+                        </g>
+                        <g inkscape:groupmode="layer" id="layer3" inkscape:label="line"
+                          transform="translate(1.4239466,10.999965)">
+                          <path
+                            style="fill:none;stroke:#bdbdbd;stroke-width:12.822;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            d="M 7.7690353,-1.7196056 104.63176,92.525456" id="path5244"
+                            inkscape:connector-curvature="0" />
+                          <path
+                            style="fill:none;stroke:#ffffff;stroke-width:9.07;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                            d="M 14.253872,-8.5801932 113.28299,87.825425" id="path5244-9"
+                            inkscape:connector-curvature="0" />
+                        </g>
+                      </svg>
+                    </a>
+                  </td>
+                  <td>
+                    <a (click)="viewDocument(d.id)">
+                      <span class="inline-block">
+                        <!-- <md-tooltip md-direction="top">Open Document</md-tooltip> -->
+                        <i aria-hidden="false" style="margin-left:-8px" ng-class="d.AlternateName.indexOf('.pdf') >
+                                            -1 ? 'documentTableIconLink iconHoverRed fa fa-file-pdf-o' :
+                                            d.AlternateName.indexOf('.doc') > -1 ? 'documentTableIconLink iconHoverBlueLink fa fa-file-word-o' :
+                                            d.AlternateName.indexOf('.xlsx') > -1 ? 'documentTableIconLink iconHoverGreenLink fa fa-file-excel-o' :
+                                            d.AlternateName.indexOf('.jpeg') > -1 ? 'documentTableIconLink iconHoverBlueLink fa fa-file-image-o' :
+                                            d.AlternateName.indexOf('.png') > -1 ? 'documentTableIconLink iconHoverBlueLink fa fa-file-image-o' :
+                                            d.AlternateName.indexOf('.zip') > -1 ? 'documentTableIconLink iconHoverBlueLink fa fa-file-archive-o' :
+                                            'documentTableIconLink iconHoverBlueLink fa fa-file-o'  ">
+                        </i>
+                      </span>
+                    </a>
+                  </td>
+                  <td>
+                    <div style="padding: 0px" (click)="d.EditDocumentRow = true;">
+                      <div *ngIf="!d.EditDocumentRow" style="line-height: 42px;">
+                        {{d.AlternateName }}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    {{d.AsOfDate}}
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                    <div *ngIf="d.documentDefinitionId != 147"
+                      (click)="d.EditDocumentRow = true;createDocumentEditCopy(d);"
+                      style="overflow: hidden; text-overflow:ellipsis;">
+                      {{d.DocumentDefinitionName }}
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      {{(d.Notes)}}
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="documents?.length"></ngb-pagination>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+.doc-header-button-reset {
+  margin: 7px 5px 7px 0px;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #707070;
+  text-transform: uppercase;
+  background: #f4516c;
+  color: #fff;
+  padding: 0 5rem
+}

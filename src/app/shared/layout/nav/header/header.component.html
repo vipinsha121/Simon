@@ -1,0 +1,171 @@
+
+<mat-toolbar class="mat-elevation-z5 navbar-background header-fixed">
+    <mat-toolbar-row>
+      <button *ngIf="isButtonClosed" mat-icon-button (click)="sendOpen()">
+            <mat-icon class="navbar-icon" aria-hidden="false" aria-label="sidenavClose">menu</mat-icon>
+      </button>
+      <mat-icon *ngIf="!isButtonClosed" [routerLink]="['']" routerLinkActive="active" style="cursor: pointer"
+      class="navbar-icon" aria-hidden="false" aria-label="menu">whatshot</mat-icon>
+
+      <button aria-label="matMenuButton" mat-button style="font-weight: 400"
+              [matMenuTriggerFor]="inboxMenu">{{ mobileQuery.matches ? '' : 'Inbox' }}
+        <mat-icon aria-label="menu"
+            [hidden]="!mobileQuery.matches"
+            aria-hidden="false">inbox</mat-icon>
+        <mat-icon aria-hidden="false" style="line-height: 22px">arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #inboxMenu="matMenu">
+        <button mat-menu-item *ngFor="let menuItem of inboxList" (click)="addInbox(menuItem)">{{ menuItem.caption }}</button>
+      </mat-menu>
+
+      <button aria-label="matMenuButton" mat-button style="font-weight: 400"
+              [routerLink]="['']"
+              routerLinkActive="active">{{ mobileQuery.matches ? '' : 'Dashboard' }}
+        <mat-icon aria-label="menu"
+          [hidden]="!mobileQuery.matches"
+          aria-hidden="false">assessment</mat-icon>
+      </button>
+
+      <button aria-label="matMenuButton" mat-button style="font-weight: 400"
+              [routerLink]="['message']"
+              routerLinkActive="active">{{ mobileQuery.matches ? '' : 'Message' }}
+        <mat-icon aria-label="menu"
+          [hidden]="!mobileQuery.matches"
+          aria-hidden="false">public</mat-icon>
+      </button>
+
+      <button aria-label="matMenuButton" mat-button style="font-weight: 400"
+              [routerLink]="['global']"
+              routerLinkActive="active">
+              {{ mobileQuery.matches ? '' : 'Global' }}
+        <mat-icon aria-label="menu"
+          [hidden]="!mobileQuery.matches"
+          aria-hidden="false">public</mat-icon>
+      </button>
+
+      <span class="navbar-spacer"></span>
+      <!--new notification implemented -->
+  <ul class="dropdown dropdown-extended dropdown-notification" id="header_inbox_bar" style="margin: 0px; padding: 0px">
+    <!--alerts drop-down-->
+    <button mat-icon-button  (mouseover)="clickedInside($event,true,'notification')">
+      <mat-icon aria-hidden="false" aria-label="menu" matBadge="{{notification?.alertcount}}" [matBadgeHidden]="hideAlertCount" matBadgePosition="before">notifications</mat-icon>
+    </button>
+
+    <ul class="dropdown-menu show" *ngIf="showNotification" (click)="clickedInside($event,false,'notification')" style="top: 34px;margin-left: -210px !important;">
+        <li class="external">
+            <h3 aria-hidden="true">You have <span class="bold">{{notification?.alertcount}} New</span> Notification</h3>
+            <span *ngIf="notification.alertcount != 0" class="button-clear"  (click)="postmarkallasread()">
+               Clear All
+            </span>
+        </li>
+      <div>
+        <ul title="Alerts"  class="dropdown-menu-list scroller"  style="height: 275px; padding: inherit;" data-handle-color="#637283">
+          <div *ngIf="notification">
+              <li class="pointer" *ngFor="let m of notification.totalalerts">
+                <div (click)="showDlg(m,'notification')">
+                <span class="alert-timestamp">{{m.createdDate | date: 'MM/dd/yyyy h:mm:ss a'}} </span>
+                    </div>
+                    <div (click)="showDlg(m,'notification')">
+                        <span class="multi_lines_text">{{m.plainContent}}</span><br />
+                        <hr />
+                    </div>
+                    <div (click)="showDlg(m,'notification')">
+                        <span class="multi_lines_text">{{m.subject}}</span>
+                    </div>
+
+          <div class="pointer" style="margin-bottom: 15px;    margin-left: 242px;">
+            <span class="clearButton" style="color: white;background-color:lightseagreen;margin-right:3px;border-radius: 20px;padding: 1px 6px;"  (click)="showDlg(m,'notification')">
+                Open
+            </span>
+            <span class="clearButton"  (click)="postMarkAlertAsRead(m.notifyresultid_05) && showMyContainer =! showMyContainer" style="color: white;background: red; border-radius: 20px;padding: 1px 6px; margin-right: 4px;" >
+                Clear
+             </span>
+
+            </div>
+        </li>
+        </div>
+    </ul>
+  </div>
+        <li>
+            <ul class="dropdown-menu-list scroller" style="height: 27px; width: 354px;
+                      margin-right: 44px;"  data-handle-color="#637283">
+            </ul>
+        </li>
+    </ul>
+  </ul>
+
+  <!-- new implemented -->
+  <ul class="dropdown dropdown-extended dropdown-notification" id="header_inbox_bar" style="margin: 0px; padding: 0px">
+        <!--messages drop-down-->
+        <button mat-icon-button (mouseover)="clickedInside($event,true,'message')" >
+            <mat-icon matBadge="{{message?.length}}" matBadgePosition="before" [matBadgeHidden]="hideMessageCount" aria-hidden="false" aria-label="menu">mail</mat-icon>
+        </button>
+        <ul class="dropdown-menu show" *ngIf="showMsg" (click)="clickedInside($event,false,'message')" style="top: 33px">
+                    <!-- <ul class="dropdown-menu show" *ngIf="showMsg" (mouseenter)="menuenter()" (mouseleave)="menuLeave(levelOneTrigger, button)" style="top: 33px"> -->
+                    <li class="external" *ngIf="message">
+                        <h3 aria-hidden="true">You have <span class="bold">{{message.length}} New</span> Messages</h3>
+                    </li>
+                    <li>
+
+
+                    <ul class="dropdown-menu-list scroller"  style="height: 275px;padding-left: 0;" data-handle-color="#637283">
+
+                    <div class="scrollbar scrollbar-black bordered-black square">
+                    <div class="overflow-auto">
+                    <li *ngFor="let m of message.slice().reverse()">
+                            <div class="pointer"  (click)="showDlg(m,'message')">
+                            <span class="alertTimestamp" style="border: 1px solid transparent;
+                            box-sizing: border-box;
+                            padding: 2px 4px;
+                            border-radius: 6px;
+                            background-color: #f0f0f0;
+                            color: #636363;
+                            font-weight: 100;
+
+                            font-size: 10px;">{{m.createdDate | date: 'MM/dd/yyyy h:mm:ss a'}} </span>
+                                </div>
+                                <div class="pointer"  (click)="showDlg(m,'message')">
+                                        <span class="multi_lines_text">{{m.subject}} - {{m.dealPrimaryPartyName}}</span>
+                                </div>
+                                <div class="pointer"  (click)="showDlg(m,'message')">
+                                    <span class="multi_lines_text">{{m.plainContent}}</span>
+                                </div>
+
+                      <div style="margin-bottom: 15px;   margin-left: 159px;">
+                            <span  class="clearButton" style="background-color: lightseagreen;
+                            margin-right: 3px;
+                            color: white;
+                            border-radius: 20px;
+                            padding: 1px 6px;
+                            margin-right: 4px;" (click)="showDlg(m,'message')">
+                                Reply
+                            </span>
+                            <span class="clearButton" (click)="clearMessage(m.recipient,m.id)" style="color: white;background: red; border-radius: 20px;padding: 1px 6px; margin-right: 4px;" >
+                                Clear
+                                </span>
+                        </div>
+
+                    </li>
+                </div>
+            </div>
+                </ul>
+                </li>
+        </ul>
+    </ul>
+      <button *ngIf="!mobileQuery.matches" mat-button [matMenuTriggerFor]="menu">{{currentUser1.firstName}}
+        {{currentUser1.lastName}}</button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item *ngFor="let user of currentuser" (click)="onSelect(user)">{{user.title}}</button>
+      </mat-menu>
+
+      <button *ngIf="mobileQuery.matches" mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon aria-hidden="false" aria-label="user-image">account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item *ngFor="let user of currentuser" (click)="onSelect(user)">{{user.title}}</button>
+      </mat-menu>
+
+      <mat-icon *ngIf="!mobileQuery.matches" class="navbar-icon" aria-hidden="false" aria-label="user-image">account_circle</mat-icon>
+
+    </mat-toolbar-row>
+  </mat-toolbar>

@@ -1,0 +1,114 @@
+<!-- <div>
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <h4>Loan</h4>
+      <div style="overflow: auto; max-height:500px;" *ngFor="let reportLoan of reportLoanData"
+        class="col-xl-12 col-md-12">
+        {{reportLoan | json}}
+        
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <h4>Deal</h4>
+      <div style="overflow: scroll; max-height:500px;" *ngFor="let reportdeal of reportdealData" class="col-xl-12 col-md-12">
+        {{reportdeal | json}}
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <h4>Party</h4>
+      <div style="overflow: scroll; max-height:500px;" *ngFor="let reportparty of reportpartyData" class="col-xl-12 col-md-12">
+        {{reportparty | json}}
+      </div>
+    </div>
+    <hr />
+
+    <div class="row">
+
+      <h4>Collateral</h4>
+      <div style="overflow: scroll; max-height:500px;   " *ngFor="let reportcollateral of reportcollateralData" class="col-xl-12 col-md-12">
+        {{reportcollateral | json}}
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+
+  </div>
+</div> -->
+
+<div id="jqxWidget" #jqxWidget>
+  <jqxWindow #windowReference [width]="500" [height]="300" [maxHeight]="1400" [minHeight]="200" [maxWidth]="700"
+    [minWidth]="200" [showCollapseButton]="true" [draggable]="true" resizable="true">
+    <div #windowHeader>
+      <span>
+        <img src="" alt="" style="margin-right: 15px" />Quick View
+      </span>
+    </div>
+    <div style="overflow: hidden;" #windowContent>
+
+      <!--Deal Info-->
+      <div layout="row" class="mt-0 ml-1 px-1" *ngFor="let reportdeal of reportdealData"
+        style="border-bottom: 1px solid #e7e7e7; padding-bottom: 7px">
+        <div class="row"></div>
+        <div layout="column" flex="100">
+          <div layout="row">
+            <div layout="column" style="font-size: 18px">{{reportdeal.primaryborrower_10}}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-1">Total</div>
+            <div class="col-md-2">{{reportdeal.dealamount_06 | currency}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!--loan info-->
+      <div layout="row" class="mt-0 ml-1 px-1" *ngFor="let reportLoan of reportLoanData ">
+        <div class="row"></div>
+        <div layout="column" flex="100">
+          <div layout="row" flex="100" style="border-bottom: 1px solid #e7e7e7; font-size: 11.5px; padding-bottom: 7px">
+            <div layout="column" flex="100">
+              <div *ngFor="let item of reportLoan | keyvalue">
+                <div layout="row" style="margin-bottom: 5px;">
+                  <div>{{item.key}}</div>
+                  <div>{{item.value}}</div>
+                </div>
+                <!-- <div layout="row" *ngFor="let row of item">
+                  <div layout="row">
+                    <div style="width: 15%">Product:</div>
+                    <div style="width: 85%">{{row.requesttypetext_10}}) {{row.productdesc_10}}</div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </jqxWindow>
+</div>
+
+
+<style>
+  .mt-0 {
+    margin-top: 0 !important;
+  }
+
+  .ml-1 {
+    margin-left: 5px !important;
+  }
+
+  .px-1 {
+    padding-left: 5px !important;
+  }
+</style>

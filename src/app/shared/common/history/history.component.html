@@ -1,0 +1,44 @@
+<div *ngIf="summaryHistoryList" class="scroller">
+
+    <div layout="row" class="dealHistoryRow"
+        *ngFor="let r of summaryHistoryList">
+        <div layout="column" flex="95" class="dealHistoryColumnR">
+            <div layout="row" flex="100" style="min-height: 20px">
+                <div>
+
+                    <!--r.ph_submittedtocf_01 == 1 ("r.ph_submittedtocf_01 == null")             deal send row
+    r.ph_submittedtocf_01 == null (*ngIf="r.ph_submittedtocf_01 == 1")        requirement row -->
+
+                    <span style="color: #4295db; padding-right: 3px; font-weight: 500; font-size: 12px">{{r.fh_createdbyfirstname_10}}  {{r.fh_createdbylastname_10}}</span>
+                    <span *ngIf="!r.ph_submittedtocf_01" style="font-size: 11px"> set</span>
+                    <span *ngIf="r.ph_submittedtocf_01" style="font-size: 11px"> sent</span>
+                    <span *ngIf="!r.ph_submittedtocf_01" style="color: #c688e4; font-weight: 600; padding: 0px 2px; font-size: 12px">{{r.reqname_10}}</span>
+                    <span *ngIf="r.ph_submittedtocf_01" style="color: #c688e4; font-weight: 600; padding: 0px 2px; font-size: 12px">this deal</span>
+                    <span *ngIf="!r.ph_submittedtocf_01" style="font-size: 11px; padding-right: 1px;">to </span>
+                    <span *ngIf="r.ph_submittedtocf_01" style="font-size: 11px; padding-right: 1px">to </span>
+                    <span *ngIf="!r.ph_submittedtocf_01"
+                          [ngClass]="(r.fh_resultstagelabel_10.indexOf('Approved') > -1) ? 'dealHistoryStatusGreen' :
+                        (r.sh_stagename_10.indexOf('Complete') > -1) ? 'dealHistoryStatusGreen' : 'dealHistoryStatusGrey'">{{r.fh_resultstagelabel_10}} 
+                    </span>
+                    <span *ngIf="r.ph_submittedtocf_01" class="dealHistoryStatusGreen"> {{r.fh_resultstagelabel_10}}</span>
+                
+                    <span *ngIf="r.ph_submittedtocf_01" class="dealHistoryStatusGreen"> {{r.fh_stagename_10}}</span>
+                </div>
+            </div>
+            <div layout="row" flex="100" style="color: #9a9a9a; font-size: 10px; min-height: 10px">
+                <div>
+                    <svg fill="#9a9a9a" height="12" viewBox="0 0 24 24" width="12" style="position: relative; top: 2px; margin-right: 1px; right: 1px" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+                    </svg>
+                    <span *ngIf="!r.ph_submittedtocf_01" style="padding-right: 10px">{{r.fh_createddate_22 | date: 'EEEE'}}</span>
+                    <span *ngIf="!r.ph_submittedtocf_01" style="padding-right: 10px">{{r.fh_createddate_22 |  date: 'M/d/yy,   h:mm  a'}}</span>
+                    <span *ngIf="r.ph_submittedtocf_01" style="padding-right: 10px">{{r.fh_createddate_22 |  date: 'EEEE'}}</span>
+                    <span *ngIf="r.ph_submittedtocf_01" style="padding-right: 10px">{{r.fh_createddate_22 |  date: 'M/d/yy,   h:mm  a'}}</span>
+                </div>
+            </div>
+        </div>
+
+    <br /><br />
+</div>
+</div>

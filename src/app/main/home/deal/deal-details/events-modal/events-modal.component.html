@@ -1,0 +1,87 @@
+<div fxLayoutAlign="center space-evenly" fxLayout="row" style="height: 100%" fxLayout.xs="column">
+  <div class="m-portlet m-portlet--rounded u-scrn-flex" fxLayout="column">
+      <div class="u-header">
+          <span class="u-header-title">Events</span>
+      </div>
+      <div class="u-portlet-container">
+          <div class="u-portlet-body u-scroll-vert">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Related Entity</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Status Date</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">User</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor = "let e of events">
+                  <!--<td>
+                    <mat-icon class="u-mat-icon-grey">assessment</mat-icon>
+                  </td>-->
+                <td>
+                    <span><span *ngIf="e.type != 'lo'"> {{e.type | uppercase }}
+                    <span ngbTooltip="{{e.type | uppercase }}{{' - '+ e.relatedEntity}}"
+                      tooltipClass="tooltip-font-size-md" [disableTooltip]="e.relatedEntity.length < 10"
+                      *ngIf="e.relatedEntity != null">{{' - '+ e.relatedEntity  | slice: 0:20}}</span>
+                    <span *ngIf="e.relatedEntity && e.relatedEntity.length >20">...</span></span>
+                    </span>
+                    <span ngbTooltip="{{e.type | uppercase }}{{' - '+  e.loanId}} {{' - ' +e.productDescription}}"
+                      tooltipClass="tooltip-font-size-md" [disableTooltip]="e.productDescription.length < 10">
+                      <span *ngIf="e.type == 'lo'"> {{e.type | uppercase }} {{' - '+  e.loanId}} {{' - ' + e.productDescription | slice: 0:11}}
+                    <span *ngIf="e.productDescription && e.productDescription.length>11">...</span></span></span>
+                  </td>
+                     <td>{{e.reqName}} </td>
+                     <td>
+                                    <span title="Due Soon" *ngIf="e.daysDue==2 && e.complete != true">
+                                        <!--{{r.daysDue}}-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#F7CA18" style="position: relative; top: 4px;">
+                                            <path d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                                        </svg>
+                                    </span>
+                                    <span title="Due Immediately" *ngIf="e.daysDue<2 && e.complete != true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#E26A6A" style="position: relative; top: 4px;">
+                                            <path d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
+                                        </svg>
+                                    </span>
+                                    <span title="Exception" *ngIf="e.exception==true">
+                                        <i class="fa fa-exclamation-circle" style="font-size:16px;color:#ffa07a"></i>
+                                    </span>
+
+                           <span class="chip chip-text"
+                             [ngClass]="e.status?.indexOf('Open') >-1 ? 'u-background-red' :
+                                  e.status?.indexOf('Complete') > -1 ? 'u-background-green' :
+                                  e.status?.indexOf('Waive') > -1 ? 'u-background-green' :
+                                  e.status?.indexOf('Approved') > -1 ? 'u-background-green' :
+                                  e.status?.indexOf('In Process') > -1 ? 'u-background-grey-dark' :
+                                  e.status?.indexOf('Pending') > -1 ? 'u-background-orange' : 'u-background-orange'">
+
+                                  {{e.status}}
+                           </span>
+                         </td>
+                        <td>
+                         <span>{{e.statusDate | date: "MM/dd"}}</span>
+                        </td>
+                        <td>
+                           <span>{{e.dueDate | date: "MM/dd"}}</span>
+                        </td>
+                        <td>
+                              <div *ngIf="e.assignedUser">
+                                 <img ngbTooltip="{{e.assignedUserName}}" tooltipClass="tooltip-font-size-md" class="avatar" [src]="e.userProfileImage" />
+                              </div>
+                        </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+      </div>
+      <div class="u-footer-container">
+
+      </div>
+  </div>
+</div>
