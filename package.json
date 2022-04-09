@@ -41,7 +41,7 @@
     "jqwidgets-framework": "^8.1.4",
     "jqwidgets-ng": "^8.1.2",
     "jqwidgets-scripts": "^8.1.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng-bootstrap-pagination": "^0.2.3",
     "ng2-adal": "^2.0.0",
     "ng2-search-filter": "^0.5.1",
